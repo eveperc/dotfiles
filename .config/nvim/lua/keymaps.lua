@@ -56,11 +56,6 @@ keymap('n', '<C-f>', "<cmd>HopWord<CR>", opts)
 -- 'akinsho/toggleterm.nvim' --------------------------------------------------------
 keymap('n', '<leader>t', '<cmd>ToggleTerm<CR>', opts)
 keymap('n', '<leader>lg', '<cmd>lua _lazygit_toggle()<CR>', opts)
--- ThePrimeagen/harpoon --------------------------------------------------------
-keymap('n', '<leader>m', ':lua require("harpoon.mark").add_file()<CR>', opts)
-keymap('n', '<leader>k', ':lua require("harpoon.ui").toggle_quick_menu()<CR>', opts)
-keymap('n', '<C-K>', ':lua require("harpoon.ui").nav_next()<CR>', opts)
-keymap('n', '<C-J>', ':lua require("harpoon.ui").nav_prev()<CR>', opts)
 -- 'mfussenegger/nvim-treehopper' --------------------------------------------------------
 keymap('v', 'm', ':<C-U>lua require("tsht").nodes()<CR>', opts)
 -- 'David-Kunz/treesitter-unit' --------------------------------------------------------
@@ -68,3 +63,9 @@ keymap('x', 'iu', ':lua require"treesitter-unit".select()<CR>', opts)
 keymap('x', 'au', ':lua require"treesitter-unit".select(true)<CR>', opts)
 keymap('o', 'iu', ':<c-u>lua require"treesitter-unit".select()<CR>', opts)
 keymap('o', 'au', ':<c-u>lua require"treesitter-unit".select(true)<CR>', opts)
+-- 'David-Kunz/vim-edgemotion' --------------------------------------------------------
+vim.keymap.set('n','<C-j>','<Plug>(edgemotion-j)')
+vim.keymap.set('n','<C-k>','<Plug>(edgemotion-k)')
+-- 'machakann/vim-columnmove'
+vim.keymap.set('n','<C-m>','<Plug>(columnmove-f)')
+vim.keymap.set('n','<C-n>','<Plug>(columnmove-F)')

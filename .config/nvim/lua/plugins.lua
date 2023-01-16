@@ -101,8 +101,6 @@ return packer.startup(function(use)
   use({ "yioneko/nvim-yati", tag = "*", requires = "nvim-treesitter/nvim-treesitter" })
   use({ "nvim-treesitter/nvim-treesitter-context" })
   use({ "nvim-treesitter/nvim-treesitter-textobjects" })
-  -- marks
-  use({ 'ThePrimeagen/harpoon' })
   -- visual
   use({ "mvllow/modes.nvim", tag = "v0.2.0" })
   use({ "petertriho/nvim-scrollbar" })
@@ -126,14 +124,15 @@ return packer.startup(function(use)
     branch = "v2", -- optional but strongly recommended
   })
   use({ "unblevable/quick-scope" })
+  use({ "haya14busa/vim-edgemotion" })
   use({ "mfussenegger/nvim-treehopper" })
   use({ 'David-Kunz/treesitter-unit' })
+  use({ 'machakann/vim-columnmove' })
   -- edit
   use({ 'numToStr/Comment.nvim' })
   use({ "windwp/nvim-autopairs" })
   use({ "machakann/vim-sandwich" })
   use({ "mattn/vim-sonictemplate" })
-  use({ "LudoPinelli/comment-box.nvim" })
   use({
     "folke/todo-comments.nvim",
     requires = "nvim-lua/plenary.nvim",
@@ -148,13 +147,8 @@ return packer.startup(function(use)
   use({
     "AckslD/nvim-neoclip.lua",
     requires = {
-      -- you'll need at least one of these
-      -- {'nvim-telescope/telescope.nvim'},
-      -- {'ibhagwan/fzf-lua'},
-    },
-    config = function()
-      require('neoclip').setup()
-    end,
+      { 'ibhagwan/fzf-lua' },
+    }
   })
   -- terminal
   use({ "akinsho/toggleterm.nvim", tag = '*' })
