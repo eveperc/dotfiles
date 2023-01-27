@@ -19,16 +19,15 @@ local options = {
   expandtab = true,
   tabstop = 2,
   shiftwidth = 2,
-  autoindent = true,
   smartindent = true,
   relativenumber = true,
-  wrap = true,
+  wrap = false,
+  autoindent = true,
   nrformats = "bin,hex",
   swapfile = false,
   -- formatoptions:remove('t'),
   -- formatoptions:append('mM'),
 }
-
 vim.opt.shortmess:append("c")
 
 for k, v in pairs(options) do
@@ -63,8 +62,6 @@ vim.cmd 'highlight GitGutterDeleteLine       ctermbg=1'
 -- 'junegunn/fzf.vim' ----------------------------------------------------------
 vim.cmd "let g:fzf_preview_window = ['right:70%', 'ctrl-/']"
 
--- "quick-scope"
-vim.cmd "let g:qs_highlight_on_keys = ['f', 'F']"
 
 -- "mattn/sonictemplate-vim"
 vim.cmd "let g:sonictemplate_vim_template_dir = ['$HOME/.config/nvim/templates/']"

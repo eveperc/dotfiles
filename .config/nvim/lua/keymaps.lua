@@ -37,12 +37,10 @@ keymap('t', '<C-W>k', '<CMD>wincmd k<CR>', term_opts)
 keymap('t', '<C-W>h', '<CMD>wincmd h<CR>', term_opts)
 keymap('t', '<C-W>l', '<CMD>wincmd l<CR>', term_opts)
 -- 'ibhagwan/fzf-lua' ----------------------------------------------------------
-keymap('n', '<leader>e', "<cmd>lua require('fzf-lua').files()<CR>", opts)
-keymap('n', '<leader>g', "<cmd>lua require('fzf-lua').git_status()<CR>", opts)
-keymap('n', '<leader>p', "<cmd>lua require('fzf-lua').live_grep()<CR>", opts)
-keymap('n', '<leader>h', "<cmd>lua require('fzf-lua').oldfiles()<CR>", opts)
-keymap('n', '<leader>b', "<cmd>lua require('fzf-lua').buffers()<CR>", opts)
-keymap('n', '<leader>c', "<cmd>lua require('neoclip.fzf')()<CR>", opts)
+keymap('n', '<leader>e', "<cmd>lua require('fzf-lua').files()<cr>", opts)
+-- keymap('n', '<leader>g', "<cmd>lua require('fzf-lua').git_files()<cr>",opts)
+keymap('n', '<leader>p', "<cmd>lua require('fzf-lua').live_grep()<cr>", opts)
+keymap('n', '<leader>b', "<cmd>lua require('fzf-lua').buffers()<cr>", opts)
 -- 'tpope/vim-fugitive' --------------------------------------------------------
 keymap('n', '<leader>GG', ':<C-u>Git<CR>', map_opts)
 keymap('n', '<leader>GC', ':<C-u>Git commit<CR>', map_opts)
@@ -63,9 +61,13 @@ keymap('x', 'iu', ':lua require"treesitter-unit".select()<CR>', opts)
 keymap('x', 'au', ':lua require"treesitter-unit".select(true)<CR>', opts)
 keymap('o', 'iu', ':<c-u>lua require"treesitter-unit".select()<CR>', opts)
 keymap('o', 'au', ':<c-u>lua require"treesitter-unit".select(true)<CR>', opts)
+-- 'vim-gitgutter'--------------------------------------------------------
+keymap('n', '<leader>gd', "<cmd>GitGutterDiffOrig<CR>", opts)
+keymap('n', '<leader>gf', "<cmd>GitGutterFold<CR>", opts)
 -- 'David-Kunz/vim-edgemotion' --------------------------------------------------------
-vim.keymap.set('n','<C-j>','<Plug>(edgemotion-j)')
-vim.keymap.set('n','<C-k>','<Plug>(edgemotion-k)')
--- 'machakann/vim-columnmove'
-vim.keymap.set('n','<C-m>','<Plug>(columnmove-f)')
-vim.keymap.set('n','<C-n>','<Plug>(columnmove-F)')
+vim.keymap.set('n', '<C-j>', '<Plug>(edgemotion-j)')
+vim.keymap.set('n', '<C-k>', '<Plug>(edgemotion-k)')
+-- 'machakann/vim-columnmove'--------------------------------------------------------
+vim.keymap.set('n', '<C-m>', '<Plug>(columnmove-f)')
+vim.keymap.set('n', '<C-n>', '<Plug>(columnmove-F)')
+
