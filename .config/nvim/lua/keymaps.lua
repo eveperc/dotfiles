@@ -64,6 +64,9 @@ keymap('o', 'au', ':<c-u>lua require"treesitter-unit".select(true)<CR>', opts)
 -- 'vim-gitgutter'--------------------------------------------------------
 keymap('n', '<leader>gd', "<cmd>GitGutterDiffOrig<CR>", opts)
 keymap('n', '<leader>gf', "<cmd>GitGutterFold<CR>", opts)
+-- 'nvim-dap-ui'--------------------------------------------------------
+keymap('n', '<leader>b', ':DapToggleBreakpoint<CR>',opts)
+keymap('n', '<leader>d', ':lua require("dapui").toggle()<CR>',opts)
 -- 'David-Kunz/vim-edgemotion' --------------------------------------------------------
 vim.keymap.set('n', '<C-j>', '<Plug>(edgemotion-j)')
 vim.keymap.set('n', '<C-k>', '<Plug>(edgemotion-k)')

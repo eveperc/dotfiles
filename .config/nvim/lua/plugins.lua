@@ -153,4 +153,7 @@ return lazy.setup({
     setup = function() vim.g.mkdp_filetypes = { "markdown" } end,
     ft = { "markdown" },
   },
+  --dap
+  {'mfussenegger/nvim-dap'},
+  {'rcarriga/nvim-dap-ui'}
 })
