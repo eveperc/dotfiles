@@ -1,32 +1,27 @@
 local status,dap = pcall(require,'dap')
 if (not status) then return end
 
-dap.adapters.cppdbg = {
-  id = 'cppdbg',
-  type = 'executable',
-  command = '~/.local/share/nvim/mason/packages/cpptools/extension/debugAdapters/bin/OpenDebugAD7',
+dap.adapters.codelldb = {
+  type = 'server',
+  port = "${port}",
+  executable = {
+    -- CHANGE THIS to your path!
+    command = vim.env.HOME .. '/.local/share/nvim/mason/packages/codelldb/extension/adapter/codelldb',
+    args = {"--port", "${port}"},
+    -- On windows you may have to uncomment this:
+    -- detached = false,
+  }
 }
+local dap = require('dap')
 dap.configurations.cpp = {
   {
     name = "Launch file",
-    type = "cppdbg",
+    type = "codelldb",
     request = "launch",
     program = function()
       return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/', 'file')
     end,
     cwd = '${workspaceFolder}',
-    stopAtEntry = true,
-  },
-  {
-    name = 'Attach to gdbserver :1234',
-    type = 'cppdbg',
-    request = 'launch',
-    MIMode = 'gdb',
-    miDebuggerServerAddress = 'localhost:1234',
-    miDebuggerPath = '/usr/bin/gdb',
-    cwd = '${workspaceFolder}',
-    program = function()
-      return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/', 'file')
-    end,
+    stopOnEntry = false,
   },
 }
