@@ -31,8 +31,8 @@ return lazy.setup({
     end,
     dependencies = { { 'nvim-web-devicons' } }
   },
-
-  { "lukas-reineke/indent-blankline.nvim" },
+  -- linter
+  {"jose-elias-alvarez/null-ls.nvim"},
   -- -- mason
   { "williamboman/mason.nvim" },
   { "williamboman/mason-lspconfig.nvim" },
@@ -77,7 +77,6 @@ return lazy.setup({
     end,
   },
 
-
   -- treesitter
   { "nvim-treesitter/nvim-treesitter" },
   { "yioneko/nvim-yati",
@@ -89,6 +88,7 @@ return lazy.setup({
   { "nvim-treesitter/nvim-treesitter-context" },
   { "nvim-treesitter/nvim-treesitter-textobjects" },
   -- visual
+  { "lukas-reineke/indent-blankline.nvim" },
   { "mvllow/modes.nvim",
     tag = "v0.2.0"
   },
@@ -106,6 +106,19 @@ return lazy.setup({
       --   If not available, we use `mini` as the fallback
       require("notify").setup()
     end,
+  },
+  { 'sunjon/shade.nvim',
+    config = function()
+      require("shade").setup({
+        overlay_opacity = 50,
+        opacity_step = 1,
+        keys = {
+          brightness_up   = '<C-Up>',
+          brightness_down = '<C-Down>',
+          toggle          = '<Leader>s',
+        },
+      })
+    end
   },
   { "RRethy/vim-illuminate" },
   -- { "xiyaowong/nvim-transparent" },
@@ -149,14 +162,11 @@ return lazy.setup({
     end,
   },
   -- markdown
-  { "iamcco/markdown-preview.nvim", run = "cd app && npm install",
-    setup = function() vim.g.mkdp_filetypes = { "markdown" } end,
-    ft = { "markdown" },
-  },
+  { "ellisonleao/glow.nvim", config = true, cmd = "Glow" },
   --dap
-  {'mfussenegger/nvim-dap'},
-  {'rcarriga/nvim-dap-ui'},
-  {'theHamsta/nvim-dap-virtual-text',
+  { 'mfussenegger/nvim-dap' },
+  { 'rcarriga/nvim-dap-ui' },
+  { 'theHamsta/nvim-dap-virtual-text',
     config = function()
       require('nvim-dap-virtual-text').setup()
     end,
