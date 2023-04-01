@@ -1,17 +1,27 @@
-  -- colorscheme -----------------------------------------------------------------
--- vim.cmd 'autocmd ColorScheme * highlight Normal ctermbg=none guibg=none'
--- vim.cmd 'autocmd ColorScheme * highlight NonText ctermbg=none guibg=none'
--- vim.cmd 'autocmd ColorScheme * highlight LineNr ctermbg=none guibg=none'
--- vim.cmd 'autocmd ColorScheme * highlight Folded ctermbg=none guibg=none'
--- vim.cmd 'autocmd ColorScheme * highlight EndOfBuffer ctermbg=none guibg=none'
+-- colorscheme -----------------------------------------------------------------
 vim.cmd 'colorscheme tokyodark'
 
--- vim.cmd 'let g:InactiveBackGround = "ctermbg=23"'
---
--- -- Neovim内でフォーカスしていないペインの背景色設定
--- vim.cmd 'execute("hi NormalNC ".g:InactiveBackGround)'
--- vim.cmd 'execute("hi NontextNC ".g:InactiveBackGround)'
--- vim.cmd 'execute ("hi SpecialkeyNC ".g:InactiveBackGround)'
--- vim.cmd 'execute ("hi EndOfBufferNC ".g:InactiveBackGround)'
+--フォーカスしていない時の背景色(好きな値・色に変更)
+vim.cmd 'let g:InactiveBackGround = "guibg=#1d1f21"'
 
+--Neovim内でフォーカスしていないペインの背景色設定
+vim.cmd 'execute ("hi NormalNC ".g:InactiveBackGround)'
+vim.cmd 'execute ("hi NontextNC ".g:InactiveBackGround)'
+vim.cmd 'execute ("hi SpecialkeyNC ".g:InactiveBackGround)'
+vim.cmd 'execute ("hi EndOfBufferNC ".g:InactiveBackGround)'
 
+--Neovim自体からフォーカスを外したりした際の切替設定
+--(フォーカスした時の設定はcolorschemeに合わせて変更）
+vim.cmd [[
+augroup ChangeBackGround
+autocmd!
+autocmd FocusGained * hi Normal guifg=#a0a8cd guibg=#11121d
+autocmd FocusGained * hi NonText guifg=#4a5057 guibg=#11121d
+autocmd FocusGained * hi SpecialKey guifg=#4a5057 guibg=#11121d
+autocmd FocusGained * hi EndOfBuffer guifg=#212234 guibg=#11121d
+autocmd FocusLost * execute('hi Normal '.g:InactiveBackGround)
+autocmd FocusLost * execute('hi NonText '.g:InactiveBackGround)
+autocmd FocusLost * execute('hi SpecialKey '.g:InactiveBackGround)
+autocmd FocusLost * execute('hi EndOfBuffer '.g:InactiveBackGround)
+augroup end
+]]
