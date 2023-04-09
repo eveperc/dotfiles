@@ -68,9 +68,11 @@ keymap('n', '<leader>gf', "<cmd>GitGutterFold<CR>", opts)
 keymap('n', '<leader>b', ':DapToggleBreakpoint<CR>',opts)
 keymap('n', '<leader>d', ':lua require("dapui").toggle()<CR>',opts)
 -- 'David-Kunz/vim-edgemotion' --------------------------------------------------------
-vim.keymap.set('n', '<C-j>', '<Plug>(edgemotion-j)')
-vim.keymap.set('n', '<C-k>', '<Plug>(edgemotion-k)')
+keymap('n', '<C-j>', '<Plug>(edgemotion-j)',opts)
+keymap('n', '<C-k>', '<Plug>(edgemotion-k)',opts)
 -- 'machakann/vim-columnmove'--------------------------------------------------------
-vim.keymap.set('n', '<C-m>', '<Plug>(columnmove-f)')
-vim.keymap.set('n', '<C-n>', '<Plug>(columnmove-F)')
+keymap('n', '<C-m>', '<Plug>(columnmove-f)',opts)
+keymap('n', '<C-n>', '<Plug>(columnmove-F)',opts)
+-- navbuddy
+keymap('n','<leader>n','<cmd>Navbuddy<CR>',opts)
 

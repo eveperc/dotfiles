@@ -25,3 +25,5 @@ autocmd FocusLost * execute('hi SpecialKey '.g:InactiveBackGround)
 autocmd FocusLost * execute('hi EndOfBuffer '.g:InactiveBackGround)
 augroup end
 ]]
+
+vim.cmd 'highlight Comment guifg=#43676b'

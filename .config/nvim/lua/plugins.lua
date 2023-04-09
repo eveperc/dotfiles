@@ -22,7 +22,20 @@ end
 return lazy.setup({
   -- My plugins here
   -- lsp
-  { "neovim/nvim-lspconfig" },
+  {
+    "neovim/nvim-lspconfig",
+    dependencies = {
+      {
+        "SmiteshP/nvim-navbuddy",
+        dependencies = {
+          "SmiteshP/nvim-navic",
+          "MunifTanjim/nui.nvim"
+        },
+        opts = { lsp = { auto_attach = true } }
+      }
+    },
+    -- your lsp config or other stuff
+  },
   {
     'glepnir/lspsaga.nvim',
     event = 'BufRead',
@@ -75,6 +88,10 @@ return lazy.setup({
     config = function()
       require('nvim-web-devicons').setup()
     end,
+  },
+  {
+    "SmiteshP/nvim-navic",
+    despendencies = "neovim/nvim-lspconfig"
   },
 
   -- treesitter
@@ -134,7 +151,7 @@ return lazy.setup({
     "phaazon/hop.nvim",
     branch = "v2", -- optional but strongly recommended
   },
-  -- { "unblevable/quick-scope"},
+  { "unblevable/quick-scope" },
   { "haya14busa/vim-edgemotion" },
   { "mfussenegger/nvim-treehopper" },
   { 'David-Kunz/treesitter-unit' },
