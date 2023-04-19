@@ -68,6 +68,39 @@ return lazy.setup({
   -- git
   { "tpope/vim-fugitive" },
   { "airblade/vim-gitgutter" },
+  {
+    "aaronhallaert/advanced-git-search.nvim",
+    config = function()
+      -- optional: setup telescope before loading the extension
+      require("telescope").setup {
+        -- move this to the place where you call the telescope setup function
+        extensions = {
+          advanced_git_search = {
+            -- fugitive or diffview
+            diff_plugin = "fugitive",
+            -- customize git in previewer
+            -- e.g. flags such as { "--no-pager" }, or { "-c", "delta.side-by-side=false" }
+            git_flags = {},
+            -- customize git diff in previewer
+            -- e.g. flags such as { "--raw" }
+            git_diff_flags = {},
+          }
+        }
+      }
+
+      require("telescope").load_extension("advanced_git_search")
+    end,
+    dependencies = {
+      "nvim-telescope/telescope.nvim",
+      -- to show diff splits and open commits in browser
+      "tpope/vim-fugitive",
+      -- to open commits in browser with fugitive
+      "tpope/vim-rhubarb",
+      -- OPTIONAL: to replace the diff from fugitive with diffview.nvim
+      -- (fugitive is still needed to open in browser)
+      -- "sindrets/diffview.nvim",
+    },
+  },
   -- colorscheme
   { 'luisiacc/gruvbox-baby' },
   { 'tiagovla/tokyodark.nvim' },
@@ -102,7 +135,7 @@ return lazy.setup({
       require("nvim-treesitter").setup()
     end,
   },
-  { "nvim-treesitter/nvim-treesitter-context" },
+  -- { "nvim-treesitter/nvim-treesitter-context" },
   { "nvim-treesitter/nvim-treesitter-textobjects" },
   -- visual
   { "lukas-reineke/indent-blankline.nvim" },
@@ -121,29 +154,29 @@ return lazy.setup({
       -- OPTIONAL:
       --   `nvim-notify` is only needed, if you want to use the notification view.
       --   If not available, we use `mini` as the fallback
-      require("notify").setup()
+      require("notify")
     end,
   },
   { "RRethy/vim-illuminate" },
-  { "levouh/tint.nvim",
-    config = function()
-      require("tint").setup({
-        tint = -45, -- Darken colors, use a positive value to brighten
-        saturation = 0.6, -- Saturation to preserve
-        transforms = require("tint").transforms.SATURATE_TINT, -- Showing default behavior, but value here can be predefined set of transforms
-        tint_background_colors = true, -- Tint background portions of highlight groups
-        highlight_ignore_patterns = { "WinSeparator", "Status.*" }, -- Highlight group patterns to ignore, see `string.find`
-        window_ignore_function = function(winid)
-          local bufid = vim.api.nvim_win_get_buf(winid)
-          local buftype = vim.api.nvim_buf_get_option(bufid, "buftype")
-          local floating = vim.api.nvim_win_get_config(winid).relative ~= ""
-
-          -- Do not tint `terminal` or floating windows, tint everything else
-          return buftype == "terminal" or floating
-        end
-      })
-    end
-  },
+  -- { "levouh/tint.nvim",
+  --   config = function()
+  --     require("tint").setup({
+  --       tint = -45, -- Darken colors, use a positive value to brighten
+  --       saturation = 0.6, -- Saturation to preserve
+  --       transforms = require("tint").transforms.SATURATE_TINT, -- Showing default behavior, but value here can be predefined set of transforms
+  --       tint_background_colors = true, -- Tint background portions of highlight groups
+  --       highlight_ignore_patterns = { "WinSeparator", "Status.*" }, -- Highlight group patterns to ignore, see `string.find`
+  --       window_ignore_function = function(winid)
+  --         local bufid = vim.api.nvim_win_get_buf(winid)
+  --         local buftype = vim.api.nvim_buf_get_option(bufid, "buftype")
+  --         local floating = vim.api.nvim_win_get_config(winid).relative ~= ""
+  --
+  --         -- Do not tint `terminal` or floating windows, tint everything else
+  --         return buftype == "terminal" or floating
+  --       end
+  --     })
+  --   end
+  -- },
   --activity
   { 'wakatime/vim-wakatime' },
   -- moving
@@ -172,6 +205,12 @@ return lazy.setup({
         -- refer to the configuration section below
       }
     end
+  },
+  {
+    "chrisgrieser/nvim-alt-substitute",
+    opts = true,
+    -- lazy-loading with `cmd =` does not work well with incremental preview
+    event = "CmdlineEnter",
   },
   -- terminal
   { "akinsho/toggleterm.nvim" },
@@ -219,5 +258,5 @@ return lazy.setup({
       "nvim-lua/plenary.nvim",
       "nvim-telescope/telescope.nvim"
     }
-  }
+  },
 })

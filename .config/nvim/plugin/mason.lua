@@ -27,49 +27,23 @@ mason_lspconfig.setup_handlers({ function(server)
     )
   }
   if server == "intelephense" then
-    require 'lspconfig'.intelephense.setup {
-      default_config = {
-        cmd = { 'intelephense', '--stdio' };
-        -- on_attach = require 'lsp'.common_on_attach;
-        filetypes = { 'php' };
-        root_dir = function(fname)
-          return vim.loop.cwd()
-        end;
-        settings = {
-          intelephense = {
-            environment = {
-              phpVersion = "8.1",
-              includePaths = {'/home/ibusuki/.config/composer/vendor/php-stubs/'},
-            },
-            completion = {
-              fullyQualifyGlobalConstantsAndFunctions = true
-            },
-            format = {
-              enable = true
-            },
-            stubs = {
-              -- "bcmath",
-              -- "bz2",
-              -- "calendar",
-              -- "Core",
-              -- "curl",
-              -- "zip",
-              -- "zlib",
-              "wordpress",
-              -- "woocommerce",
-              -- "acf-pro",
-              "wordpress-globals",
-              "wp-cli",
-              -- "genesis",
-              -- "polylang",
-              "wp-cli-stubs",
-              -- "genesis-stubs",
-              'wordpress-stubs',
-            },
-          }
-        }
-      },
-      opt
+    opt.settings = {
+      intelephense = {
+        environment = {
+          phpVersion = "8.1",
+          includePaths = { '/home/ibusuki/.config/composer/vendor/php-stubs/wordpress-stubs' },
+        },
+        completion = {
+          fullyQualifyGlobalConstantsAndFunctions = true
+        },
+        format = {
+          enable = true
+        },
+        stubs = {
+          "wordpress",
+          'wordpress-stubs',
+        },
+      }
     }
   end
   require('lspconfig')[server].setup(opt)
