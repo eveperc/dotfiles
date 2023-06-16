@@ -44,6 +44,12 @@ return lazy.setup({
     end,
     dependencies = { { 'nvim-web-devicons' } }
   },
+  {
+    "https://git.sr.ht/~whynothugo/lsp_lines.nvim",
+    config = function()
+      require("lsp_lines").setup()
+    end,
+  },
   -- linter
   { "jose-elias-alvarez/null-ls.nvim" },
   -- -- mason
@@ -53,14 +59,16 @@ return lazy.setup({
   { "kyazdani42/nvim-web-devicons" },
   { 'ryanoasis/vim-devicons' },
   -- nvim-lualine/lualine.nvim
-  { 'nvim-lualine/lualine.nvim',
+  {
+    'nvim-lualine/lualine.nvim',
     ft = "norg",
     config = function()
       require('nvim-web-devicons').setup()
     end,
   },
   --tabline
-  { 'akinsho/bufferline.nvim',
+  {
+    'akinsho/bufferline.nvim',
     config = function()
       require('nvim-web-devicons').setup()
     end,
@@ -101,9 +109,29 @@ return lazy.setup({
       -- "sindrets/diffview.nvim",
     },
   },
+
   -- colorscheme
+  { 'ray-x/aurora' },
   { 'luisiacc/gruvbox-baby' },
   { 'tiagovla/tokyodark.nvim' },
+  { 'kdheepak/monochrome.nvim' },
+  { 'titanzero/zephyrium' },
+  {
+    "neanias/everforest-nvim",
+    version = false,
+    lazy = false,
+    priority = 1000, -- make sure to load this before all the other start plugins
+    -- Optional; default configuration will be used if setup isn't called.
+    config = function()
+      require("everforest").setup({
+        -- Your config here
+      })
+    end,
+  },
+  {
+    'glepnir/zephyr-nvim',
+    requires = { 'nvim-treesitter/nvim-treesitter', opt = true },
+  },
   -- fzf
   { "ibhagwan/fzf-lua" },
   -- lua module
@@ -116,7 +144,8 @@ return lazy.setup({
   { "hrsh7th/cmp-nvim-lsp" },
   { "hrsh7th/vim-vsnip" },
   -- file explorer
-  { "tamago324/lir.nvim",
+  {
+    "tamago324/lir.nvim",
     ft = "norg",
     config = function()
       require('nvim-web-devicons').setup()
@@ -129,24 +158,22 @@ return lazy.setup({
 
   -- treesitter
   { "nvim-treesitter/nvim-treesitter" },
-  { "yioneko/nvim-yati",
+  {
+    "yioneko/nvim-yati",
     ft = "norg",
     config = function()
       require("nvim-treesitter").setup()
     end,
   },
-  -- { "nvim-treesitter/nvim-treesitter-context" },
   { "nvim-treesitter/nvim-treesitter-textobjects" },
   -- visual
   { "lukas-reineke/indent-blankline.nvim" },
-  { "mvllow/modes.nvim",
-    tag = "v0.2.0"
-  },
   { "petertriho/nvim-scrollbar" },
   { "j-hui/fidget.nvim" },
   { "rcarriga/nvim-notify" },
   { "MunifTanjim/nui.nvim" },
-  { "folke/noice.nvim",
+  {
+    "folke/noice.nvim",
     ft = "norg",
     config = function()
       require("nui.popup")
@@ -215,7 +242,8 @@ return lazy.setup({
   -- terminal
   { "akinsho/toggleterm.nvim" },
   --mark
-  { 'chentoast/marks.nvim',
+  {
+    'chentoast/marks.nvim',
     config = function()
       require('marks').setup(
 
@@ -223,7 +251,8 @@ return lazy.setup({
     end,
   },
   -- markdown
-  { 'iamcco/markdown-preview.nvim',
+  {
+    'iamcco/markdown-preview.nvim',
     config = function()
       vim.fn["mkdp#util#install"]()
     end
@@ -231,32 +260,35 @@ return lazy.setup({
   --dap
   { 'mfussenegger/nvim-dap' },
   { 'rcarriga/nvim-dap-ui' },
-  { 'theHamsta/nvim-dap-virtual-text',
+  {
+    'theHamsta/nvim-dap-virtual-text',
     config = function()
       require('nvim-dap-virtual-text').setup()
     end,
   },
   --chatGPT
   {
-    'nvim-telescope/telescope.nvim', tag = '0.1.1',
+    'nvim-telescope/telescope.nvim',
+    tag = '0.1.1',
     -- or                              , branch = '0.1.1',
     dependencies = { 'nvim-lua/plenary.nvim' }
   },
-  {
-    "jackMort/ChatGPT.nvim",
-    config = function()
-      require("chatgpt").setup({
-        -- optional configuration
-        keymaps = {
-          close = { "<C-c>" },
-          submit = "<Enter>",
-        }
-      })
-    end,
-    requires = {
-      "MunifTanjim/nui.nvim",
-      "nvim-lua/plenary.nvim",
-      "nvim-telescope/telescope.nvim"
-    }
-  },
+  -- {
+  --   "jackMort/ChatGPT.nvim",
+  --   config = function()
+  --     require("chatgpt").setup({
+  --       -- optional configuration
+  --       keymaps = {
+  --         close = { "<C-c>" },
+  --         submit = "<Enter>",
+  --       }
+  --     })
+  --   end,
+  --   requires = {
+  --     "MunifTanjim/nui.nvim",
+  --     "nvim-lua/plenary.nvim",
+  --     "nvim-telescope/telescope.nvim"
+  --   }
+  -- },
+  { "github/copilot.vim" },
 })

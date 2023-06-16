@@ -1,7 +1,7 @@
 local options = {
   encoding = "utf-8",
   fileencoding = "utf-8",
-  -- clipboard = "unnamedplus",
+  clipboard = "unnamedplus",
   whichwrap = "b,s,[,],<,>",
   backspace = "indent,eol,start",
   ambiwidth = "single",
@@ -21,12 +21,13 @@ local options = {
   shiftwidth = 2,
   smartindent = true,
   relativenumber = true,
-  wrap = false,
+  wrap = true,
   autoindent = true,
   nrformats = "bin,hex",
   swapfile = false,
   -- formatoptions:remove('t'),
   -- formatoptions:append('mM'),
+  cursorline = true,
 }
 vim.opt.shortmess:append("c")
 
@@ -67,7 +68,3 @@ vim.cmd "let g:fzf_preview_window = ['right:70%', 'ctrl-/']"
 vim.cmd "let g:sonictemplate_vim_template_dir = ['$HOME/.config/nvim/templates/']"
 
 vim.cmd("set guifont=DroidSansMono_Nerd_Font:h11")
-
--- quick-scope
--- vim.cmd 'highlight QuickScopePrimary guifg=#afff5f gui=underline ctermfg=155 cterm=underline'
--- vim.cmd 'highlight QuickScopeSecondary guifg=#5fffff gui=underline ctermfg=81 cterm=underline'

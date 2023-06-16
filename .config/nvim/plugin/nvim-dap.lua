@@ -1,6 +1,36 @@
+local vim = vim
 local status, dap = pcall(require, 'dap')
 if (not status) then return end
 
+dap.adapters.node2 = {
+  type = 'executable',
+  command = 'node',
+  args = {vim.env.HOME .. '/.local/share/nvim/mason/packages/node-debug2-adapter/out/src/nodeDebug.js'},
+}
+
+dap.configurations.javascript = {
+  {
+    type = 'node2',
+    request = 'launch',
+    program = vim.fn.expand('%:p'),
+    cwd = vim.fn.getcwd(),
+    sourceMaps = true,
+    protocol = 'inspector',
+    console = 'integratedTerminal',
+  },
+}
+
+dap.configurations.typescript = {
+  {
+    type = 'node2',
+    request = 'launch',
+    program = vim.fn.expand('%:p'),
+    cwd = vim.fn.getcwd(),
+    sourceMaps = true,
+    protocol = 'inspector',
+    console = 'integratedTerminal',
+  },
+}
 dap.adapters.codelldb = {
   type = 'server',
   port = "${port}",
@@ -12,7 +42,6 @@ dap.adapters.codelldb = {
     -- detached = false,
   }
 }
-local dap = require('dap')
 dap.configurations.cpp = {
   {
     name = "Launch file",
@@ -39,11 +68,9 @@ dap.configurations.php = {
     port = 9003,
     log = true,
     hostname = "0.0.0.0",
-    -- pathMappings = {
-    --   ["/var/www/html"] = "${workspaceFolder}"
-    -- },
-    serverSourceRoot = '/work/backend',
-    localSourceRoot = { vim.env.HOME .. './src/cocorela/backend' },
+    pathMappings = {
+      ["/var/www/html"] = "${workspaceFolder}"
+    },
   }
 }
 dap.adapters.go = {

@@ -31,7 +31,9 @@ mason_lspconfig.setup_handlers({ function(server)
       intelephense = {
         environment = {
           phpVersion = "8.1",
-          includePaths = { '/home/ibusuki/.config/composer/vendor/php-stubs/wordpress-stubs' },
+          includePaths = {
+            '/home/eveperc/.config/composer/vendor/php-stubs/wordpress-stubs',
+            '/home/eveperc/.config/composer/vendor/jetbrains/phpstorm-stubs'},
         },
         completion = {
           fullyQualifyGlobalConstantsAndFunctions = true
@@ -42,6 +44,7 @@ mason_lspconfig.setup_handlers({ function(server)
         stubs = {
           "wordpress",
           'wordpress-stubs',
+          'phpstorm-stubs',
         },
       }
     }

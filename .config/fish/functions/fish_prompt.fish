@@ -1230,10 +1230,8 @@ end
 
 function _prompt_dir
 
-    # 〜ここから〜
     if [ $HOME = $PWD ]; printf ' %s ' $icon_home
     else; printf ' %s ' $icon_folder; end
-    # 〜ここまでを追加〜
 
     printf ' %s ' (prompt_pwd)
     _segment $color_user $color_dark
@@ -1250,7 +1248,6 @@ function _prompt_user
     end
 end
 
-# 〜ここから〜
 function _git_prompt_untracked
     echo (command git ls-files --others --exclude-standard --directory --no-empty-directory --error-unmatch -- :/ 2> /dev/null)
 end
@@ -1259,7 +1256,6 @@ function _git_status_symbol
     if [ (_git_prompt_untracked) ]; echo -n "$icon_untracked "
     else if [ (_is_git_dirty) ]; echo -n "$icon_git_dirty "; end
 end
-# 〜ここまでを追加〜
 
 function _change_color_git_status_bar
     if [ (_is_git_dirty) ]; set color_git_status_bar $color_git_dirty
