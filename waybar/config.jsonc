@@ -1,0 +1,98 @@
+{
+    "layer": "top",
+    "modules-left": ["sway/workspaces"],
+    "modules-center": ["sway/window"],
+    "modules-right": ["custom/pacman","custom/weather","cpu","memory","temperature","network","clock"],
+    "height":30,
+    "custom/arch": {
+      "format": "  ",
+      "tooltip": false,
+    },
+    "sway/workspaces": {
+        "all-outputs": false,
+        "active-only": true,
+        "format": "{icon}",
+        "format-icons": {
+             "1": "壱",
+             "2": "弐",
+             "3": "参",
+             "4": "四",
+             "5": "五",
+             "6": "六",
+             "7": "七",
+             "8": "八",
+             "9": "九",
+             "10": "十",
+            "urgent": "",
+            "focused": "",
+            "default": "ﱤ",
+        }
+    },
+    "sway/mode": {
+        "format": "<span style=\"italic\">{}</span>",
+        "max-length": 50
+    },
+    "sway/window": {
+        "format": "{}",
+        "min-length": 30,
+        "max-length": 30,
+        "rewrite": {
+            "(.*) - Mozilla Firefox":"A $1",
+            "(.*) - NVIM": "B $1",
+            // "(.*) - (.*)": "$0 $1"
+        }
+    },
+    "clock": {
+        //  "timezone": "America/New_York",
+        "interval": 1,
+        // "format": " {:%H:%M:%S}",
+        "format": " {:%H:%M}",
+        "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
+        "format-alt": "{:%Y-%m-%d}"
+    },
+    "cpu": {
+        "interval": 5,
+        // "format": "{usage}%/{avg_frequency}/{max_frequency}G ",
+        "format": "{usage}% ",
+        "tooltip": true
+    },
+    "memory": {
+        "format": "{}% ",
+        "interval": 5
+    },
+    "temperature": {
+        // "thermal-zone": 2,
+        "hwmon-path": "/sys/class/hwmon/hwmon4/temp1_input",
+        "critical-threshold": 75,
+        "interval": 5,
+        "format-critical": "{temperatureC}°C {icon}",
+        "format": "{temperatureC}°C {icon}",
+        "format-icons": ["", "", ""]
+    },
+    "network": {
+        "interface": "enp3s0", // (Optional) To force the use of this interface
+        "format-wifi": "{signalStrength}% ",
+        "format-ethernet": "{ifname}: {ipaddr}/{cidr} ",
+        "format-linked": "{ifname} (No IP) ",
+        "format-disconnected": "Disconnected ⚠",
+        "format-alt": "{bandwidthUpBits}  {bandwidthDownBits} ",
+        "tooltip-format": "{ifname}: {ipaddr}/{cidr}\n{essid}",
+        "interval": 5
+    },
+    "custom/pacman": {
+        "format": "{} ",
+        "interval": 3600,                     // every hour
+        "exec": "checkupdates | wc -l",       // # of updates
+        "exec-if": "exit 0",                  // always run; consider advanced run conditions
+        "on-click": "alacritty -e 'sudo pacman -Syu'; pkill -SIGRTMIN+8 waybar", // update system
+        "signal": 8,
+        //  "tooltip-format": "pacman wants to eat... {}"
+    },
+    "custom/weather": {
+      "format": "{}",
+      "tooltip": true,
+      "interval": 3600,
+      "exec": "python ~/.config/waybar/scripts/waybar-wttr.py",
+      "return-type": "json"
+    },
+}
