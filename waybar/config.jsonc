@@ -2,7 +2,7 @@
     "layer": "top",
     "modules-left": ["sway/workspaces"],
     "modules-center": ["sway/window"],
-    "modules-right": ["custom/pacman","custom/weather","cpu","memory","temperature","network","clock"],
+    "modules-right": ["custom/pacman","backlight","pulseaudio","battery","custom/weather","cpu","memory","temperature","network","clock"],
     "height":30,
     "custom/arch": {
       "format": "  ",
@@ -42,6 +42,18 @@
             // "(.*) - (.*)": "$0 $1"
         }
     },
+    "battery": {
+        "interval": 30,
+        "states": {
+            // "good": 95,
+            "warning": 30,
+            "critical": 15
+        },
+        "format-charging": "{capacity}% 󰂄",
+        "format": "{capacity}%  {icon}",
+        "format-icons": ["", "", "", "", ""],
+        "tooltip": true
+    },
     "clock": {
         //  "timezone": "America/New_York",
         "interval": 1,
@@ -53,7 +65,7 @@
     "cpu": {
         "interval": 5,
         // "format": "{usage}%/{avg_frequency}/{max_frequency}G ",
-        "format": "{usage}% ",
+        "format": "{usage}% ",
         "tooltip": true
     },
     "memory": {
@@ -70,7 +82,7 @@
         "format-icons": ["", "", ""]
     },
     "network": {
-        "interface": "enp3s0", // (Optional) To force the use of this interface
+        "interface": "wlp0s20f3", // (Optional) To force the use of this interface
         "format-wifi": "{signalStrength}% ",
         "format-ethernet": "{ifname}: {ipaddr}/{cidr} ",
         "format-linked": "{ifname} (No IP) ",
@@ -89,10 +101,36 @@
         //  "tooltip-format": "pacman wants to eat... {}"
     },
     "custom/weather": {
-      "format": "{}",
-      "tooltip": true,
-      "interval": 3600,
-      "exec": "python ~/.config/waybar/scripts/waybar-wttr.py",
-      "return-type": "json"
+        "format": "{}",
+        "tooltip": true,
+        "interval": 3600,
+        "exec": "python ~/.config/waybar/scripts/waybar-wttr.py",
+        "return-type": "json"
+    },
+    "backlight": {
+        // "device": "acpi_video1",
+        "format": "{icon} {percent}%",
+        "format-icons": ["󱩐", "󱩒", "󱩖"],
+        "on-scroll-down": "brightnessctl -c backlight set 5%",
+        "on-scroll-up": "brightnessctl -c backlight set +5%"
+    },
+     "pulseaudio": {
+        //  "scroll-step": 1, // %, can be a float
+        "format": "{volume}% {icon} {format_source}",
+        "format-bluetooth": "{volume}% {icon} {format_source}",
+        "format-bluetooth-muted": " {icon} {format_source}",
+        "format-muted": " {format_source}",
+        "format-source": "{volume}% ",
+        "format-source-muted": "",
+        "format-icons": {
+            "headphone": "",
+            "hands-free": "",
+            "headset": "",
+            "phone": "",
+            "portable": "",
+            "car": "",
+            "default": ["", "", ""]
+        },
+        "on-click": "pavucontrol"
     },
 }

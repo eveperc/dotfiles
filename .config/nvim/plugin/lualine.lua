@@ -1,48 +1,7 @@
-local status, lualine = pcall(require, "lualine")
-if (not status) then return end
-
--- lualine.setup {
---   options = {
---     icons_enabled = true,
---     theme = 'tokyodark',
---     section_separators = { left = '', right = '' },
---     component_separators = { left = '', right = '' },
---     disabled_filetypes = {},
---     always_divide_middle = true,
---     globalstatus = true,
---   },
---   sections = {
---     lualine_a = { 'mode' },
---     lualine_b = { 'branch' },
---     lualine_c = { {
---       'filename',
---       file_status = true, -- displays file status (readonly status, modified status)
---       path = 0 -- 0 = just filename, 1 = relative path, 2 = absolute path
---     } },
---     lualine_x = {
---       { 'diagnostics', sources = { "nvim_diagnostic" }, symbols = { error = ' ', warn = ' ', info = ' ',
---         hint = ' ' } },
---       'encoding',
---       'filetype'
---     },
---     lualine_y = { 'progress' },
---     lualine_z = { 'location' }
---   },
---   inactive_sections = {
---     lualine_a = {},
---     lualine_b = {},
---     lualine_c = { {
---       'filename',
---       file_status = true, -- displays file status (readonly status, modified status)
---       path = 1 -- 0 = just filename, 1 = relative path, 2 = absolute path
---     } },
---     lualine_x = { 'location' },
---     lualine_y = {},
---     lualine_z = {}
---   },
---   tabline = {},
---   extensions = { 'fugitive' }
--- }
+-- Eviline config for lualine
+-- Author: shadmansaleh
+-- Credit: glepnir
+local lualine = require('lualine')
 
 -- Color table for highlights
 -- stylua: ignore
@@ -114,7 +73,7 @@ local function ins_left(component)
   table.insert(config.sections.lualine_c, component)
 end
 
--- Inserts a component in lualine_x ot right section
+-- Inserts a component in lualine_x at right section
 local function ins_right(component)
   table.insert(config.sections.lualine_x, component)
 end
@@ -138,13 +97,13 @@ ins_left {
       n = colors.red,
       i = colors.green,
       v = colors.blue,
-      [''] = colors.blue,
+      [''] = colors.blue,
       V = colors.blue,
       c = colors.magenta,
       no = colors.red,
       s = colors.orange,
       S = colors.orange,
-      [''] = colors.orange,
+      [''] = colors.orange,
       ic = colors.yellow,
       R = colors.violet,
       Rv = colors.violet,
@@ -241,7 +200,7 @@ ins_right {
 ins_right {
   'diff',
   -- Is it me or the symbol for modified us really weird
-  symbols = { added = ' ', modified = '柳 ', removed = ' ' },
+  symbols = { added = ' ', modified = '󰝤 ', removed = ' ' },
   diff_color = {
     added = { fg = colors.green },
     modified = { fg = colors.orange },

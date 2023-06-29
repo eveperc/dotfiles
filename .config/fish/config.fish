@@ -18,6 +18,7 @@ set -x fish_user_paths $fish_user_paths $HOME/.cargo/bin
 # ~/.npm-global/bin にパスを通す
 set -x fish_user_paths $fish_user_paths $HOME/.npm-global/bin
 
+export XDG_SESSION_TYPE=wayland
 # alias tmuxg='tmux new-session \; source-file ~/.tmux.session.conf'
 
 # alias di 'docker images [--format] | docker-color-output'

@@ -25,7 +25,7 @@ set $term wezterm
 ### Output configuration
 #
 # Default wallpaper (more resolutions are available in /usr/share/backgrounds/sway/)
-output "*" bg /usr/share/backgrounds/archlinux/archwave.png fill
+output "*" bg /usr/share/backgrounds/archlinux/arch_wallpaper2.jpg fill
 #
 # Example configuration:
 #
@@ -214,23 +214,96 @@ include /etc/sway/config.d/*
 exec mako
 exec fcitx5 -d
 exec nm-applet --indicator
-# exec /usr/share/sway/scripts/inactive-windows-transparency.py --opacity 0.8
+exec /usr/share/sway/scripts/inactive-windows-transparency.py --opacity 0.8
 
 exec swayidle -w \
   timeout 300 'swaylock -f -C ~/.config/swaylock/config' \
   timeout 1200 'systemctl suspend'
 
-bindsym Mod4+Shift+A exec swaylock -f -C ~/.config/swaylock/config
+set $lock swaylock \
+	--screenshots \
+	--clock \
+	--indicator \
+	--indicator-radius 100 \
+	--indicator-thickness 7 \
+	--effect-blur 7x5 \
+	--effect-vignette 0.5:0.5 \
+	--ring-color bb00cc \
+	--key-hl-color 880033 \
+	--line-color 00000000 \
+	--inside-color 00000088 \
+	--separator-color 00000000 \
+	--grace 2 \
+	--fade-in 0.2
+
+bindsym Mod4+Shift+A exec $lock
 
 gaps outer 3
 gaps inner 15
 default_border pixel 3
 
-# set window transparency
-exec_always ~/.config/sway/window-transparency.sh
+#Network
+exec nm-applet --indicator
 
+# set window transparency
+# exec_always ~/.config/sway/window-transparency.sh
 
 # アクティブウィンドウのスクリーンショット
 bindsym Mod4+Shift+X exec /usr/share/sway/scripts/grimshot --notify save window $HOME/Downloads/screenshot_$(date "+%y%m%d%H%M%S").png
 # 全画面のスクリーンショット
 bindsym Mod4+Shift+Z exec /usr/share/sway/scripts/grimshot --notify save output  $HOME/Downloads/screenshot_$(date "+%y%m%d%H%M%S").png
+
+
+set $bg             #00c694cc
+set $bg-inactive    #120e1200
+set $bg-urgent      #d9236588
+set $text-light     #f2d8e988
+set $text-dark      #0b0b0b88
+set $text-inactive  #59485088
+
+# set color theme
+# class                 border        bground       text        indicator     child_border
+client.focused          $bg           $bg           $text-dark  $bg           $bg
+client.focused_inactive $bg-inactive  $bg-inactive  $text-light $bg-inactive  $bg-inactive
+client.unfocused        $bg-inactive  $bg-inactive  $text-light $bg-inactive  $bg-inactive
+client.urgent           $bg-urgent    $bg-urgent    $text-light $bg-urgent    $bg-urgent
+client.placeholder      $bg-inactive  $bg-inactive  $text-light $bg-inactive  $bg-inactive
+
+for_window [app_id="showmethekey-gtk" title="Floating Window - Show Me The Key"] {
+  floating enable
+  sticky enable
+  move down 470 px
+  move right 0 px
+}
+for_window [app_id="one.alynx.showmethekey"] {
+  floating enable
+}
+exec systemctl --user import-environment DISPLAY WAYLAND_DISPLAY SWAYSOCK
+exec dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=sway
+
+#wob
+set $WOBSOCK $XDG_RUNTIME_DIR/wob.sock
+exec mkfifo $WOBSOCK && tail -f $WOBSOCK | wob
+exec_always {
+    ~/.config/sway/wob.sh $SWAYSOCK.wob
+}
+
+# WOB Brightness Control
+bindsym XF86MonBrightnessDown exec brightnessctl set 5%- | sed -En 's/.*\(([0-9]+)%\).*/\1/p' > $SWAYSOCK.wob
+bindsym XF86MonBrightnessUp exec brightnessctl set +5% | sed -En 's/.*\(([0-9]+)%\).*/\1/p' > $SWAYSOCK.wob
+
+bindsym $mod+Shift+d exec brightnessctl set 5%- | sed -En 's/.*\(([0-9]+)%\).*/\1/p' > $SWAYSOCK.wob
+bindsym $mod+Shift+u exec brightnessctl set +5% | sed -En 's/.*\(([0-9]+)%\).*/\1/p' > $SWAYSOCK.wob
+
+#sounds
+bindsym XF86AudioRaiseVolume exec pactl set-sink-volume @DEFAULT_SINK@ +1%
+bindsym XF86AudioLowerVolume exec pactl set-sink-volume @DEFAULT_SINK@ -1%
+bindsym XF86AudioMute exec pactl set-sink-mute @DEFAULT_SINK@ toggle
+bindsym XF86AudioMicMute exec pactl set-source-mute @DEFAULT_SOURCE@ toggle
+bindsym XF86AudioPlay exec playerctl play-pause
+bindsym XF86AudioNext exec playerctl next
+bindsym XF86AudioPrev exec playerctl previous
+
+#bluetooth
+exec blueman-applet
+for_window [app_id="blueman-manager"] floating enable

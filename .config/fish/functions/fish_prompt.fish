@@ -1217,7 +1217,7 @@ set icon_untracked                  $icon_three_point_reader    # 追加
 set icon_git_symbol                 $icon_octocat               # 追加
 set icon_git_dirty                  $icon_plus                  # 追加
 
-set icon_home                       \uf7db  # 追加
+set icon_home                       \uf303  # 追加
 set icon_folder                     \uf07c  # 追加
 
 set color_user

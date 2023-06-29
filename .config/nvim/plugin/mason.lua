@@ -31,9 +31,7 @@ mason_lspconfig.setup_handlers({ function(server)
       intelephense = {
         environment = {
           phpVersion = "8.1",
-          includePaths = {
-            '/home/eveperc/.config/composer/vendor/php-stubs/wordpress-stubs',
-            '/home/eveperc/.config/composer/vendor/jetbrains/phpstorm-stubs'},
+          includePaths = { '/home/eveperc/.config/composer/vendor/php-stubs/wordpress-stubs' },
         },
         completion = {
           fullyQualifyGlobalConstantsAndFunctions = true
@@ -42,9 +40,37 @@ mason_lspconfig.setup_handlers({ function(server)
           enable = true
         },
         stubs = {
+          "bcmath",
+          "bz2",
+          "calendar",
+          "Core",
+          "ctype",
+          "curl",
+          "date",
+          "dom",
+          "fileinfo",
+          "filter",
+          "ftp",
+          "hash",
+          "iconv",
+          "json",
+          "mbstring",
+          "pcntl",
+          "pcre",
+          "Phar",
+          "posix",
+          "readline",
+          "Reflection",
+          "session",
+          "SimpleXML",
+          "standard",
+          "Swoole",
+          "tokenizer",
+          "xml",
+          "zip",
+          "zlib",
           "wordpress",
-          'wordpress-stubs',
-          'phpstorm-stubs',
+          -- 'wordpress-stubs',
         },
       }
     }
