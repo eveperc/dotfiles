@@ -3,22 +3,22 @@ local autocmd = vim.api.nvim_create_autocmd -- Create autocommand
 
 -- Remove whitespace on save
 autocmd("BufWritePre", {
-  pattern = "*",
-  command = ":%s/\\s\\+$//e",
+    pattern = "*",
+    command = ":%s/\\s\\+$//e",
 })
 
 -- Don't auto commenting new lines
 autocmd("BufEnter", {
-  pattern = "*",
-  command = "set fo-=c fo-=r fo-=o",
+    pattern = "*",
+    command = "set fo-=c fo-=r fo-=o",
 })
 
 -- Restore cursor location when file is opened
 autocmd({ "BufReadPost" }, {
-  pattern = { "*" },
-  callback = function()
-    vim.api.nvim_exec('silent! normal! g`"zv', false)
-  end,
+    pattern = { "*" },
+    callback = function()
+        vim.api.nvim_exec('silent! normal! g`"zv', false)
+    end,
 })
 
 
@@ -54,3 +54,14 @@ vim.cmd [[
     autocmd ColorScheme * highlight QuickScopeSecondary guifg='#4169E1' gui=underline ctermfg=81 cterm=underline
   augroup END
 ]]
+
+-- キーマッピングのオプション
+local opts = { noremap = true, silent = true }
+
+-- BufWritePreイベントでのキーマッピング設定
+vim.cmd([[
+augroup FormatOnSave
+    autocmd!
+    autocmd BufWritePre * lua vim.lsp.buf.format()
+augroup END
+]])

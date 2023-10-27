@@ -79,3 +79,4 @@ keymap('n','<leader>n','<cmd>Navbuddy<CR>',opts)
 vim.keymap.set({ "n", "x" }, "<leader>s", [[:S ///g<Left><Left><Left>]], { desc = "󱗘 :AltSubstitute" })
 -- advanced-git-search
 keymap('n','<leader>gs',"<cmd>Telescope advanced_git_search diff_commit_file<CR>",opts)
+

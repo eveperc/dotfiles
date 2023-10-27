@@ -2,7 +2,7 @@
     "layer": "top",
     "modules-left": ["sway/workspaces"],
     "modules-center": ["sway/window"],
-    "modules-right": ["custom/pacman","backlight","pulseaudio","battery","custom/weather","cpu","memory","temperature","network","clock"],
+    "modules-right": ["custom/pacman","pulseaudio","battery","network","clock"],
     "height":30,
     "custom/arch": {
       "format": "  ",
@@ -24,7 +24,7 @@
              "9": "九",
              "10": "十",
             "urgent": "",
-            "focused": "",
+            // "focused": "",
             "default": "ﱤ",
         }
     },

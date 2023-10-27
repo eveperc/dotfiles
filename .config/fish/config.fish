@@ -9,8 +9,6 @@ if status is-interactive
 #
 set -x GOPATH $HOME/go
 set -x PATH $PATH $GOPATH/bin
-# set -x GOPATH $HOME/go
-# set -x PATH $PATH $GOPATH/bin
 set -x DISPLAY $(cat /etc/resolv.conf | grep nameserver | awk '{print $2}'):0
 
 set -x fish_user_paths $fish_user_paths $HOME/.cargo/bin
@@ -19,6 +17,8 @@ set -x fish_user_paths $fish_user_paths $HOME/.cargo/bin
 set -x fish_user_paths $fish_user_paths $HOME/.npm-global/bin
 
 export XDG_SESSION_TYPE=wayland
+
+set -Ux BROWSER /usr/bin/firefox
 # alias tmuxg='tmux new-session \; source-file ~/.tmux.session.conf'
 
 # alias di 'docker images [--format] | docker-color-output'

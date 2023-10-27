@@ -37,7 +37,7 @@ return lazy.setup({
     -- your lsp config or other stuff
   },
   {
-    'glepnir/lspsaga.nvim',
+    'nvimdev/lspsaga.nvim',
     event = 'BufRead',
     config = function()
       require('lspsaga').setup({})
@@ -51,7 +51,12 @@ return lazy.setup({
     end,
   },
   -- linter
-  { "jose-elias-alvarez/null-ls.nvim" },
+  -- { "jose-elias-alvarez/null-ls.nvim" },
+  {
+    'creativenull/efmls-configs-nvim',
+    version = 'v0.2.x', -- tag is optional
+    dependencies = { 'neovim/nvim-lspconfig' },
+  },
   -- -- mason
   { "williamboman/mason.nvim" },
   { "williamboman/mason-lspconfig.nvim" },
@@ -129,7 +134,7 @@ return lazy.setup({
     end,
   },
   {
-    'glepnir/zephyr-nvim',
+    'nvimdev/zephyr-nvim',
     requires = { 'nvim-treesitter/nvim-treesitter', opt = true },
   },
   -- fzf
@@ -169,7 +174,14 @@ return lazy.setup({
   -- visual
   { "lukas-reineke/indent-blankline.nvim" },
   { "petertriho/nvim-scrollbar" },
-  { "j-hui/fidget.nvim" },
+  {
+    "j-hui/fidget.nvim",
+    tag = "legacy",
+    event = "LspAttach",
+    opts = {
+      -- options
+    },
+  },
   { "rcarriga/nvim-notify" },
   { "MunifTanjim/nui.nvim" },
   {
@@ -185,25 +197,8 @@ return lazy.setup({
     end,
   },
   { "RRethy/vim-illuminate" },
-  -- { "levouh/tint.nvim",
-  --   config = function()
-  --     require("tint").setup({
-  --       tint = -45, -- Darken colors, use a positive value to brighten
-  --       saturation = 0.6, -- Saturation to preserve
-  --       transforms = require("tint").transforms.SATURATE_TINT, -- Showing default behavior, but value here can be predefined set of transforms
-  --       tint_background_colors = true, -- Tint background portions of highlight groups
-  --       highlight_ignore_patterns = { "WinSeparator", "Status.*" }, -- Highlight group patterns to ignore, see `string.find`
-  --       window_ignore_function = function(winid)
-  --         local bufid = vim.api.nvim_win_get_buf(winid)
-  --         local buftype = vim.api.nvim_buf_get_option(bufid, "buftype")
-  --         local floating = vim.api.nvim_win_get_config(winid).relative ~= ""
-  --
-  --         -- Do not tint `terminal` or floating windows, tint everything else
-  --         return buftype == "terminal" or floating
-  --       end
-  --     })
-  --   end
-  -- },
+  { "xiyaowong/nvim-cursorword" },
+
   --activity
   { 'wakatime/vim-wakatime' },
   -- moving
@@ -252,10 +247,20 @@ return lazy.setup({
   },
   -- markdown
   {
-    'iamcco/markdown-preview.nvim',
+    "iamcco/markdown-preview.nvim",
+    build = "cd app && npm install",
+    ft = "markdown",
+    lazy = true,
+    keys = { { "gm", "<cmd>MarkdownPreviewToggle<cr>", desc = "Markdown Preview" } },
     config = function()
-      vim.fn["mkdp#util#install"]()
-    end
+      vim.g.mkdp_auto_close = true
+      vim.g.mkdp_open_to_the_world = false
+      vim.g.mkdp_open_ip = "127.0.0.1"
+      vim.g.mkdp_port = "8888"
+      vim.g.mkdp_browser = ""
+      vim.g.mkdp_echo_preview_url = true
+      vim.g.mkdp_page_title = "${name}"
+    end,
   },
   --dap
   { 'mfussenegger/nvim-dap' },
@@ -273,22 +278,6 @@ return lazy.setup({
     -- or                              , branch = '0.1.1',
     dependencies = { 'nvim-lua/plenary.nvim' }
   },
-  -- {
-  --   "jackMort/ChatGPT.nvim",
-  --   config = function()
-  --     require("chatgpt").setup({
-  --       -- optional configuration
-  --       keymaps = {
-  --         close = { "<C-c>" },
-  --         submit = "<Enter>",
-  --       }
-  --     })
-  --   end,
-  --   requires = {
-  --     "MunifTanjim/nui.nvim",
-  --     "nvim-lua/plenary.nvim",
-  --     "nvim-telescope/telescope.nvim"
-  --   }
-  -- },
+  { 'segeljakt/vim-silicon' },
   { "github/copilot.vim" },
 })

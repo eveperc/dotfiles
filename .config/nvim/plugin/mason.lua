@@ -12,7 +12,7 @@ mason_lspconfig.setup_handlers({ function(server)
       vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
       local opts = { noremap = true, silent = true }
       vim.keymap.set("n", "K", "<cmd>Lspsaga hover_doc<CR>")
-      vim.keymap.set('n', 'gr', '<cmd>Lspsaga lsp_finder<CR>')
+      vim.keymap.set('n', 'gr', '<cmd>Lspsaga finder<CR>')
       vim.keymap.set("n", "gd", "<cmd>Lspsaga peek_definition<CR>")
       vim.keymap.set("n", "ga", "<cmd>Lspsaga code_action<CR>")
       vim.keymap.set("n", "gn", "<cmd>Lspsaga rename<CR>")

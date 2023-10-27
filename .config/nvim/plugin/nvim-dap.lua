@@ -65,9 +65,9 @@ dap.configurations.php = {
     type = 'php',
     request = 'launch',
     name = 'Listen for Xdebug',
-    port = 9003,
+    port = 9000,
     log = true,
-    hostname = "0.0.0.0",
+    hostname = "192.168.21.39",
     pathMappings = {
       ["/var/www/html"] = "${workspaceFolder}"
     },
