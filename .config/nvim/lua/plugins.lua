@@ -138,7 +138,16 @@ return lazy.setup({
     requires = { 'nvim-treesitter/nvim-treesitter', opt = true },
   },
   -- fzf
-  { "ibhagwan/fzf-lua" },
+  {
+    "ibhagwan/fzf-lua",
+    -- optional for icon support
+    dependencies = { "nvim-tree/nvim-web-devicons" },
+    config = function()
+      -- calling `setup` is optional for customization
+      require("fzf-lua").setup({})
+    end
+  },
+  { "junegunn/fzf",         build = "./install --bin" },
   -- lua module
   { "nvim-lua/plenary.nvim" },
   -- nvim-cmp
@@ -199,12 +208,11 @@ return lazy.setup({
   { "RRethy/vim-illuminate" },
   { "xiyaowong/nvim-cursorword" },
 
-  --activity
-  { 'wakatime/vim-wakatime' },
   -- moving
   {
-    "phaazon/hop.nvim",
-    branch = "v2", -- optional but strongly recommended
+    'smoka7/hop.nvim',
+    version = "*",
+    opts = {},
   },
   { "unblevable/quick-scope" },
   { "haya14busa/vim-edgemotion" },
@@ -245,23 +253,6 @@ return lazy.setup({
       )
     end,
   },
-  -- markdown
-  {
-    "iamcco/markdown-preview.nvim",
-    build = "cd app && npm install",
-    ft = "markdown",
-    lazy = true,
-    keys = { { "gm", "<cmd>MarkdownPreviewToggle<cr>", desc = "Markdown Preview" } },
-    config = function()
-      vim.g.mkdp_auto_close = true
-      vim.g.mkdp_open_to_the_world = false
-      vim.g.mkdp_open_ip = "127.0.0.1"
-      vim.g.mkdp_port = "8888"
-      vim.g.mkdp_browser = ""
-      vim.g.mkdp_echo_preview_url = true
-      vim.g.mkdp_page_title = "${name}"
-    end,
-  },
   --dap
   { 'mfussenegger/nvim-dap' },
   { 'rcarriga/nvim-dap-ui' },
@@ -271,7 +262,6 @@ return lazy.setup({
       require('nvim-dap-virtual-text').setup()
     end,
   },
-  --chatGPT
   {
     'nvim-telescope/telescope.nvim',
     tag = '0.1.1',
@@ -280,4 +270,7 @@ return lazy.setup({
   },
   { 'segeljakt/vim-silicon' },
   { "github/copilot.vim" },
+  { "vim-denops/denops.vim" },
+  { "previm/previm" },
+  { "dense-analysis/ale" }
 })

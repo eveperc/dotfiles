@@ -1,38 +1,38 @@
 local options = {
-  encoding = "utf-8",
-  fileencoding = "utf-8",
-  clipboard = "unnamedplus",
-  whichwrap = "b,s,[,],<,>",
-  backspace = "indent,eol,start",
-  ambiwidth = "single",
-  wildmenu = true,
-  cmdheight = 1,
-  laststatus = 3,
-  showcmd = true,
-  hlsearch = true,
-  hidden = true,
-  backup = true,
-  backupdir = os.getenv("HOME") .. '/.vim/backup',
-  winblend = 20,
-  pumblend = 20,
-  termguicolors = true,
-  expandtab = true,
-  tabstop = 4,
-  shiftwidth = 4,
-  smartindent = true,
-  relativenumber = true,
-  wrap = true,
-  autoindent = true,
-  nrformats = "bin,hex",
-  swapfile = false,
-  -- formatoptions:remove('t'),
-  -- formatoptions:append('mM'),
-  cursorline = true,
+    encoding = "utf-8",
+    fileencoding = "utf-8",
+    clipboard = "unnamedplus",
+    whichwrap = "b,s,[,],<,>",
+    backspace = "indent,eol,start",
+    ambiwidth = "single",
+    wildmenu = true,
+    cmdheight = 1,
+    laststatus = 3,
+    showcmd = true,
+    hlsearch = true,
+    hidden = true,
+    backup = true,
+    backupdir = os.getenv("HOME") .. '/.vim/backup',
+    winblend = 20,
+    pumblend = 20,
+    termguicolors = true,
+    expandtab = true,
+    tabstop = 2,
+    shiftwidth = 2,
+    smartindent = true,
+    relativenumber = true,
+    wrap = true,
+    autoindent = true,
+    nrformats = "bin,hex",
+    swapfile = false,
+    -- formatoptions:remove('t'),
+    -- formatoptions:append('mM'),
+    cursorline = true,
 }
 vim.opt.shortmess:append("c")
 
 for k, v in pairs(options) do
-  vim.opt[k] = v
+    vim.opt[k] = v
 end
 
 vim.cmd("set whichwrap+=<,>,[,],h,l")
@@ -40,13 +40,13 @@ vim.cmd([[set iskeyword+=-]])
 vim.cmd([[set formatoptions-=cro]]) -- TODO: this doesn't seem to work
 
 vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
-  vim.lsp.diagnostic.on_publish_diagnostics, { virtual_text = false }
+    vim.lsp.diagnostic.on_publish_diagnostics, { virtual_text = false }
 )
 vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(
-  vim.lsp.handlers.hover, { separator = true }
+    vim.lsp.handlers.hover, { separator = true }
 )
 vim.lsp.handlers["textdocument/signaturehelp"] = vim.lsp.with(
-  vim.lsp.handlers.signature_help, { separator = true }
+    vim.lsp.handlers.signature_help, { separator = true }
 )
 
 -- 'airblade/vim-gitgutter' ----------------------------------------------------
@@ -68,3 +68,10 @@ vim.cmd "let g:fzf_preview_window = ['right:70%', 'ctrl-/']"
 vim.cmd "let g:sonictemplate_vim_template_dir = ['$HOME/.config/nvim/templates/']"
 
 vim.cmd("set guifont=DroidSansMono_Nerd_Font:h11")
+
+-- "denops" ---------------------------------------------------------------------
+vim.cmd "set runtimepath^=~/dps-helloworld"
+vim.cmd "let g:genops#debug = 1"
+
+-- "previm"
+vim.cmd "let g:previm_open_cmd = 'xdg-open'"

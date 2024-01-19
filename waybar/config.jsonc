@@ -1,5 +1,9 @@
 {
     "layer": "top",
+    "margin-top": 10,
+    "margin-left": 25,
+    "margin-right": 25,
+
     "modules-left": ["sway/workspaces"],
     "modules-center": ["sway/window"],
     "modules-right": ["custom/pacman","pulseaudio","battery","network","clock"],

@@ -9,13 +9,14 @@ if status is-interactive
 #
 set -x GOPATH $HOME/go
 set -x PATH $PATH $GOPATH/bin
-set -x DISPLAY $(cat /etc/resolv.conf | grep nameserver | awk '{print $2}'):0
+# set -x DISPLAY $(cat /etc/resolv.conf | grep nameserver | awk '{print $2}'):0
 
 set -x fish_user_paths $fish_user_paths $HOME/.cargo/bin
 
 # ~/.npm-global/bin にパスを通す
 set -x fish_user_paths $fish_user_paths $HOME/.npm-global/bin
 
+set -gx LIBVA_DRIVER_NAME iHD
 export XDG_SESSION_TYPE=wayland
 
 set -Ux BROWSER /usr/bin/firefox
@@ -36,19 +37,19 @@ function fish_user_key_bindings
 end
 
 # 使いたい色を登録しておく
-set -l blue             00bcc6
-set -l light_blue       8ed0ff
-set -l green            00c694
-set -l dark_green       287480
-set -l light_green      00ff00
-set -l red              ff6161
-set -l pink             c600c0
-set -l light_pink       f8bbf6
-set -l orange           E69875
-set -l yellow           fff92f
+set -l blue             384b55
+set -l light_blue       7fbbb3
+set -l green            a7c080
+set -l dark_green       3c4841
+set -l light_green      a7co80
+set -l red              e67e80
+set -l pink             d699b6
+set -l light_pink       e6c0c0
+set -l orange           e69875
+set -l yellow           e6d6ac
 # 白と黒は誰が見ても同じなので、グローバルに登録
-set -g white            D3C6AA
-set -g black            D3C6AA
+set -g white            d3c6aa
+set -g black            d3c6aa
 # 抽象的な名前でグローバルに登録
 set -g color_dark       333333
 set -g color_discreet   757575
@@ -56,7 +57,7 @@ set -g color_main       $green
 set -g color_main_light $orange
 set -g color_warning    $red
 # git color
-set -g color_git_main   $green
+set -g color_git_main   $blue
 set -g color_git_dirty  $orange
 # fish color
 set -g fish_color_normal            $white                          # デフォルトの色

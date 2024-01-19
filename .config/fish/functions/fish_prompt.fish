@@ -1207,7 +1207,7 @@ end
 set -l separator_triangle           \ue0b0
 set -l icon_cross                   \uf00d
 set -l icon_plus                    \uf067  # 追加
-set -l icon_three_point_reader      \uf6d7  # 追加
+# set -l icon_three_point_reader      \uf6d7  # 追加
 set -l icon_octocat                 \uf113  # 追加
 
 # 区切り文字などを、少し抽象的な名前で登録する
@@ -1238,7 +1238,8 @@ function _prompt_dir
 end
 
 function _prompt_user
-    printf '%s ' (set_color $white)(whoami)
+    # printf '%s ' (set_color $white)(whoami)
+    printf '%s ' (set_color $white)'eveperc'
 
     if command git rev-parse --is-inside-work-tree >/dev/null 2>&1
         _change_color_git_status_bar

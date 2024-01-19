@@ -1,8 +1,20 @@
-# Default config for sway
-
-### Variables
-# Logo key. Use Mod1 for Alt.
 set $menu wofi -G --show drun | xargs swaymsg exec --
+set $term wezterm
+
+blur enable
+blur_passes 3
+blur_radius 2
+corner_radius 10
+
+shadows enable
+shadow_blur_radius 25
+
+# inactive window fade amount. 0.0 = no dimming, 1.0 = fully dimmed
+default_dim_inactive 0.2
+dim_inactive_colors.unfocused #000000FF
+dim_inactive_colors.urgent #900000FF
+
+# Variable definitions
 set $mod Mod4
 # Home row direction keys, like vim
 set $left h
@@ -10,7 +22,6 @@ set $down j
 set $up k
 set $right l
 # Your preferred terminal emulator
-set $term wezterm
 # Your preferred application launcher
 # Note: pass the final command to swaymsg so that the resulting window can be opened
 # on the original workspace that the command was run on.
@@ -23,8 +34,8 @@ output "*" bg /usr/share/backgrounds/archlinux/arch_wallpaper2.jpg fill
 #
 # Example configuration:
 #
-output HDMI-A-1 resolution 1360x768
-#
+output HDMI-A-1 resolution 1920x1080
+
 # You can get the names of your outputs by running: swaymsg -t get_outputs
 
 ### Idle configuration
@@ -234,7 +245,7 @@ bindsym Mod4+Shift+A exec $lock
 
 gaps outer 3
 gaps inner 15
-default_border pixel 3
+default_border pixel 8
 
 #Network
 exec nm-applet --indicator
@@ -243,9 +254,9 @@ exec nm-applet --indicator
 # exec_always ~/.config/sway/window-transparency.sh
 
 # アクティブウィンドウのスクリーンショット
-bindsym Mod4+Shift+X exec /usr/share/sway/scripts/grimshot --notify save window $HOME/Downloads/screenshot_$(date "+%y%m%d%H%M%S").png
+bindsym Mod4+Shift+X exec /usr/share/swayfx/scripts/grimshot --notify save window $HOME/Downloads/screenshot_$(date "+%y%m%d%H%M%S").png
 # 全画面のスクリーンショット
-bindsym Mod4+Shift+Z exec /usr/share/sway/scripts/grimshot --notify save output  $HOME/Downloads/screenshot_$(date "+%y%m%d%H%M%S").png
+bindsym Mod4+Shift+Z exec /usr/share/swayfx/scripts/grimshot --notify save output  $HOME/Downloads/screenshot_$(date "+%y%m%d%H%M%S").png
 
 
 set $bg             #00c694cc
@@ -263,15 +274,6 @@ client.unfocused        $bg-inactive  $bg-inactive  $text-light $bg-inactive  $b
 client.urgent           $bg-urgent    $bg-urgent    $text-light $bg-urgent    $bg-urgent
 client.placeholder      $bg-inactive  $bg-inactive  $text-light $bg-inactive  $bg-inactive
 
-for_window [app_id="showmethekey-gtk" title="Floating Window - Show Me The Key"] {
-  floating enable
-  sticky enable
-  move down 470 px
-  move right 0 px
-}
-for_window [app_id="one.alynx.showmethekey"] {
-  floating enable
-}
 exec systemctl --user import-environment DISPLAY WAYLAND_DISPLAY SWAYSOCK
 exec dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=sway
 
@@ -304,3 +306,7 @@ for_window [app_id="blueman-manager"] floating enable
 
 #for_window [app_id="FloatingVim"] floating enable
 #bindsym $mod+i exec XMODIFIERS=@im= ~/.config/sway/ime.sh
+
+bindsym $mod+Shift+v exec clipman pick -t wofi
+
+
