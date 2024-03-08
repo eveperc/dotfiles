@@ -45,7 +45,7 @@ mason_lspconfig.setup_handlers({ function(server)
     opt.settings = {
       intelephense = {
         environment = {
-          phpVersion = "8.1",
+          phpVersion = "8.2",
           includePaths = { '/home/katsunori-ibusuki/.config/composer/vendor/php-stubs/wordpress-stubs' },
         },
         completion = {

@@ -309,4 +309,8 @@ for_window [app_id="blueman-manager"] floating enable
 
 bindsym $mod+Shift+v exec clipman pick -t wofi
 
-
+for_window [app_id="showmethekey-gtk" title="Floating Window - Show Me The Key"] {
+  floating enable
+  sticky enable
+  move down 380 px
+}

@@ -18,9 +18,7 @@ if not status_ok then
   return
 end
 
--- Install your plugins here
 return lazy.setup({
-  -- My plugins here
   -- lsp
   {
     "neovim/nvim-lspconfig",
@@ -29,9 +27,8 @@ return lazy.setup({
         "SmiteshP/nvim-navbuddy",
         dependencies = {
           "SmiteshP/nvim-navic",
-          "MunifTanjim/nui.nvim"
+          "MunifTanjim/nui.nvim",
         },
-        opts = { lsp = { auto_attach = true } }
       }
     },
     -- your lsp config or other stuff
@@ -50,8 +47,16 @@ return lazy.setup({
       require("lsp_lines").setup()
     end,
   },
+  {
+    "folke/trouble.nvim",
+    dependencies = { "nvim-tree/nvim-web-devicons" },
+    opts = {
+      -- your configuration comes here
+      -- or leave it empty to use the default settings
+      -- refer to the configuration section below
+    },
+  },
   -- linter
-  -- { "jose-elias-alvarez/null-ls.nvim" },
   {
     'creativenull/efmls-configs-nvim',
     version = 'v0.2.x', -- tag is optional
@@ -61,7 +66,7 @@ return lazy.setup({
   { "williamboman/mason.nvim" },
   { "williamboman/mason-lspconfig.nvim" },
   -- devicon
-  { "kyazdani42/nvim-web-devicons" },
+  { "nvim-tree/nvim-web-devicons" },
   { 'ryanoasis/vim-devicons' },
   -- nvim-lualine/lualine.nvim
   {
@@ -135,7 +140,7 @@ return lazy.setup({
   },
   {
     'nvimdev/zephyr-nvim',
-    requires = { 'nvim-treesitter/nvim-treesitter', opt = true },
+    dependencies = { 'nvim-treesitter/nvim-treesitter', opt = true },
   },
   -- fzf
   {
@@ -150,13 +155,61 @@ return lazy.setup({
   { "junegunn/fzf",         build = "./install --bin" },
   -- lua module
   { "nvim-lua/plenary.nvim" },
-  -- nvim-cmp
-  { "hrsh7th/nvim-cmp" },
-  { "hrsh7th/cmp-path" },
-  { "hrsh7th/cmp-buffer" },
-  { "hrsh7th/cmp-cmdline" },
+
+  -- 自動補完プラグイン
+  {
+    "hrsh7th/nvim-cmp",
+    config = function()
+      require("cmp").setup({
+        snippet = {
+          expand = function(args)
+            require("luasnip").lsp_expand(args.body)
+          end,
+        },
+        sources = {
+          { name = "luasnip" },
+          { name = "nvim_lsp" },
+          { name = "path" },
+          { name = "buffer" },
+          { name = "cmdline" },
+        },
+      })
+    end,
+    dependencies = {
+      { "hrsh7th/cmp-nvim-lsp" },
+      { "hrsh7th/cmp-nvim-lsp-signature-help" },
+      { "hrsh7th/cmp-nvim-lsp-document-symbol" },
+      { "hrsh7th/cmp-path" },
+      { "hrsh7th/cmp-buffer" },
+      { "hrsh7th/cmp-cmdline" },
+      { "hrsh7th/vim-vsnip" },
+      { "hrsh7th/cmp-nvim-lsp" },
+      { "onsails/lspkind.nvim" },
+      { "cmp_luasnip" },
+      { "L3MON4D3/LuaSnip" },
+      { "rafamadriz/friendly-snippets" },
+    },
+  },
+  -- lsp用の補完
   { "hrsh7th/cmp-nvim-lsp" },
+  { "hrsh7th/cmp-nvim-lsp-signature-help" },
+  { "hrsh7th/cmp-nvim-lsp-document-symbol" },
+  -- バッファー補完
+  { "hrsh7th/cmp-buffer" },
+  -- パス補完
+  { "hrsh7th/cmp-path" },
+  -- コマンドライン補完
+  { "hrsh7th/cmp-cmdline" },
+  -- スニペット補完
   { "hrsh7th/vim-vsnip" },
+  -- cmpで補完する際に表示されるアイコンを設定
+  { "onsails/lspkind.nvim" },
+  -- copilot補完
+  -- {
+  --   "zbirenbaum/copilot-cmp",
+  --
+  -- },
+
   -- file explorer
   {
     "tamago324/lir.nvim",
@@ -264,13 +317,22 @@ return lazy.setup({
   },
   {
     'nvim-telescope/telescope.nvim',
-    tag = '0.1.1',
-    -- or                              , branch = '0.1.1',
     dependencies = { 'nvim-lua/plenary.nvim' }
   },
   { 'segeljakt/vim-silicon' },
   { "github/copilot.vim" },
   { "vim-denops/denops.vim" },
   { "previm/previm" },
-  { "dense-analysis/ale" }
+  { "dense-analysis/ale" },
+  -- Lua
+  -- スニペット--
+  { "rafamadriz/friendly-snippets" },
+  {
+    "L3MON4D3/LuaSnip",
+    dependencies = { "rafamadriz/friendly-snippets" },
+    config = function()
+      require("luasnip.loaders.from_vscode").lazy_load()
+    end,
+  },
+  { 'saadparwaiz1/cmp_luasnip' }
 })
