@@ -1,5 +1,6 @@
 local status, mason = pcall(require, 'mason')
 local vim = vim
+local home_dir = os.getenv("HOME")
 if (not status) then return end
 
 mason.setup()
@@ -46,7 +47,7 @@ mason_lspconfig.setup_handlers({ function(server)
       intelephense = {
         environment = {
           phpVersion = "8.2",
-          includePaths = { '/home/katsunori-ibusuki/.config/composer/vendor/php-stubs/wordpress-stubs' },
+          includePaths = { home_dir .. '/.config/composer/vendor/php-stubs/wordpress-stubs' },
         },
         completion = {
           fullyQualifyGlobalConstantsAndFunctions = true
@@ -94,12 +95,17 @@ mason_lspconfig.setup_handlers({ function(server)
     end
   elseif server == "volar" then
     opt.filetypes = { "vue", "javascript", "typescript" }
-    -- elseif server == "tsserver" then
-    --     if not is_node_repo then
-    --         return
-    --     end
-    --
-    --     opt.root_dir = node_root_dir
+    -- プロジェクトルートを指定
+    opt.root_dir = nvim_lsp.util.root_pattern("vite.config.ts", "nuxt.config.ts")
+  elseif server == "tsserver" then
+    opt.single_file_support = false
+    opt.root_dir = function(fname)
+      -- VueやNuxtのプロジェクトではVolarに任せるので無効にする
+      if nvim_lsp.util.root_pattern("vite.config.ts", "nuxt.config.ts")(fname) then
+        return nil
+      end
+      return nvim_lsp.util.root_pattern("tsconfig.json")(fname)
+    end
   elseif server == "denols" then
     if is_node_repo then
       return

@@ -6,7 +6,7 @@ vim.g.ale_fixers = {
   scss = { 'prettier' },
   javascript = { 'prettier' },
   typescript = { 'prettier' },
-  vue = { 'prettier' },
+  -- vue = { 'prettier' },
   php = { 'php_cs_fixer' },
 }
 
@@ -14,7 +14,8 @@ vim.g.ale_fixers = {
 -- PHP
 vim.g.ale_php_phpcs_standard = 'PSR2'
 vim.g.ale_php_phpcsf_standard = 'PSR2'
-vim.g.ale_php_phpcs_use_global = 1
+-- vim.g.ale_php_phpcs_use_global = 1
+vim.g.ale_php_cs_fixer_use_global = 1
 vim.g.ale_sign_column_always = 1
 
 

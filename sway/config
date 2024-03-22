@@ -66,8 +66,8 @@ output HDMI-A-1 resolution 1920x1080
 # Read `man 5 sway-input` for more information about this section.
 
 input type:keyboard {
-    repeat_delay 300
-    repeat_rate 50
+    repeat_delay 200
+    repeat_rate 100
 }
 ### Key bindings
 #
