@@ -205,10 +205,10 @@ return lazy.setup({
   -- cmpで補完する際に表示されるアイコンを設定
   { "onsails/lspkind.nvim" },
   -- copilot補完
-  -- {
-  --   "zbirenbaum/copilot-cmp",
-  --
-  -- },
+  {
+    "zbirenbaum/copilot-cmp",
+
+  },
 
   -- file explorer
   {

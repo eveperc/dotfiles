@@ -5,7 +5,7 @@ vim.g.ale_fixers = {
   css = { 'prettier' },
   scss = { 'prettier' },
   javascript = { 'prettier' },
-  typescript = { 'prettier' },
+  typescript = { 'eslint' },
   -- vue = { 'prettier' },
   php = { 'php_cs_fixer' },
 }

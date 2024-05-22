@@ -93,10 +93,6 @@ mason_lspconfig.setup_handlers({ function(server)
     opt.on_attach = function(client, bufnr)
       vim.api.nvim_buf_set_option(bufnr, 'shiftwidth', 4)
     end
-  elseif server == "volar" then
-    opt.filetypes = { "vue", "javascript", "typescript" }
-    -- プロジェクトルートを指定
-    opt.root_dir = nvim_lsp.util.root_pattern("vite.config.ts", "nuxt.config.ts")
   elseif server == "tsserver" then
     opt.single_file_support = false
     opt.root_dir = function(fname)
@@ -106,6 +102,22 @@ mason_lspconfig.setup_handlers({ function(server)
       end
       return nvim_lsp.util.root_pattern("tsconfig.json")(fname)
     end
+  elseif server == "volar" then
+    -- プロジェクトルートを指定
+    -- @vue/language-serverのパスを取得
+    local vue_language_server_path = nvim_lsp.util.root_pattern("node_modules/@vue/language-server")(vim.api
+      .nvim_buf_get_name(0))
+    opt.root_dir = nvim_lsp.util.root_pattern("nuxt.config.ts", "vite.config.ts")
+    opt.filetypes = { "vue", "javascript", "typescript" }
+    opt.init_options = {
+      plugins = {
+        {
+          name = '@vue/typescript-plugin',
+          location = vue_language_server_path,
+          languages = { 'vue', 'typescript' },
+        }
+      }
+    }
   elseif server == "denols" then
     if is_node_repo then
       return
@@ -123,6 +135,13 @@ mason_lspconfig.setup_handlers({ function(server)
           }
         }
       }
+    }
+  elseif server == "clangd" then
+    opt.cmd = { "clangd", "--background-index" }
+    opt.filetypes = { "c", "cpp", "objc", "objcpp" }
+    opt.root_dir = nvim_lsp.util.root_pattern("compile_flags.txt", ".clangd")
+    opt.init_options = {
+      clangdFileStatus = true
     }
   end
   require('lspconfig')[server].setup(opt)
