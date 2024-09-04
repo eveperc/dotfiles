@@ -20,6 +20,9 @@ set -gx LIBVA_DRIVER_NAME iHD
 export XDG_SESSION_TYPE=wayland
 
 set -Ux BROWSER /usr/bin/firefox
+
+set -x NVIM_LOG_FILE $HOME/.config/nvim/log/nvim.log
+
 # alias tmuxg='tmux new-session \; source-file ~/.tmux.session.conf'
 
 # alias di 'docker images [--format] | docker-color-output'
@@ -82,4 +85,14 @@ export LSCOLORS=Gxfxcxdxbxegedabagacad
 
 end
 
-thefuck --alias | source
+# thefuck --alias | source
+
+function ghwk
+  git config --global user.name "katsunori-ibusuki-yoriso"
+  git config --global user.email "katsunori-ibusuki@yoriso.com"
+end
+
+function ghpr
+  git config --global user.name "eveperc"
+  git config --global user.email "eve.perc@gmail.com"
+end

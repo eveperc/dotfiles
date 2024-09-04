@@ -119,6 +119,7 @@ return lazy.setup({
       -- "sindrets/diffview.nvim",
     },
   },
+  { 'f-person/git-blame.nvim' },
 
   -- colorscheme
   { 'ray-x/aurora' },
@@ -218,6 +219,41 @@ return lazy.setup({
       require('nvim-web-devicons').setup()
     end,
   },
+  -- lazy.nvim
+  {
+    'nvim-neo-tree/neo-tree.nvim',
+    branch = 'v3.x',
+    dependencies = {
+      -- Others dependencies
+      'saifulapm/neotree-file-nesting-config', -- add plugin as dependency. no need any other config or setup call
+    },
+    opts = {
+      -- recommanded config for better UI
+      hide_root_node = true,
+      retain_hidden_root_indent = true,
+      filesystem = {
+        filtered_items = {
+          show_hidden_count = false,
+          never_show = {
+            '.DS_Store',
+          },
+        },
+      },
+      default_component_configs = {
+        indent = {
+          with_expanders = true,
+          expander_collapsed = '',
+          expander_expanded = '',
+        },
+      },
+      -- others config
+    },
+    config = function(_, opts)
+      -- Adding rules from plugin
+      opts.nesting_rules = require('neotree-file-nesting-config').nesting_rules
+      require('neo-tree').setup(opts)
+    end,
+  },
   {
     "SmiteshP/nvim-navic",
     despendencies = "neovim/nvim-lspconfig"
@@ -308,7 +344,7 @@ return lazy.setup({
   },
   --dap
   { 'mfussenegger/nvim-dap' },
-  { 'rcarriga/nvim-dap-ui' },
+  { "rcarriga/nvim-dap-ui",   dependencies = { "mfussenegger/nvim-dap", "nvim-neotest/nvim-nio" } },
   {
     'theHamsta/nvim-dap-virtual-text',
     config = function()
@@ -321,6 +357,19 @@ return lazy.setup({
   },
   { 'segeljakt/vim-silicon' },
   { "github/copilot.vim" },
+  {
+    "CopilotC-Nvim/CopilotChat.nvim",
+    branch = "canary",
+    dependencies = {
+      { "zbirenbaum/copilot.lua" }, -- or github/copilot.vim
+      { "nvim-lua/plenary.nvim" },  -- for curl, log wrapper
+    },
+    opts = {
+      debug = true, -- Enable debugging
+      -- See Configuration section for rest
+    },
+    -- See Commands section for default commands if you want to lazy load on them
+  },
   { "vim-denops/denops.vim" },
   { "previm/previm" },
   { "dense-analysis/ale" },
@@ -334,5 +383,13 @@ return lazy.setup({
       require("luasnip.loaders.from_vscode").lazy_load()
     end,
   },
-  { 'saadparwaiz1/cmp_luasnip' }
+  { 'saadparwaiz1/cmp_luasnip' },
+  --color--
+  {
+    'NvChad/nvim-colorizer.lua',
+    config = function()
+      require('colorizer').setup()
+    end,
+  },
+  { 'wakatime/vim-wakatime',   lazy = false }
 })

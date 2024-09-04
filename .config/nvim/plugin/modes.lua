@@ -1,7 +1,17 @@
-local status,modes = pcall(require,'modes')
-if (not status) then return end
+-- Attempt to require the 'modes' module
+local status, modes = pcall(require, 'modes')
+if not status then
+  print("Failed to load modes module")
+  return
+end
 
--- modes.nvim
+-- Ensure 'modes' is a table
+if type(modes) ~= "table" then
+  print("Unexpected type for modes: " .. type(modes))
+  return
+end
+
+-- modes.nvim setup
 modes.setup({
   colors = {
     copy = "#f5c359",
@@ -24,6 +34,5 @@ modes.setup({
   set_number = true,
 
   -- Disable modes highlights in specified filetypes
-  -- Please PR commonly ignored filetypes
-  ignore_filetypes = { 'NvimTree', 'TelescopePrompt' }
+  -- Please PR commonly ignored filetype
 })

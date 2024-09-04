@@ -29,6 +29,10 @@ local function on_attach(server, bufnr)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>f', '<cmd>lua vim.lsp.buf.format()<CR>', opts)
   if server == "intelephense" then
     vim.api.nvim_buf_set_keymap(bufnr, "n", "<space>rn", "<cmd>lua vim.lsp.buf.rename()<CR>", opts)
+  elseif server == "rust_analyzer" then
+    vim.api.nvim_buf_set_option(bufnr, 'shiftwidth', 4)
+    vim.api.nvim_buf_set_option(bufnr, 'tabstop', 4)
+    vim.api.nvim_buf_set_option(bufnr, 'expandtab', true)
   end
 end
 mason_lspconfig.setup_handlers({ function(server)
@@ -53,7 +57,9 @@ mason_lspconfig.setup_handlers({ function(server)
           fullyQualifyGlobalConstantsAndFunctions = true
         },
         format = {
-          enable = true
+          enable = true,
+          braces = "PSR12",
+          on_save = true,
         },
         stubs = {
           "bcmath",
@@ -95,25 +101,30 @@ mason_lspconfig.setup_handlers({ function(server)
     end
   elseif server == "tsserver" then
     opt.single_file_support = false
-    opt.root_dir = function(fname)
-      -- VueやNuxtのプロジェクトではVolarに任せるので無効にする
-      if nvim_lsp.util.root_pattern("vite.config.ts", "nuxt.config.ts")(fname) then
-        return nil
-      end
-      return nvim_lsp.util.root_pattern("tsconfig.json")(fname)
-    end
-  elseif server == "volar" then
-    -- プロジェクトルートを指定
-    -- @vue/language-serverのパスを取得
-    local vue_language_server_path = nvim_lsp.util.root_pattern("node_modules/@vue/language-server")(vim.api
-      .nvim_buf_get_name(0))
-    opt.root_dir = nvim_lsp.util.root_pattern("nuxt.config.ts", "vite.config.ts")
+    local vue_typescript_plugin = require("mason-registry").get_package("vue-language-server"):get_install_path() ..
+    "/node_modules/@vue/language-server/node_modules/@vue/typescript-plugin"
+
     opt.filetypes = { "vue", "javascript", "typescript" }
     opt.init_options = {
       plugins = {
         {
           name = '@vue/typescript-plugin',
-          location = vue_language_server_path,
+          location = vue_typescript_plugin,
+          languages = { 'vue', 'typescript' },
+        }
+      }
+    }
+  elseif server == "volar" then
+    -- プロジェクトルートを指定
+    local vue_typescript_plugin = require("mason-registry").get_package("vue-language-server"):get_install_path() ..
+    "/node_modules/@vue/language-server/node_modules/@vue/typescript-plugin"
+
+    opt.filetypes = { "vue", "javascript", "typescript" }
+    opt.init_options = {
+      plugins = {
+        {
+          name = '@vue/typescript-plugin',
+          location = vue_typescript_plugin,
           languages = { 'vue', 'typescript' },
         }
       }
@@ -142,6 +153,18 @@ mason_lspconfig.setup_handlers({ function(server)
     opt.root_dir = nvim_lsp.util.root_pattern("compile_flags.txt", ".clangd")
     opt.init_options = {
       clangdFileStatus = true
+    }
+  elseif server == "rust_analyzer" then
+    opt.root_dir = nvim_lsp.util.root_pattern("Cargo.toml", "rust-project.json")
+    opt.settings = {
+      ["rust-analyzer"] = {
+        cargo = {
+          loadOutDirsFromCheck = true
+        },
+        procMacro = {
+          enable = true
+        },
+      }
     }
   end
   require('lspconfig')[server].setup(opt)

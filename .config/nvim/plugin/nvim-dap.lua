@@ -2,10 +2,12 @@ local vim = vim
 local status, dap = pcall(require, 'dap')
 if (not status) then return end
 
+dap.set_log_level('TRACE')
+
 dap.adapters.node2 = {
   type = 'executable',
   command = 'node',
-  args = {vim.env.HOME .. '/.local/share/nvim/mason/packages/node-debug2-adapter/out/src/nodeDebug.js'},
+  args = { vim.env.HOME .. '/.local/share/nvim/mason/packages/node-debug2-adapter/out/src/nodeDebug.js' },
 }
 
 dap.configurations.javascript = {
@@ -62,29 +64,28 @@ dap.adapters.php = {
 }
 dap.configurations.php = {
   {
-    type = 'php',
-    request = 'launch',
-    name = 'Listen for Xdebug',
-    port = 9000,
-    log = true,
-    hostname = "192.168.21.39",
+    name = "Listen for Xdebug",
+    type = "php",
+    request = "launch",
+    port = 9003,
+    stopOnEntry = false,
     pathMappings = {
-      ["/var/www/html"] = "${workspaceFolder}"
-    },
+      ["/var/www/html/wp-content/themes/ohaka-sagashi"] = "${workspaceFolder}"
+    }
   }
 }
 dap.adapters.go = {
-  type = 'executable';
-  command = 'node';
-  args = { vim.env.HOME .. '/.local/share/nvim/mason/packages/go-debug-adapter/extension/dist/debugAdapter.js' };
+  type = 'executable',
+  command = 'node',
+  args = { vim.env.HOME .. '/.local/share/nvim/mason/packages/go-debug-adapter/extension/dist/debugAdapter.js' },
 }
 dap.configurations.go = {
   {
-    type = 'go';
-    name = 'Debug';
-    request = 'launch';
-    showLog = false;
-    program = "${file}";
+    type = 'go',
+    name = 'Debug',
+    request = 'launch',
+    showLog = false,
+    program = "${file}",
     dlvToolPath = vim.fn.exepath('dlv') -- Adjust to where delve is installed
   },
 }

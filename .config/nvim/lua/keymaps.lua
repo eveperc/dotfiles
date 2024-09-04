@@ -80,3 +80,24 @@ vim.keymap.set({ "n", "x" }, "<leader>s", [[:S ///g<Left><Left><Left>]], { desc 
 keymap('n', '<leader>gs', "<cmd>Telescope advanced_git_search diff_commit_file<CR>", opts)
 -- folke/trouble.nvim
 keymap('n', '<leader>xx', "<cmd>TroubleToggle<CR>", opts)
+
+-- CopilotChat.nvim --------------------------------------------------------
+-- バッファの内容全体を使って Copilot とチャットする
+function CopilotChatBuffer()
+  local input = vim.fn.input("Quick Chat: ")
+  if input ~= "" then
+    require("CopilotChat").ask(input, { selection = require("CopilotChat.select").buffer })
+  end
+end
+-- telescope を使ってアクションプロンプトを表示する
+function ShowCopilotChatActionPrompt()
+  local actions = require("CopilotChat.actions")
+  require("CopilotChat.integrations.telescope").pick(actions.prompt_actions())
+end
+
+-- キーマッピング
+keymap('n', '<leader>ccq', ':lua CopilotChatBuffer()<CR>', opts)
+-- <leader>ccp (Copilot Chat Prompt の略) でアクションプロンプトを表示する
+keymap('n', '<leader>ccp', ':lua ShowCopilotChatActionPrompt()<CR>', opts)
+-- ビジュアルモードで選択した範囲を使って Copilot とチャットする
+keymap('v', '<leader>ccq', ':lua CopilotChat.ask(vim.fn.getreg("v"), { selection = require("CopilotChat.select").visual })<CR>', opts)

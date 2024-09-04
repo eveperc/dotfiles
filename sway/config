@@ -1,5 +1,5 @@
 set $menu wofi -G --show drun | xargs swaymsg exec --
-set $term wezterm
+set $term alacritty
 
 blur enable
 blur_passes 3
@@ -31,6 +31,9 @@ set $right l
 #
 # Default wallpaper (more resolutions are available in /usr/share/backgrounds/sway/)
 output "*" bg /usr/share/backgrounds/archlinux/arch_wallpaper2.jpg fill
+# output "*" bg /home/katsunori-ibusuki/Downloads/Anime-Landscape2.png fill
+# output "*" bg /home/katsunori-ibusuki/Downloads/arch-chan_to.png fill
+# output "*" bg /home/katsunori-ibusuki/Downloads/pastel-window.png fill
 #
 # Example configuration:
 #
@@ -219,7 +222,7 @@ include /etc/sway/config.d/*
 exec mako
 exec fcitx5 -d
 exec nm-applet --indicator
-exec /usr/share/sway/scripts/inactive-windows-transparency.py --opacity 0.8
+# exec /usr/share/sway/scripts/inactive-windows-transparency.py --opacity 0.8
 
 exec swayidle -w \
   timeout 300 'swaylock -f -C ~/.config/swaylock/config' \
@@ -254,7 +257,7 @@ exec nm-applet --indicator
 # exec_always ~/.config/sway/window-transparency.sh
 
 # アクティブウィンドウのスクリーンショット
-bindsym Mod4+Shift+X exec /usr/share/swayfx/scripts/grimshot --notify save window $HOME/Downloads/screenshot_$(date "+%y%m%d%H%M%S").png
+bindsym Mod4+Shift+X exec grim -g "$(slurp)" $HOME/Downloads/screenshot_$(date "+%y%m%d%H%M%S").png
 # 全画面のスクリーンショット
 bindsym Mod4+Shift+Z exec /usr/share/swayfx/scripts/grimshot --notify save output  $HOME/Downloads/screenshot_$(date "+%y%m%d%H%M%S").png
 

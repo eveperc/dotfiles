@@ -63,11 +63,11 @@ local opts = { noremap = true, silent = true }
 -- BufWritePreイベントでのキーマッピング設定
 vim.api.nvim_create_augroup("FormatOnSave", { clear = true })
 vim.api.nvim_create_autocmd("BufWritePre", {
-  group = "FormatOnSave",
-  pattern = "*",
-  callback = function()
-    if vim.bo.filetype ~= 'css' and vim.bo.filetype ~= 'scss' then
-      vim.lsp.buf.format()
-    end
-  end,
+group = "FormatOnSave",
+pattern = "*",
+callback = function()
+  if vim.bo.filetype ~= 'css' and vim.bo.filetype ~= 'scss' then
+    vim.lsp.buf.format()
+  end
+end,
 })
