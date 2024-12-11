@@ -1,3 +1,3 @@
 if ({{_cursor_}}) {
-  {{_wrap_}}
+{{_wrap_}}
 }

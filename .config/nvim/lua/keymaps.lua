@@ -32,10 +32,10 @@ keymap('n', '<C-W>-', ':<C-u>resize -5<CR>', term_opts)
 keymap('n', '<C-W>>', ':<C-u>vertical resize +10<CR>', term_opts)
 keymap('n', '<C-W><', ':<C-u>vertical resize -10<CR>', term_opts)
 
-keymap('t', '<C-W>j', '<CMD>wincmd j<CR>', term_opts)
-keymap('t', '<C-W>k', '<CMD>wincmd k<CR>', term_opts)
-keymap('t', '<C-W>h', '<CMD>wincmd h<CR>', term_opts)
-keymap('t', '<C-W>l', '<CMD>wincmd l<CR>', term_opts)
+-- keymap('t', '<C-W>j', '<CMD>wincmd j<CR>', term_opts)
+-- keymap('t', '<C-W>k', '<CMD>wincmd k<CR>', term_opts)
+-- keymap('t', '<C-W>h', '<CMD>wincmd h<CR>', term_opts)
+-- keymap('t', '<C-W>l', '<CMD>wincmd l<CR>', term_opts)
 -- 'ibhagwan/fzf-lua' ----------------------------------------------------------
 keymap('n', '<leader>e', "<cmd>lua require('fzf-lua').files()<cr>", opts)
 keymap('n', '<leader>p', "<cmd>lua require('fzf-lua').live_grep()<cr>", opts)
@@ -89,6 +89,7 @@ function CopilotChatBuffer()
     require("CopilotChat").ask(input, { selection = require("CopilotChat.select").buffer })
   end
 end
+
 -- telescope を使ってアクションプロンプトを表示する
 function ShowCopilotChatActionPrompt()
   local actions = require("CopilotChat.actions")
@@ -100,4 +101,27 @@ keymap('n', '<leader>ccq', ':lua CopilotChatBuffer()<CR>', opts)
 -- <leader>ccp (Copilot Chat Prompt の略) でアクションプロンプトを表示する
 keymap('n', '<leader>ccp', ':lua ShowCopilotChatActionPrompt()<CR>', opts)
 -- ビジュアルモードで選択した範囲を使って Copilot とチャットする
-keymap('v', '<leader>ccq', ':lua CopilotChat.ask(vim.fn.getreg("v"), { selection = require("CopilotChat.select").visual })<CR>', opts)
+keymap('v', '<leader>ccq',
+  ':lua CopilotChat.ask(vim.fn.getreg("v"), { selection = require("CopilotChat.select").visual })<CR>', opts)
+
+-- 大西配列用のキーマッピング
+keymap('n', 'k', 'h', map_opts)
+keymap('n', 't', 'j', map_opts)
+keymap('n', 'n', 'k', map_opts)
+-- keymap('n', 's', 'l', map_opts)
+-- タイムアウトを設定して即座に右移動するように
+vim.keymap.set('n', 's', 'l', { noremap = true, nowait = true })
+vim.keymap.set('v', 's', 'l', { noremap = true, nowait = true })
+keymap('v', 'k', 'h', map_opts)
+keymap('v', 't', 'j', map_opts)
+keymap('v', 'n', 'k', map_opts)
+keymap('v', 's', 'l', map_opts)
+keymap('t', '<C-W>k', '<CMD>wincmd h<CR>', term_opts)
+keymap('t', '<C-W>t', '<CMD>wincmd j<CR>', term_opts)
+keymap('t', '<C-W>n', '<CMD>wincmd k<CR>', term_opts)
+keymap('t', '<C-W>s', '<CMD>wincmd l<CR>', term_opts)
+keymap('n', '<C-s>', ':<C-u>bnext<CR>', opts)
+keymap('n', '<C-k>', ':<C-u>bprevious<CR>', opts)
+-- 検索結果の移動を-キーに割り当て
+keymap('n', '-', 'n', map_opts) -- 次の検索結果へ
+keymap('n', '_', 'N', map_opts) -- 前の検索結果へ（Shift + -）

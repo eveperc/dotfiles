@@ -9,8 +9,12 @@ local nvim_lsp = require('lspconfig')
 local status, mason_lspconfig = pcall(require, 'mason-lspconfig')
 if (not status) then return end
 
-require('mason-lspconfig').setup({
-  ensure_installed = { "volar", "tsserver" }
+-- Mason setup
+mason.setup()
+
+-- Ensure Volar is installed
+mason_lspconfig.setup({
+  ensure_installed = { "volar" }
 })
 
 local function on_attach(server, bufnr)
@@ -99,10 +103,11 @@ mason_lspconfig.setup_handlers({ function(server)
     opt.on_attach = function(client, bufnr)
       vim.api.nvim_buf_set_option(bufnr, 'shiftwidth', 4)
     end
-  elseif server == "tsserver" then
+  elseif server == "ts_ls" then
     opt.single_file_support = false
+
     local vue_typescript_plugin = require("mason-registry").get_package("vue-language-server"):get_install_path() ..
-    "/node_modules/@vue/language-server/node_modules/@vue/typescript-plugin"
+        "/node_modules/@vue/language-server/node_modules/@vue/typescript-plugin"
 
     opt.filetypes = { "vue", "javascript", "typescript" }
     opt.init_options = {
@@ -110,25 +115,11 @@ mason_lspconfig.setup_handlers({ function(server)
         {
           name = '@vue/typescript-plugin',
           location = vue_typescript_plugin,
-          languages = { 'vue', 'typescript' },
+          languages = { 'vue' },
         }
       }
     }
-  elseif server == "volar" then
-    -- プロジェクトルートを指定
-    local vue_typescript_plugin = require("mason-registry").get_package("vue-language-server"):get_install_path() ..
-    "/node_modules/@vue/language-server/node_modules/@vue/typescript-plugin"
-
-    opt.filetypes = { "vue", "javascript", "typescript" }
-    opt.init_options = {
-      plugins = {
-        {
-          name = '@vue/typescript-plugin',
-          location = vue_typescript_plugin,
-          languages = { 'vue', 'typescript' },
-        }
-      }
-    }
+    opt.root_dir = nvim_lsp.util.root_pattern("nuxt.config.ts", "tsconfig.json")
   elseif server == "denols" then
     if is_node_repo then
       return

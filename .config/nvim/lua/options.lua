@@ -74,4 +74,4 @@ vim.cmd "set runtimepath^=~/dps-helloworld"
 vim.cmd "let g:genops#debug = 1"
 
 -- "previm"
-vim.cmd "let g:previm_open_cmd = 'xdg-open'"
+vim.cmd "let g:previm_open_cmd = 'open -a /Applications/Vivaldi.app'"

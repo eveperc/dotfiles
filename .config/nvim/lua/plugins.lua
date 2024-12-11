@@ -47,15 +47,15 @@ return lazy.setup({
       require("lsp_lines").setup()
     end,
   },
-  {
-    "folke/trouble.nvim",
-    dependencies = { "nvim-tree/nvim-web-devicons" },
-    opts = {
-      -- your configuration comes here
-      -- or leave it empty to use the default settings
-      -- refer to the configuration section below
-    },
-  },
+  -- {
+  --   "folke/trouble.nvim",
+  --   dependencies = { "nvim-tree/nvim-web-devicons" },
+  --   opts = {
+  --     -- your configuration comes here
+  --     -- or leave it empty to use the default settings
+  --     -- refer to the configuration section below
+  --   },
+  -- },
   -- linter
   {
     'creativenull/efmls-configs-nvim',
@@ -208,9 +208,8 @@ return lazy.setup({
   -- copilot補完
   {
     "zbirenbaum/copilot-cmp",
-
+    opts={},
   },
-
   -- file explorer
   {
     "tamago324/lir.nvim",
@@ -307,7 +306,7 @@ return lazy.setup({
   { "haya14busa/vim-edgemotion" },
   { "mfussenegger/nvim-treehopper" },
   { 'David-Kunz/treesitter-unit' },
-  { 'machakann/vim-columnmove' },
+  -- { 'machakann/vim-columnmove' },
   -- edit
   { 'numToStr/Comment.nvim' },
   { "windwp/nvim-autopairs" },
@@ -356,7 +355,27 @@ return lazy.setup({
     dependencies = { 'nvim-lua/plenary.nvim' }
   },
   { 'segeljakt/vim-silicon' },
-  { "github/copilot.vim" },
+  {
+    "zbirenbaum/copilot.lua",
+    cmd = "Copilot",
+    event = "InsertEnter",
+    opts = {
+      suggestion = {
+        enabled = true,
+        auto_trigger = true,  -- 自動的に提案を表示
+        keymap = {
+          accept = "<C-s>",  -- Tabキーで補完を受け入れ
+          next = "<M-n>",    -- Alt + ] で次の提案
+          prev = "<M-p>",    -- Alt + [ で前の提案
+          dismiss = "<C-j>", -- Ctrl + ] で提案を却下
+        },
+        debounce = 75,      -- 提案を表示するまでの遅延時間（ミリ秒）を減らす
+      },
+      panel = {
+        enabled = false,     -- 提案パネルを無効化してパフォーマンスを改善
+      },
+    },
+  },
   {
     "CopilotC-Nvim/CopilotChat.nvim",
     branch = "canary",
@@ -391,5 +410,100 @@ return lazy.setup({
       require('colorizer').setup()
     end,
   },
-  { 'wakatime/vim-wakatime',   lazy = false }
+  -- avante --
+  {
+  'stevearc/dressing.nvim',
+    opts = {},
+  },
+  {
+    "HakonHarnes/img-clip.nvim",
+    event = "VeryLazy",
+    opts = {
+      -- add options here
+      -- or leave it empty to use the default settings
+    },
+    keys = {
+      -- suggested keymap
+      { "<leader>p", "<cmd>PasteImage<cr>", desc = "Paste image from system clipboard" },
+    },
+  },
+  {
+    "yetone/avante.nvim",
+    enabled = true,
+    event = "VeryLazy",
+    lazy = false,
+    version = false,
+    opts = {
+        provider = "copilot",
+        -- provider = "claude",
+        -- provider = "openai",
+        auto_suggestions_provider = "copilot",
+        behaviour = {
+            auto_suggestions = true,
+            auto_set_highlight_group = true,
+            auto_set_keymaps = true,
+            auto_apply_diff_after_generation = true,
+            support_paste_from_clipboard = true,
+        },
+        windows = {
+            position = "right",
+            width = 30,
+            sidebar_header = {
+                align = "center",
+                rounded = false,
+            },
+            ask = {
+                floating = true,
+                start_insert = true,
+                border = "rounded"
+            }
+        },
+        -- providers-setting
+        claude = {
+            model = "claude-3-5-sonnet-20240620", -- $3/$15, maxtokens=8000
+            -- model = "claude-3-opus-20240229",  -- $15/$75
+            -- model = "claude-3-haiku-20240307", -- $0.25/1.25
+            max_tokens = 8000,
+        },
+        copilot = {
+            model = "gpt-4o-2024-05-13",
+            -- model = "gpt-4o-mini",
+            max_tokens = 4096,
+        },
+        openai = {
+            model = "gpt-4o", -- $2.5/$10
+            -- model = "gpt-4o-mini", -- $0.15/$0.60
+            max_tokens = 4096,
+        },
+    },
+    -- if you want to build from source then do `make BUILD_FROM_SOURCE=true`
+    -- build = "make",
+    -- build = "powershell -ExecutionPolicy Bypass -File Build.ps1 -BuildFromSource false",
+    dependencies = {
+        "nvim-treesitter/nvim-treesitter",
+        "stevearc/dressing.nvim",
+        "nvim-lua/plenary.nvim",
+        "MunifTanjim/nui.nvim",
+        --- The below dependencies are optional,
+        "nvim-tree/nvim-web-devicons",
+        "zbirenbaum/copilot.lua",  -- for providers='copilot'
+        {
+            -- support for image pasting
+            "HakonHarnes/img-clip.nvim",
+            event = "VeryLazy",
+            opts = {
+                -- recommended settings
+                default = {
+                    embed_image_as_base64 = false,
+                    prompt_for_file_name = false,
+                    drag_and_drop = {
+                        insert_mode = true,
+                    },
+                    -- required for Windows users
+                    use_absolute_path = true,
+                },
+            },
+        },
+    },
+  }
 })
