@@ -6,7 +6,7 @@ end
 local select = require('CopilotChat.select')
 copilotChat.setup {
   debug = true, -- Enable debugging
-  model = 'gpt-4', -- モデル名の確認
+  model = 'claude-3.5-sonnet', -- モデル名の確認
   -- プロンプトの設定
   prompts = {
     Explain = {
