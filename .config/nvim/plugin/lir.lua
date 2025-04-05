@@ -7,6 +7,7 @@ local clipboard_actions = require 'lir.clipboard.actions'
 
 lir.setup {
   show_hidden_files = false,
+  ignore = {".DS_Store"},
   devicons = {
     enable = true,
     highlight_dirname = true
@@ -60,17 +61,17 @@ lir.setup {
     -- end,
   },
   hide_cursor = true,
-  on_init = function()
-    -- use visual mode
-    vim.api.nvim_buf_set_keymap(
-      0,
-      "x",
-      "J",
-      ':<C-u>lua require"lir.mark.actions".toggle_mark("v")<CR>',
-      { noremap = true, silent = true }
-    )
-
-    -- echo cwd
-    vim.api.nvim_echo({ { vim.fn.expand("%:p"), "Normal" } }, false, {})
-  end,
+  -- on_init = function()
+  --   -- use visual mode
+  --   vim.api.nvim_buf_set_keymap(
+  --     0,
+  --     "x",
+  --     "J",
+  --     ':<C-u>lua require"lir.mark.actions".toggle_mark("v")<CR>',
+  --     { noremap = true, silent = true }
+  --   )
+  --
+  --   -- echo cwd
+  --   vim.api.nvim_echo({ { vim.fn.expand("%:p"), "Normal" } }, false, {})
+  -- end,
 }
