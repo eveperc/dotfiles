@@ -440,15 +440,23 @@ return lazy.setup({
     },
   },
   {
+    'MeanderingProgrammer/render-markdown.nvim',
+    -- dependencies = { 'nvim-treesitter/nvim-treesitter', 'echasnovski/mini.nvim' }, -- if you use the mini.nvim suite
+    -- dependencies = { 'nvim-treesitter/nvim-treesitter', 'echasnovski/mini.icons' }, -- if you use standalone mini plugins
+    dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-tree/nvim-web-devicons' }, -- if you prefer nvim-web-devicons
+    ---@module 'render-markdown'
+    ---@type render.md.UserConfig
+    opts = {},
+  },
+  {
     "yetone/avante.nvim",
     dependencies = {
       "nvim-treesitter/nvim-treesitter",
       "stevearc/dressing.nvim",
       "nvim-lua/plenary.nvim",
       "MunifTanjim/nui.nvim",
-      --- The below dependencies are optional,
       "nvim-tree/nvim-web-devicons",
-      "zbirenbaum/copilot.lua",  -- for providers='copilot'
+      "zbirenbaum/copilot.lua",
       {
         -- support for image pasting
         "HakonHarnes/img-clip.nvim",
@@ -466,35 +474,25 @@ return lazy.setup({
           },
         },
       },
+      {
+      -- Make sure to set this up properly if you have lazy=true
+      'MeanderingProgrammer/render-markdown.nvim',
+        opts = {
+          file_types = { "markdown", "Avante" },
+        },
+        ft = { "markdown", "Avante" },
+      },
     },
     enabled = true,
-    -- event = "VeryLazy", -- 削除
-    lazy = false,
+    event = "VeryLazy",
+    -- lazy = false,
     version = false,
     opts = {
       provider = "copilot",
-      -- provider = "claude",
-      -- provider = "openai",
-      -- use_xml_format = true,
       auto_suggestions_provider = "copilot",
       behaviour = {
-          -- auto_suggestions = true,
-          -- auto_set_highlight_group = true,
-          -- auto_set_keymaps = true,
           auto_apply_diff_after_generation = true,
-          -- support_paste_from_clipboard = true,
       },
-      -- behaviour = {
-      --   auto_suggestions = false, -- Experimental stage
-      --   auto_set_highlight_group = true,
-      --   auto_set_keymaps = true,
-      --   auto_apply_diff_after_generation = false,
-      --   support_paste_from_clipboard = false,
-      --   minimize_diff = true, -- Whether to remove unchanged lines when applying a code block
-      --   enable_token_counting = true, -- Whether to enable token counting. Default to true.
-      --   enable_cursor_planning_mode = false, -- Whether to enable Cursor Planning Mode. Default to false.
-      --   enable_claude_text_editor_tool_mode = false, -- Whether to enable Claude Text Editor Tool Mode.
-      -- },
       windows = {
           position = "right",
           width = 30,
