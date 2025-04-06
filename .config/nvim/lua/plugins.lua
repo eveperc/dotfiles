@@ -1,4 +1,56 @@
+--[[
+このファイルは、lazy.nvimを使用してNeovimのプラグインを管理します。
+プラグインは機能ごとにグループ化されており、必要に応じて設定されています。
+
+主なプラグイングループ:
+1. LSP関連
+   - nvim-lspconfig: LSPの基本設定
+   - lspsaga: LSPのUI改善
+   - mason: LSPサーバー管理
+
+2. 補完機能
+   - nvim-cmp: 補完エンジン
+   - copilot: AI補完
+   - LuaSnip: スニペット
+
+3. UI/表示
+   - nvim-web-devicons: ファイルアイコン
+   - lualine: ステータスライン
+   - bufferline: タブライン
+   - noice/notify: 通知UI
+
+4. Git連携
+   - vim-fugitive: Git操作
+   - vim-gitgutter: 差分表示
+   - advanced-git-search: Git検索
+
+5. ファイル操作
+   - lir.nvim: ファイルエクスプローラ
+   - fzf-lua: ファジーファインダー
+
+6. 編集支援
+   - hop.nvim: カーソル移動
+   - nvim-treesitter: 構文解析
+   - Comment.nvim: コメント操作
+   - nvim-autopairs: 自動ペア入力
+
+7. AI支援
+   - avante.nvim: AIコーディング支援
+   - codecompanion.nvim: AIコードレビュー
+   - CopilotChat.nvim: AI対話
+
+8. デバッグ
+   - nvim-dap: デバッグ機能
+   - nvim-dap-ui: デバッグUI
+
+9. その他
+   - カラースキーム
+   - マークダウンプレビュー
+   - ターミナル統合
+--]]
+
 local fn = vim.fn
+
 
 local lazypath = fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
@@ -18,8 +70,10 @@ if not status_ok then
   return
 end
 
+  -- =========================================================================
+  -- LSPとコード解析
+  -- =========================================================================
 return lazy.setup({
-  -- lsp
   {
     "neovim/nvim-lspconfig",
     dependencies = {
@@ -47,15 +101,6 @@ return lazy.setup({
       require("lsp_lines").setup()
     end,
   },
-  -- {
-  --   "folke/trouble.nvim",
-  --   dependencies = { "nvim-tree/nvim-web-devicons" },
-  --   opts = {
-  --     -- your configuration comes here
-  --     -- or leave it empty to use the default settings
-  --     -- refer to the configuration section below
-  --   },
-  -- },
   -- linter
   {
     'creativenull/efmls-configs-nvim',
@@ -121,7 +166,8 @@ return lazy.setup({
   },
   { 'f-person/git-blame.nvim' },
 
-  -- colorscheme
+  -- カラースキーム
+  -- =========================================================================
   { 'ray-x/aurora' },
   { 'luisiacc/gruvbox-baby' },
   { 'tiagovla/tokyodark.nvim' },
@@ -143,7 +189,9 @@ return lazy.setup({
     'nvimdev/zephyr-nvim',
     dependencies = { 'nvim-treesitter/nvim-treesitter', opt = true },
   },
-  -- fzf
+  -- =========================================================================
+  -- ファジーファインダー (fzf)
+  -- =========================================================================
   {
     "ibhagwan/fzf-lua",
     -- optional for icon support
@@ -157,25 +205,11 @@ return lazy.setup({
   -- lua module
   { "nvim-lua/plenary.nvim" },
 
-  -- 自動補完プラグイン
+  -- =========================================================================
+  -- 自動補完システム
+  -- =========================================================================
   {
     "hrsh7th/nvim-cmp",
-    config = function()
-      require("cmp").setup({
-        snippet = {
-          expand = function(args)
-            require("luasnip").lsp_expand(args.body)
-          end,
-        },
-        sources = {
-          { name = "luasnip" },
-          { name = "nvim_lsp" },
-          { name = "path" },
-          { name = "buffer" },
-          { name = "cmdline" },
-        },
-      })
-    end,
     dependencies = {
       { "hrsh7th/cmp-nvim-lsp" },
       { "hrsh7th/cmp-nvim-lsp-signature-help" },
@@ -206,11 +240,13 @@ return lazy.setup({
   -- cmpで補完する際に表示されるアイコンを設定
   { "onsails/lspkind.nvim" },
   -- copilot補完
-  {
-    "zbirenbaum/copilot-cmp",
-    opts={},
+  { "zbirenbaum/copilot-cmp",
+    config = function()
+      require("copilot_cmp").setup()
+    end,
   },
-  -- file explorer
+  -- ファイルエクスプローラとナビゲーション
+  -- =========================================================================
   {
     "tamago324/lir.nvim",
     ft = "norg",
@@ -218,47 +254,12 @@ return lazy.setup({
       require('nvim-web-devicons').setup()
     end,
   },
-  -- lazy.nvim
-  {
-    'nvim-neo-tree/neo-tree.nvim',
-    branch = 'v3.x',
-    dependencies = {
-      -- Others dependencies
-      'saifulapm/neotree-file-nesting-config', -- add plugin as dependency. no need any other config or setup call
-    },
-    opts = {
-      -- recommanded config for better UI
-      hide_root_node = true,
-      retain_hidden_root_indent = true,
-      filesystem = {
-        filtered_items = {
-          show_hidden_count = false,
-          never_show = {
-            '.DS_Store',
-          },
-        },
-      },
-      default_component_configs = {
-        indent = {
-          with_expanders = true,
-          expander_collapsed = '',
-          expander_expanded = '',
-        },
-      },
-      -- others config
-    },
-    config = function(_, opts)
-      -- Adding rules from plugin
-      opts.nesting_rules = require('neotree-file-nesting-config').nesting_rules
-      require('neo-tree').setup(opts)
-    end,
-  },
   {
     "SmiteshP/nvim-navic",
     despendencies = "neovim/nvim-lspconfig"
   },
-
-  -- treesitter
+  -- 構文解析とコード理解 (Treesitter)
+  -- =========================================================================
   { "nvim-treesitter/nvim-treesitter" },
   {
     "yioneko/nvim-yati",
@@ -268,7 +269,9 @@ return lazy.setup({
     end,
   },
   { "nvim-treesitter/nvim-treesitter-textobjects" },
-  -- visual
+  -- =========================================================================
+  -- ビジュアル強化
+  -- =========================================================================
   { "lukas-reineke/indent-blankline.nvim" },
   { "petertriho/nvim-scrollbar" },
   {
@@ -296,7 +299,9 @@ return lazy.setup({
   { "RRethy/vim-illuminate" },
   { "xiyaowong/nvim-cursorword" },
 
-  -- moving
+  -- =========================================================================
+  -- カーソル移動と操作
+  -- =========================================================================
   {
     'smoka7/hop.nvim',
     version = "*",
@@ -307,7 +312,9 @@ return lazy.setup({
   { "mfussenegger/nvim-treehopper" },
   { 'David-Kunz/treesitter-unit' },
   -- { 'machakann/vim-columnmove' },
-  -- edit
+  -- =========================================================================
+  -- 編集支援
+  -- =========================================================================
   { 'numToStr/Comment.nvim' },
   { "windwp/nvim-autopairs" },
   { "machakann/vim-sandwich" },
@@ -330,9 +337,13 @@ return lazy.setup({
     -- lazy-loading with `cmd =` does not work well with incremental preview
     event = "CmdlineEnter",
   },
-  -- terminal
+  -- =========================================================================
+  -- ターミナル統合
+  -- =========================================================================
   { "akinsho/toggleterm.nvim" },
-  --mark
+  -- =========================================================================
+  -- マーク機能
+  -- =========================================================================
   {
     'chentoast/marks.nvim',
     config = function()
@@ -341,7 +352,9 @@ return lazy.setup({
       )
     end,
   },
-  --dap
+  -- =========================================================================
+  -- デバッグ支援 (DAP)
+  -- =========================================================================
   { 'mfussenegger/nvim-dap' },
   { "rcarriga/nvim-dap-ui",   dependencies = { "mfussenegger/nvim-dap", "nvim-neotest/nvim-nio" } },
   {
@@ -361,15 +374,15 @@ return lazy.setup({
     event = "InsertEnter",
     opts = {
       suggestion = {
-        enabled = true,
-        auto_trigger = true,  -- 自動的に提案を表示
-        keymap = {
-          accept = "<C-s>",  -- Tabキーで補完を受け入れ
-          next = "<M-n>",    -- Alt + ] で次の提案
-          prev = "<M-p>",    -- Alt + [ で前の提案
-          dismiss = "<C-j>", -- Ctrl + ] で提案を却下
-        },
-        debounce = 75,      -- 提案を表示するまでの遅延時間（ミリ秒）を減らす
+        enabled = false,
+        -- auto_trigger = true,  -- 自動的に提案を表示
+        -- keymap = {
+        --   accept = "<C-s>",  -- Tabキーで補完を受け入れ
+        --   next = "<M-n>",    -- Alt + ] で次の提案
+        --   prev = "<M-p>",    -- Alt + [ で前の提案
+        --   dismiss = "<C-j>", -- Ctrl + ] で提案を却下
+        -- },
+        -- debounce = 75,      -- 提案を表示するまでの遅延時間（ミリ秒）を減らす
       },
       panel = {
         enabled = false,     -- 提案パネルを無効化してパフォーマンスを改善
@@ -378,16 +391,25 @@ return lazy.setup({
   },
   {
     "CopilotC-Nvim/CopilotChat.nvim",
-    branch = "canary",
+    branch = "main",
     dependencies = {
-      { "zbirenbaum/copilot.lua" }, -- or github/copilot.vim
-      { "nvim-lua/plenary.nvim" },  -- for curl, log wrapper
+      { "zbirenbaum/copilot.lua" },
+      { "nvim-lua/plenary.nvim" },
+      { "ibhagwan/fzf-lua" },  -- fzf-luaを依存関係に追加
     },
     opts = {
-      debug = true, -- Enable debugging
-      -- See Configuration section for rest
+      model = "claude-3.5-sonnet",
+      debug = true,
     },
-    -- See Commands section for default commands if you want to lazy load on them
+    config = function()
+      -- fzf-luaをUIセレクタとして登録
+      require('fzf-lua').register_ui_select()
+
+      -- CopilotChatの設定
+      require('CopilotChat').setup({
+        -- その他の設定はそのまま
+      })
+    end,
   },
   { "vim-denops/denops.vim" },
   { "previm/previm" },
@@ -424,7 +446,6 @@ return lazy.setup({
     },
     keys = {
       -- suggested keymap
-      { "<leader>p", "<cmd>PasteImage<cr>", desc = "Paste image from system clipboard" },
     },
   },
   {
@@ -437,14 +458,26 @@ return lazy.setup({
         provider = "copilot",
         -- provider = "claude",
         -- provider = "openai",
+        -- use_xml_format = true,
         auto_suggestions_provider = "copilot",
         behaviour = {
-            auto_suggestions = true,
-            auto_set_highlight_group = true,
-            auto_set_keymaps = true,
+            -- auto_suggestions = true,
+            -- auto_set_highlight_group = true,
+            -- auto_set_keymaps = true,
             auto_apply_diff_after_generation = true,
-            support_paste_from_clipboard = true,
+            -- support_paste_from_clipboard = true,
         },
+        -- behaviour = {
+        --   auto_suggestions = false, -- Experimental stage
+        --   auto_set_highlight_group = true,
+        --   auto_set_keymaps = true,
+        --   auto_apply_diff_after_generation = false,
+        --   support_paste_from_clipboard = false,
+        --   minimize_diff = true, -- Whether to remove unchanged lines when applying a code block
+        --   enable_token_counting = true, -- Whether to enable token counting. Default to true.
+        --   enable_cursor_planning_mode = false, -- Whether to enable Cursor Planning Mode. Default to false.
+        --   enable_claude_text_editor_tool_mode = false, -- Whether to enable Claude Text Editor Tool Mode.
+        -- },
         windows = {
             position = "right",
             width = 30,
@@ -466,9 +499,9 @@ return lazy.setup({
             max_tokens = 8000,
         },
         copilot = {
-            model = "gpt-4o-2024-05-13",
             -- model = "gpt-4o-mini",
-            max_tokens = 4096,
+            model = "claude-3.5-sonnet",
+            -- max_tokens = 4096,
         },
         openai = {
             model = "gpt-4o", -- $2.5/$10
@@ -505,5 +538,72 @@ return lazy.setup({
             },
         },
     },
-  }
+  },
+  {
+    "folke/trouble.nvim",
+    opts = {}, -- for default options, refer to the configuration section for custom setup.
+    cmd = "Trouble",
+    keys = {
+      {
+        "<leader>xx",
+        "<cmd>Trouble diagnostics toggle<cr>",
+        desc = "Diagnostics (Trouble)",
+      },
+      {
+        "<leader>xX",
+        "<cmd>Trouble diagnostics toggle filter.buf=0<cr>",
+        desc = "Buffer Diagnostics (Trouble)",
+      },
+      {
+        "<leader>cs",
+        "<cmd>Trouble symbols toggle focus=false<cr>",
+        desc = "Symbols (Trouble)",
+      },
+      {
+        "<leader>cl",
+        "<cmd>Trouble lsp toggle focus=false win.position=right<cr>",
+        desc = "LSP Definitions / references / ... (Trouble)",
+      },
+      {
+        "<leader>xL",
+        "<cmd>Trouble loclist toggle<cr>",
+        desc = "Location List (Trouble)",
+      },
+      {
+        "<leader>xQ",
+        "<cmd>Trouble qflist toggle<cr>",
+        desc = "Quickfix List (Trouble)",
+      },
+    },
+  },
+  {
+    "olimorris/codecompanion.nvim",
+    config = true,
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "nvim-treesitter/nvim-treesitter",
+    },
+    opts = {
+      language = "Japanese",
+      strategies = {
+        chat = {
+          adapter = "copilot",
+        },
+        inline = {
+          adapter = "copilot",
+        },
+      },
+      adapters = {
+        openai = function()
+          return require("codecompanion.adapters").extend("anthropic", {
+            schema = {
+              model = {
+                default = "claude-3.5-sonnet",
+              },
+            },
+          })
+        end,
+      },
+    }
+  },
 })

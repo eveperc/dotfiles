@@ -21,16 +21,7 @@ local function on_attach(server, bufnr)
   vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
 
   local opts = { noremap = true, silent = true }
-  vim.keymap.set("n", "K", "<cmd>Lspsaga hover_doc<CR>")
-  vim.keymap.set('n', 'gr', '<cmd>Lspsaga finder<CR>')
-  vim.keymap.set("n", "gd", "<cmd>Lspsaga peek_definition<CR>")
-  vim.keymap.set("n", "ga", "<cmd>Lspsaga code_action<CR>")
-  vim.keymap.set("n", "gn", "<cmd>Lspsaga rename<CR>")
-  vim.keymap.set("n", "ge", "<cmd>Lspsaga show_line_diagnostics<CR>")
-  vim.keymap.set("n", "[e", "<cmd>Lspsaga diagnostic_jump_next<CR>")
-  vim.keymap.set("n", "]e", "<cmd>Lspsaga diagnostic_jump_prev<CR>")
-  vim.api.nvim_buf_set_keymap(bufnr, "n", "gi", "<cmd>lua vim.lsp.buf.implementation()<CR>", opts)
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>f', '<cmd>lua vim.lsp.buf.format()<CR>', opts)
+
   if server == "intelephense" then
     vim.api.nvim_buf_set_keymap(bufnr, "n", "<space>rn", "<cmd>lua vim.lsp.buf.rename()<CR>", opts)
   elseif server == "rust_analyzer" then
