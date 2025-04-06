@@ -1,21 +1,44 @@
 --[[
 keymaps.lua - Neovimのキーマッピング設定
 
-このファイルでは以下のカテゴリのキーマッピングを定義しています：
-1. 基本的なエディタ操作 (ファイル保存、バッファ切り替えなど)
-2. LSP関連の操作 (定義ジャンプ、ホバー、コードアクション)
-3. プラグイン固有の機能
-4. 大西配列用のキーマッピング
+このファイルは以下のセクションで構成されています：
 
-キーマッピングの命名規則：
-- <leader> キーはスペースに設定
-- プラグイン関連のマッピングは <leader> + アルファベットで設定
-- モード別のマッピング (normal, insert, visual, terminal) を明確に区分
+1. 基本設定
+   - LeaderキーやGlobalオプションの設定
+   - 基本的なオプション定義
 
-注意：
-- opts = { noremap = true, silent = true } - 再マッピング無効、出力非表示
-- map_opts = { noremap = true } - 再マッピング無効
-- term_opts = { silent = true } - ターミナルモード用、出力非表示
+2. エディタの基本操作
+   - ファイル操作（保存、終了など）
+   - バッファ操作
+   - ウィンドウ操作
+   - 移動操作
+
+3. LSP (Language Server Protocol)
+   - コード補完
+   - 定義ジャンプ
+   - ドキュメント表示
+   - コードアクション
+
+4. プラグイン固有の機能
+   - Fuzzy Finder (fzf-lua)
+   - Git操作 (vim-fugitive)
+   - ファイラー (lir.nvim)
+   - AI支援 (CopilotChat)
+   - その他プラグイン
+
+5. キーボードレイアウト
+   - 大西配列用のキーマッピング
+   - 検索操作のカスタマイズ
+
+キーマッピングの規則：
+- <Leader>キー: スペースキーを使用
+- プラグイン機能: <Leader> + 機能を表すアルファベット
+- モード別設定: normal(n), insert(i), visual(v), terminal(t)
+
+オプション設定：
+- opts: { noremap = true, silent = true }  -- 再マップ無効, 出力非表示
+- map_opts: { noremap = true }            -- 再マップのみ無効
+- term_opts: { silent = true }            -- ターミナル用, 出力非表示
 --]]
 
 local vim = vim
@@ -23,23 +46,18 @@ local opts = { noremap = true, silent = true }
 local map_opts = { noremap = true }
 local term_opts = { silent = true }
 
---local keymap = vim.keymap
+
 local keymap = vim.api.nvim_set_keymap
 
---Remap space as leader key
+-- 1. 基本設定
+--------------------------------------------------------------------------------
+-- スペースをLeaderキーとして設定
 keymap("", "<Space>", "<Nop>", opts)
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 
--- モード一覧
---   normal_mode = 'n' - ノーマルモード
---   insert_mode = 'i' - 挿入モード
---   visual_mode = 'v' - ビジュアルモード
---   visual_block_mode = 'x' - ビジュアルブロックモード
---   term_mode = 't' - ターミナルモード
---   command_mode = 'c' - コマンドモード
-
--- 基本的なエディタ操作
+-- 2. エディタの基本操作
+--------------------------------------------------------------------------------
 -- 現在のファイルのディレクトリに移動
 keymap('n', '<leader><leader>', ':<C-u>cd %:h<CR>', map_opts)
 keymap('n', '<leader>w', ':<C-u>w<CR>', map_opts)
@@ -54,7 +72,8 @@ keymap('n', '<C-W>-', ':<C-u>resize -5<CR>', term_opts)
 keymap('n', '<C-W>>', ':<C-u>vertical resize +10<CR>', term_opts)
 keymap('n', '<C-W><', ':<C-u>vertical resize -10<CR>', term_opts)
 
--- LSP関連のキーマッピング
+-- 3. LSP (Language Server Protocol)
+--------------------------------------------------------------------------------
 -- ホバードキュメントの表示
 vim.keymap.set("n", "K", "<cmd>Lspsaga hover_doc<CR>")
 
@@ -134,12 +153,18 @@ function ShowCopilotChatActionPrompt()
 end
 
 -- キーマッピング
+keymap('n', '<leader>ct','<cmd>CopilotChatToggle<CR>',opts)
+keymap('n', '<leader>at','<cmd>AvanteToggle<CR>',opts)
 keymap('n', '<leader>ccq', ':lua CopilotChatBuffer()<CR>', opts)
 -- <leader>ccp (Copilot Chat Prompt の略) でアクションプロンプトを表示する
 keymap('n', '<leader>ccp', ':lua ShowCopilotChatActionPrompt()<CR>', opts)
 -- ビジュアルモードで選択した範囲を使って Copilot とチャットする
 keymap('v', '<leader>ccq',
   ':lua CopilotChat.ask(vim.fn.getreg("v"), { selection = require("CopilotChat.select").visual })<CR>', opts)
+
+--------------------------------------------------------------------------------
+-- 5. キーボードレイアウト
+--------------------------------------------------------------------------------
 
 -- 大西配列用のキーマッピング（ホームポジションでの移動効率化）
 -- k: 左移動 (h)
@@ -151,8 +176,9 @@ keymap('n', 't', 'j', map_opts)
 keymap('n', 'n', 'k', map_opts)
 -- keymap('n', 's', 'l', map_opts)
 -- タイムアウトを設定して即座に右移動するように
-vim.keymap.set('n', 's', 'l', { noremap = true, nowait = true })
-vim.keymap.set('v', 's', 'l', { noremap = true, nowait = true })
+keymap('n', 's', 'l', { noremap = true, nowait = true })
+keymap('v', 's', 'l', { noremap = true, nowait = true })
+
 keymap('v', 'k', 'h', map_opts)
 keymap('v', 't', 'j', map_opts)
 keymap('v', 'n', 'k', map_opts)

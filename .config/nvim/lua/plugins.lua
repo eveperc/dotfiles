@@ -70,9 +70,9 @@ if not status_ok then
   return
 end
 
-  -- =========================================================================
-  -- LSPとコード解析
-  -- =========================================================================
+-- =========================================================================
+-- LSPとコード解析
+-- =========================================================================
 return lazy.setup({
   {
     "neovim/nvim-lspconfig",
@@ -166,6 +166,7 @@ return lazy.setup({
   },
   { 'f-person/git-blame.nvim' },
 
+  -- =========================================================================
   -- カラースキーム
   -- =========================================================================
   { 'ray-x/aurora' },
@@ -189,6 +190,7 @@ return lazy.setup({
     'nvimdev/zephyr-nvim',
     dependencies = { 'nvim-treesitter/nvim-treesitter', opt = true },
   },
+
   -- =========================================================================
   -- ファジーファインダー (fzf)
   -- =========================================================================
@@ -245,6 +247,8 @@ return lazy.setup({
       require("copilot_cmp").setup()
     end,
   },
+
+  -- =========================================================================
   -- ファイルエクスプローラとナビゲーション
   -- =========================================================================
   {
@@ -258,6 +262,8 @@ return lazy.setup({
     "SmiteshP/nvim-navic",
     despendencies = "neovim/nvim-lspconfig"
   },
+
+  -- =========================================================================
   -- 構文解析とコード理解 (Treesitter)
   -- =========================================================================
   { "nvim-treesitter/nvim-treesitter" },
@@ -269,6 +275,7 @@ return lazy.setup({
     end,
   },
   { "nvim-treesitter/nvim-treesitter-textobjects" },
+
   -- =========================================================================
   -- ビジュアル強化
   -- =========================================================================
@@ -312,6 +319,7 @@ return lazy.setup({
   { "mfussenegger/nvim-treehopper" },
   { 'David-Kunz/treesitter-unit' },
   -- { 'machakann/vim-columnmove' },
+
   -- =========================================================================
   -- 編集支援
   -- =========================================================================
@@ -337,10 +345,12 @@ return lazy.setup({
     -- lazy-loading with `cmd =` does not work well with incremental preview
     event = "CmdlineEnter",
   },
+
   -- =========================================================================
   -- ターミナル統合
   -- =========================================================================
   { "akinsho/toggleterm.nvim" },
+
   -- =========================================================================
   -- マーク機能
   -- =========================================================================
@@ -352,6 +362,7 @@ return lazy.setup({
       )
     end,
   },
+
   -- =========================================================================
   -- デバッグ支援 (DAP)
   -- =========================================================================
@@ -375,18 +386,11 @@ return lazy.setup({
     opts = {
       suggestion = {
         enabled = false,
-        -- auto_trigger = true,  -- 自動的に提案を表示
-        -- keymap = {
-        --   accept = "<C-s>",  -- Tabキーで補完を受け入れ
-        --   next = "<M-n>",    -- Alt + ] で次の提案
-        --   prev = "<M-p>",    -- Alt + [ で前の提案
-        --   dismiss = "<C-j>", -- Ctrl + ] で提案を却下
-        -- },
-        -- debounce = 75,      -- 提案を表示するまでの遅延時間（ミリ秒）を減らす
       },
       panel = {
         enabled = false,     -- 提案パネルを無効化してパフォーマンスを改善
       },
+      copilot_node_command = 'node'
     },
   },
   {
@@ -397,19 +401,6 @@ return lazy.setup({
       { "nvim-lua/plenary.nvim" },
       { "ibhagwan/fzf-lua" },  -- fzf-luaを依存関係に追加
     },
-    opts = {
-      model = "claude-3.5-sonnet",
-      debug = true,
-    },
-    config = function()
-      -- fzf-luaをUIセレクタとして登録
-      require('fzf-lua').register_ui_select()
-
-      -- CopilotChatの設定
-      require('CopilotChat').setup({
-        -- その他の設定はそのまま
-      })
-    end,
   },
   { "vim-denops/denops.vim" },
   { "previm/previm" },
@@ -450,94 +441,91 @@ return lazy.setup({
   },
   {
     "yetone/avante.nvim",
+    dependencies = {
+      "nvim-treesitter/nvim-treesitter",
+      "stevearc/dressing.nvim",
+      "nvim-lua/plenary.nvim",
+      "MunifTanjim/nui.nvim",
+      --- The below dependencies are optional,
+      "nvim-tree/nvim-web-devicons",
+      "zbirenbaum/copilot.lua",  -- for providers='copilot'
+      {
+        -- support for image pasting
+        "HakonHarnes/img-clip.nvim",
+        event = "VeryLazy",
+        opts = {
+          -- recommended settings
+          default = {
+            embed_image_as_base64 = false,
+            prompt_for_file_name = false,
+            drag_and_drop = {
+                insert_mode = true,
+            },
+            -- required for Windows users
+            use_absolute_path = true,
+          },
+        },
+      },
+    },
     enabled = true,
-    event = "VeryLazy",
+    -- event = "VeryLazy", -- 削除
     lazy = false,
     version = false,
     opts = {
-        provider = "copilot",
-        -- provider = "claude",
-        -- provider = "openai",
-        -- use_xml_format = true,
-        auto_suggestions_provider = "copilot",
-        behaviour = {
-            -- auto_suggestions = true,
-            -- auto_set_highlight_group = true,
-            -- auto_set_keymaps = true,
-            auto_apply_diff_after_generation = true,
-            -- support_paste_from_clipboard = true,
-        },
-        -- behaviour = {
-        --   auto_suggestions = false, -- Experimental stage
-        --   auto_set_highlight_group = true,
-        --   auto_set_keymaps = true,
-        --   auto_apply_diff_after_generation = false,
-        --   support_paste_from_clipboard = false,
-        --   minimize_diff = true, -- Whether to remove unchanged lines when applying a code block
-        --   enable_token_counting = true, -- Whether to enable token counting. Default to true.
-        --   enable_cursor_planning_mode = false, -- Whether to enable Cursor Planning Mode. Default to false.
-        --   enable_claude_text_editor_tool_mode = false, -- Whether to enable Claude Text Editor Tool Mode.
-        -- },
-        windows = {
-            position = "right",
-            width = 30,
-            sidebar_header = {
-                align = "center",
-                rounded = false,
-            },
-            ask = {
-                floating = true,
-                start_insert = true,
-                border = "rounded"
-            }
-        },
-        -- providers-setting
-        claude = {
-            model = "claude-3-5-sonnet-20240620", -- $3/$15, maxtokens=8000
-            -- model = "claude-3-opus-20240229",  -- $15/$75
-            -- model = "claude-3-haiku-20240307", -- $0.25/1.25
-            max_tokens = 8000,
-        },
-        copilot = {
-            -- model = "gpt-4o-mini",
-            model = "claude-3.5-sonnet",
-            -- max_tokens = 4096,
-        },
-        openai = {
-            model = "gpt-4o", -- $2.5/$10
-            -- model = "gpt-4o-mini", -- $0.15/$0.60
-            max_tokens = 4096,
-        },
-    },
-    -- if you want to build from source then do `make BUILD_FROM_SOURCE=true`
-    -- build = "make",
-    -- build = "powershell -ExecutionPolicy Bypass -File Build.ps1 -BuildFromSource false",
-    dependencies = {
-        "nvim-treesitter/nvim-treesitter",
-        "stevearc/dressing.nvim",
-        "nvim-lua/plenary.nvim",
-        "MunifTanjim/nui.nvim",
-        --- The below dependencies are optional,
-        "nvim-tree/nvim-web-devicons",
-        "zbirenbaum/copilot.lua",  -- for providers='copilot'
-        {
-            -- support for image pasting
-            "HakonHarnes/img-clip.nvim",
-            event = "VeryLazy",
-            opts = {
-                -- recommended settings
-                default = {
-                    embed_image_as_base64 = false,
-                    prompt_for_file_name = false,
-                    drag_and_drop = {
-                        insert_mode = true,
-                    },
-                    -- required for Windows users
-                    use_absolute_path = true,
-                },
-            },
-        },
-    },
+      provider = "copilot",
+      -- provider = "claude",
+      -- provider = "openai",
+      -- use_xml_format = true,
+      auto_suggestions_provider = "copilot",
+      behaviour = {
+          -- auto_suggestions = true,
+          -- auto_set_highlight_group = true,
+          -- auto_set_keymaps = true,
+          auto_apply_diff_after_generation = true,
+          -- support_paste_from_clipboard = true,
+      },
+      -- behaviour = {
+      --   auto_suggestions = false, -- Experimental stage
+      --   auto_set_highlight_group = true,
+      --   auto_set_keymaps = true,
+      --   auto_apply_diff_after_generation = false,
+      --   support_paste_from_clipboard = false,
+      --   minimize_diff = true, -- Whether to remove unchanged lines when applying a code block
+      --   enable_token_counting = true, -- Whether to enable token counting. Default to true.
+      --   enable_cursor_planning_mode = false, -- Whether to enable Cursor Planning Mode. Default to false.
+      --   enable_claude_text_editor_tool_mode = false, -- Whether to enable Claude Text Editor Tool Mode.
+      -- },
+      windows = {
+          position = "right",
+          width = 30,
+          sidebar_header = {
+              align = "center",
+              rounded = false,
+          },
+          ask = {
+              floating = true,
+              start_insert = true,
+              border = "rounded"
+          }
+      },
+      -- providers-setting
+      claude = {
+          model = "claude-3-5-sonnet-20240620", -- $3/$15, maxtokens=8000
+          -- model = "claude-3-opus-20240229",  -- $15/$75
+          -- model = "claude-3-haiku-20240307", -- $0.25/1.25
+          max_tokens = 8000,
+      },
+      copilot = {
+          -- model = "gpt-4o-mini",
+          model = "claude-3.5-sonnet",
+          -- max_tokens = 4096,
+      },
+      openai = {
+          model = "gpt-4o", -- $2.5/$10
+          -- model = "gpt-4o-mini", -- $0.15/$0.60
+          max_tokens = 4096,
+      },
+    }
   },
   {
     "folke/trouble.nvim",
@@ -575,35 +563,5 @@ return lazy.setup({
         desc = "Quickfix List (Trouble)",
       },
     },
-  },
-  {
-    "olimorris/codecompanion.nvim",
-    config = true,
-    dependencies = {
-      "nvim-lua/plenary.nvim",
-      "nvim-treesitter/nvim-treesitter",
-    },
-    opts = {
-      language = "Japanese",
-      strategies = {
-        chat = {
-          adapter = "copilot",
-        },
-        inline = {
-          adapter = "copilot",
-        },
-      },
-      adapters = {
-        openai = function()
-          return require("codecompanion.adapters").extend("anthropic", {
-            schema = {
-              model = {
-                default = "claude-3.5-sonnet",
-              },
-            },
-          })
-        end,
-      },
-    }
   },
 })

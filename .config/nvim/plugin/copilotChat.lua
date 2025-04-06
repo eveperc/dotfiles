@@ -7,6 +7,22 @@ local select = require('CopilotChat.select')
 copilotChat.setup {
   debug = true, -- Enable debugging
   model = 'claude-3.5-sonnet', -- モデル名の確認
+  opts = {
+      model = "claude-3.5-sonnet",
+      debug = true,
+  },
+  window = {
+    layout = 'float', -- 'vertical', 'horizontal', 'float',
+  },
+  config = function()
+    -- fzf-luaをUIセレクタとして登録
+    require('fzf-lua').register_ui_select()
+
+    -- CopilotChatの設定
+    require('CopilotChat').setup({
+      -- その他の設定はそのまま
+    })
+  end,
   -- プロンプトの設定
   prompts = {
     Explain = {

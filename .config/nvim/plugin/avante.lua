@@ -1,0 +1,67 @@
+-- local status, avante = pcall(require, 'avante')
+-- if (not status) then print("Error loading avante: ", avante) return end
+--
+-- avante.setup {
+--   -- enabled = true,
+--   -- event = "VeryLazy", -- 削除
+--   -- -- lazy = false,
+--   -- version = false,
+--   -- opts = {
+--   --     provider = "copilot",
+--   --     -- provider = "claude",
+--   --     -- provider = "openai",
+--   --     -- use_xml_format = true,
+--   --     auto_suggestions_provider = "copilot",
+--   --     behaviour = {
+--   --         -- auto_suggestions = true,
+--   --         -- auto_set_highlight_group = true,
+--   --         -- auto_set_keymaps = true,
+--   --         auto_apply_diff_after_generation = true,
+--   --         -- support_paste_from_clipboard = true,
+--   --     },
+--   --     -- behaviour = {
+--   --     --   auto_suggestions = false, -- Experimental stage
+--   --     --   auto_set_highlight_group = true,
+--   --     --   auto_set_keymaps = true,
+--   --     --   auto_apply_diff_after_generation = false,
+--   --     --   support_paste_from_clipboard = false,
+--   --     --   minimize_diff = true, -- Whether to remove unchanged lines when applying a code block
+--   --     --   enable_token_counting = true, -- Whether to enable token counting. Default to true.
+--   --     --   enable_cursor_planning_mode = false, -- Whether to enable Cursor Planning Mode. Default to false.
+--   --     --   enable_claude_text_editor_tool_mode = false, -- Whether to enable Claude Text Editor Tool Mode.
+--   --     -- },
+--   --     windows = {
+--   --         position = "right",
+--   --         width = 30,
+--   --         sidebar_header = {
+--   --             align = "center",
+--   --             rounded = false,
+--   --         },
+--   --         ask = {
+--   --             floating = true,
+--   --             start_insert = true,
+--   --             border = "rounded"
+--   --         }
+--   --     },
+--   --     -- providers-setting
+--   --     claude = {
+--   --         model = "claude-3-5-sonnet-20240620", -- $3/$15, maxtokens=8000
+--   --         -- model = "claude-3-opus-20240229",  -- $15/$75
+--   --         -- model = "claude-3-haiku-20240307", -- $0.25/1.25
+--   --         max_tokens = 8000,
+--   --     },
+--   --     copilot = {
+--   --         -- model = "gpt-4o-mini",
+--   --         model = "claude-3.5-sonnet",
+--   --         -- max_tokens = 4096,
+--   --     },
+--   --     openai = {
+--   --         model = "gpt-4o", -- $2.5/$10
+--   --         -- model = "gpt-4o-mini", -- $0.15/$0.60
+--   --         max_tokens = 4096,
+--   --     },
+--   -- },
+--   -- if you want to build from source then do `make BUILD_FROM_SOURCE=true`
+--   -- build = "make",
+--   -- build = "powershell -ExecutionPolicy Bypass -File Build.ps1 -BuildFromSource false",
+-- }
