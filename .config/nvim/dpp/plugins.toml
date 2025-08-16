@@ -1,0 +1,46 @@
+# Essential plugins (non-lazy)
+
+[[plugins]]
+repo = 'Shougo/dpp.vim'
+
+[[plugins]]
+repo = 'vim-denops/denops.vim'
+
+[[plugins]]
+repo = 'Shougo/dpp-ext-installer'
+
+[[plugins]]
+repo = 'Shougo/dpp-ext-lazy'
+
+[[plugins]]
+repo = 'Shougo/dpp-ext-toml'
+
+[[plugins]]
+repo = 'Shougo/dpp-protocol-git'
+
+[[plugins]]
+repo = 'Shougo/dpp-ext-local'
+
+# Base requirements
+[[plugins]]
+repo = 'nvim-lua/plenary.nvim'
+
+[[plugins]]
+repo = 'nvim-tree/nvim-web-devicons'
+
+# Treesitter (基本的な構文ハイライト)
+[[plugins]]
+repo = 'nvim-treesitter/nvim-treesitter'
+hook_post_update = 'TSUpdate'
+hook_source = '''
+lua << EOF
+require('nvim-treesitter.configs').setup({
+  ensure_installed = { "lua", "vim", "vimdoc", "typescript", "javascript", "python" },
+  sync_install = false,
+  auto_install = true,
+  highlight = {
+    enable = true,
+  },
+})
+EOF
+'''

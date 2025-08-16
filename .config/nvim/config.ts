@@ -32,47 +32,39 @@ export class Config extends BaseConfig {
         });
 
         const [context, options] = await args.contextBuilder.get(args.denops);
-        const dotfilesDir = "~/.config/nvim/toml/";
+        const dotfilesDir = "~/.config/nvim/dpp";
 
-        // use toml
+        // Load TOML files by category
+        const tomlFiles = [
+            { name: "/core.toml", lazy: false },
+            { name: "/lsp.toml", lazy: true },
+            { name: "/completion.toml", lazy: true },
+            { name: "/ui.toml", lazy: true },
+            { name: "/git.toml", lazy: true },
+            { name: "/editor.toml", lazy: true },
+            { name: "/tools.toml", lazy: true },
+        ];
+
         const tomls: Toml[] = [];
-        const toml = (await args.dpp.extAction(
-            args.denops,
-            context,
-            options,
-            "toml",
-            "load",
-            {
-                path: await fn.expand(args.denops, dotfilesDir + "/dein.toml"),
-                //path: `${dotfilesDir}/dein.toml`,
-                options: {
-                    lazy: false,
-                },
+        
+        for (const file of tomlFiles) {
+            const toml = (await args.dpp.extAction(
+                args.denops,
+                context,
+                options,
+                "toml",
+                "load",
+                {
+                    path: await fn.expand(args.denops, dotfilesDir + file.name),
+                    options: {
+                        lazy: file.lazy,
+                    },
+                }
+            )) as Toml | undefined;
+            
+            if (toml) {
+                tomls.push(toml);
             }
-        )) as Toml | undefined;
-        if (toml) {
-            tomls.push(toml);
-        }
-
-        const lazyToml = (await args.dpp.extAction(
-            args.denops,
-            context,
-            options,
-            "toml",
-            "load",
-            {
-                path: await fn.expand(
-                    args.denops,
-                    dotfilesDir + "/dein_lazy.toml"
-                ),
-                //path: `${dotfilesDir}/dein_lazy.toml`,
-                options: {
-                    lazy: true,
-                },
-            }
-        )) as Toml | undefined;
-        if (lazyToml) {
-            tomls.push(lazyToml);
         }
 
         const recordPlugins: Record<string, Plugin> = {};

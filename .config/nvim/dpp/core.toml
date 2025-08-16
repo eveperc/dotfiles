@@ -1,0 +1,48 @@
+# Core plugins - Essential and always loaded
+
+# =========================================================================
+# Package Manager Core
+# =========================================================================
+[[plugins]]
+repo = 'Shougo/dpp.vim'
+
+[[plugins]]
+repo = 'vim-denops/denops.vim'
+
+[[plugins]]
+repo = 'Shougo/dpp-ext-installer'
+
+[[plugins]]
+repo = 'Shougo/dpp-ext-lazy'
+
+[[plugins]]
+repo = 'Shougo/dpp-ext-toml'
+
+[[plugins]]
+repo = 'Shougo/dpp-protocol-git'
+
+[[plugins]]
+repo = 'Shougo/dpp-ext-local'
+
+# =========================================================================
+# Base Libraries
+# =========================================================================
+[[plugins]]
+repo = 'nvim-lua/plenary.nvim'
+
+[[plugins]]
+repo = 'MunifTanjim/nui.nvim'
+
+# =========================================================================
+# Icons
+# =========================================================================
+[[plugins]]
+repo = 'nvim-tree/nvim-web-devicons'
+hook_source = '''
+lua << EOF
+require('nvim-web-devicons').setup()
+EOF
+'''
+
+[[plugins]]
+repo = 'ryanoasis/vim-devicons'

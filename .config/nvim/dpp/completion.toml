@@ -1,0 +1,105 @@
+# Completion and Snippets
+
+# =========================================================================
+# Completion Engine
+# =========================================================================
+[[plugins]]
+repo = 'hrsh7th/nvim-cmp'
+on_event = ['InsertEnter', 'CmdlineEnter']
+depends = [
+  'cmp-nvim-lsp',
+  'cmp-buffer',
+  'cmp-path',
+  'cmp-cmdline',
+  'lspkind.nvim',
+  'LuaSnip',
+  'cmp_luasnip'
+]
+
+# =========================================================================
+# Completion Sources
+# =========================================================================
+[[plugins]]
+repo = 'hrsh7th/cmp-nvim-lsp'
+on_source = 'nvim-cmp'
+
+[[plugins]]
+repo = 'hrsh7th/cmp-nvim-lsp-signature-help'
+on_source = 'nvim-cmp'
+
+[[plugins]]
+repo = 'hrsh7th/cmp-nvim-lsp-document-symbol'
+on_source = 'nvim-cmp'
+
+[[plugins]]
+repo = 'hrsh7th/cmp-buffer'
+on_source = 'nvim-cmp'
+
+[[plugins]]
+repo = 'hrsh7th/cmp-path'
+on_source = 'nvim-cmp'
+
+[[plugins]]
+repo = 'hrsh7th/cmp-cmdline'
+on_source = 'nvim-cmp'
+
+[[plugins]]
+repo = 'onsails/lspkind.nvim'
+on_source = 'nvim-cmp'
+
+# =========================================================================
+# Snippets
+# =========================================================================
+[[plugins]]
+repo = 'L3MON4D3/LuaSnip'
+on_event = 'InsertEnter'
+depends = ['friendly-snippets']
+build = 'make install_jsregexp'
+
+[[plugins]]
+repo = 'saadparwaiz1/cmp_luasnip'
+on_source = 'nvim-cmp'
+
+[[plugins]]
+repo = 'rafamadriz/friendly-snippets'
+on_source = 'LuaSnip'
+
+[[plugins]]
+repo = 'hrsh7th/vim-vsnip'
+on_event = 'InsertEnter'
+
+# =========================================================================
+# AI Completion
+# =========================================================================
+[[plugins]]
+repo = 'zbirenbaum/copilot.lua'
+on_event = 'InsertEnter'
+hook_source = '''
+lua << EOF
+require("copilot").setup({
+  suggestion = { enabled = false },
+  panel = { enabled = false },
+})
+EOF
+'''
+
+[[plugins]]
+repo = 'zbirenbaum/copilot-cmp'
+depends = ['copilot.lua']
+on_source = 'nvim-cmp'
+hook_source = '''
+lua << EOF
+require("copilot_cmp").setup()
+EOF
+'''
+
+[[plugins]]
+repo = 'CopilotC-Nvim/CopilotChat.nvim'
+branch = 'canary'
+depends = ['copilot.lua', 'plenary.nvim']
+on_cmd = ['CopilotChat']
+hook_source = '''
+lua << EOF
+require("CopilotChat").setup()
+EOF
+'''

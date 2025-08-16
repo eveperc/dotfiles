@@ -1,0 +1,114 @@
+# UI and Visual Enhancements
+
+# =========================================================================
+# Status Line / Tab Line
+# =========================================================================
+[[plugins]]
+repo = 'nvim-lualine/lualine.nvim'
+on_event = 'VimEnter'
+depends = ['nvim-web-devicons']
+
+[[plugins]]
+repo = 'akinsho/bufferline.nvim'
+on_event = 'VimEnter'
+depends = ['nvim-web-devicons']
+
+# =========================================================================
+# Notifications & Messages
+# =========================================================================
+[[plugins]]
+repo = 'rcarriga/nvim-notify'
+on_event = 'VimEnter'
+hook_source = '''
+lua << EOF
+vim.notify = require("notify")
+EOF
+'''
+
+[[plugins]]
+repo = 'folke/noice.nvim'
+on_event = 'VimEnter'
+depends = ['nui.nvim', 'nvim-notify']
+
+[[plugins]]
+repo = 'j-hui/fidget.nvim'
+tag = 'legacy'
+on_event = 'LspAttach'
+
+# =========================================================================
+# Visual Enhancements
+# =========================================================================
+[[plugins]]
+repo = 'lukas-reineke/indent-blankline.nvim'
+on_event = 'BufRead'
+hook_source = '''
+lua << EOF
+require("ibl").setup()
+EOF
+'''
+
+[[plugins]]
+repo = 'petertriho/nvim-scrollbar'
+on_event = 'BufRead'
+hook_source = '''
+lua << EOF
+require("scrollbar").setup()
+EOF
+'''
+
+[[plugins]]
+repo = 'norcalli/nvim-colorizer.lua'
+on_cmd = ['ColorizerToggle']
+on_ft = ['css', 'html', 'javascript', 'typescript', 'vue']
+hook_source = '''
+lua << EOF
+require('colorizer').setup()
+EOF
+'''
+
+[[plugins]]
+repo = 'xiyaowong/nvim-cursorword'
+on_event = 'BufRead'
+
+[[plugins]]
+repo = 'mvllow/modes.nvim'
+on_event = 'ModeChanged'
+hook_source = '''
+lua << EOF
+require('modes').setup()
+EOF
+'''
+
+# =========================================================================
+# Colorschemes
+# =========================================================================
+[[plugins]]
+repo = 'folke/tokyonight.nvim'
+on_cmd = 'colorscheme'
+
+[[plugins]]
+repo = 'ray-x/aurora'
+
+[[plugins]]
+repo = 'luisiacc/gruvbox-baby'
+
+[[plugins]]
+repo = 'tiagovla/tokyodark.nvim'
+
+[[plugins]]
+repo = 'kdheepak/monochrome.nvim'
+
+[[plugins]]
+repo = 'titanzero/zephyrium'
+
+[[plugins]]
+repo = 'neanias/everforest-nvim'
+hook_source = '''
+lua << EOF
+require("everforest").setup()
+EOF
+'''
+
+[[plugins]]
+repo = 'nvimdev/zephyr-nvim'
+depends = ['nvim-treesitter']

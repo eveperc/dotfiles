@@ -1,0 +1,184 @@
+# Editor Enhancements
+
+# =========================================================================
+# Treesitter
+# =========================================================================
+[[plugins]]
+repo = 'nvim-treesitter/nvim-treesitter'
+on_event = ['BufRead', 'BufNewFile']
+hook_post_update = 'TSUpdate'
+hook_source = '''
+lua << EOF
+require('nvim-treesitter.configs').setup({
+  ensure_installed = { 
+    "lua", "vim", "vimdoc", "query",
+    "typescript", "javascript", "tsx", "json",
+    "python", "rust", "go", "c", "cpp",
+    "html", "css", "yaml", "toml", "markdown"
+  },
+  highlight = { enable = true },
+  indent = { enable = true },
+})
+EOF
+'''
+
+[[plugins]]
+repo = 'yioneko/nvim-yati'
+depends = ['nvim-treesitter']
+on_ft = ['python', 'yaml']
+
+[[plugins]]
+repo = 'nvim-treesitter/nvim-treesitter-textobjects'
+depends = ['nvim-treesitter']
+on_event = 'BufRead'
+
+[[plugins]]
+repo = 'nvim-treesitter/nvim-treesitter-context'
+depends = ['nvim-treesitter']
+on_event = 'BufRead'
+
+[[plugins]]
+repo = 'David-Kunz/treesitter-unit'
+depends = ['nvim-treesitter']
+on_event = 'BufRead'
+
+# =========================================================================
+# Motion & Navigation
+# =========================================================================
+[[plugins]]
+repo = 'smoka7/hop.nvim'
+on_cmd = ['HopWord', 'HopLine', 'HopChar1', 'HopChar2']
+hook_source = '''
+lua << EOF
+require('hop').setup()
+EOF
+'''
+
+[[plugins]]
+repo = 'unblevable/quick-scope'
+on_event = 'BufRead'
+
+[[plugins]]
+repo = 'haya14busa/vim-edgemotion'
+on_cmd = ['EdgeMotion']
+on_event = 'BufRead'
+
+# phaazon/hop.nvimはsmoka7/hop.nvimと重複するため削除
+# [[plugins]]
+# repo = 'phaazon/hop.nvim'
+# branch = 'v2'
+# on_cmd = ['HopWord', 'HopLine']
+
+[[plugins]]
+repo = 'mfussenegger/nvim-treehopper'
+depends = ['nvim-treesitter', 'hop.nvim']
+on_cmd = ['TSHop']
+
+# =========================================================================
+# Text Manipulation
+# =========================================================================
+[[plugins]]
+repo = 'numToStr/Comment.nvim'
+on_event = 'BufRead'
+hook_source = '''
+lua << EOF
+require('Comment').setup()
+EOF
+'''
+
+[[plugins]]
+repo = 'windwp/nvim-autopairs'
+on_event = 'InsertEnter'
+hook_source = '''
+lua << EOF
+require('nvim-autopairs').setup()
+EOF
+'''
+
+[[plugins]]
+repo = 'machakann/vim-sandwich'
+on_event = 'BufRead'
+hook_source = '''
+lua << EOF
+-- デフォルトマッピングを無効化
+vim.g.sandwich_no_default_key_mappings = 1
+-- カスタムマッピングはhooks/keymaps_fix.luaで設定
+EOF
+'''
+
+[[plugins]]
+repo = 'roobert/search-replace.nvim'
+on_cmd = ['SearchReplace']
+hook_source = '''
+lua << EOF
+require('search-replace').setup()
+EOF
+'''
+
+[[plugins]]
+repo = 'gbprod/substitute.nvim'
+on_cmd = ['Substitute']
+hook_source = '''
+lua << EOF
+require('substitute').setup()
+-- キーマッピングはkeymaps.luaで設定
+EOF
+'''
+
+[[plugins]]
+repo = 'gbprod/nvim-alt-substitute'
+on_cmd = ['SubstituteRange', 'SubstituteWord']
+on_event = 'BufRead'
+
+# =========================================================================
+# File Management
+# =========================================================================
+[[plugins]]
+repo = 'tamago324/lir.nvim'
+on_cmd = ['LirOpen']
+depends = ['nvim-web-devicons']
+
+[[plugins]]
+repo = 'nvim-tree/nvim-tree.lua'
+on_cmd = ['NvimTreeToggle', 'NvimTreeOpen', 'NvimTreeFindFile']
+depends = ['nvim-web-devicons']
+hook_source = '''
+lua << EOF
+require('nvim-tree').setup()
+EOF
+'''
+
+# =========================================================================
+# Search & Find
+# =========================================================================
+[[plugins]]
+repo = 'nvim-telescope/telescope.nvim'
+on_cmd = ['Telescope']
+depends = ['plenary.nvim']
+
+[[plugins]]
+repo = 'ibhagwan/fzf-lua'
+depends = ['nvim-web-devicons']
+on_cmd = ['FzfLua']
+hook_source = '''
+lua << EOF
+require('fzf-lua').setup({})
+EOF
+'''
+
+[[plugins]]
+repo = 'junegunn/fzf'
+build = './install --bin'
+on_cmd = ['FZF']
+
+# =========================================================================
+# Marks & Bookmarks
+# =========================================================================
+[[plugins]]
+repo = 'chentoast/marks.nvim'
+on_event = 'BufRead'
+hook_source = '''
+lua << EOF
+require('marks').setup()
+EOF
+'''

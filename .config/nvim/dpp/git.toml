@@ -1,0 +1,62 @@
+# Git Integration
+
+# =========================================================================
+# Core Git Functions
+# =========================================================================
+[[plugins]]
+repo = 'tpope/vim-fugitive'
+on_cmd = ['Git', 'Gstatus', 'Gblame', 'Gpush', 'Gpull']
+
+[[plugins]]
+repo = 'tpope/vim-rhubarb'
+depends = ['vim-fugitive']
+on_cmd = ['GBrowse']
+
+# =========================================================================
+# Git Signs & Blame
+# =========================================================================
+[[plugins]]
+repo = 'lewis6991/gitsigns.nvim'
+on_event = 'BufRead'
+hook_source = '''
+lua << EOF
+require('gitsigns').setup({
+  signs = {
+    add          = { text = '│' },
+    change       = { text = '│' },
+    delete       = { text = '_' },
+    topdelete    = { text = '‾' },
+    changedelete = { text = '~' },
+    untracked    = { text = '┆' },
+  },
+})
+EOF
+'''
+
+[[plugins]]
+repo = 'airblade/vim-gitgutter'
+on_event = 'BufRead'
+
+[[plugins]]
+repo = 'f-person/git-blame.nvim'
+on_cmd = ['GitBlameToggle']
+hook_source = '''
+lua << EOF
+require('gitblame').setup({
+  enabled = false,
+})
+EOF
+'''
+
+# =========================================================================
+# Advanced Git Search
+# =========================================================================
+[[plugins]]
+repo = 'aaronhallaert/advanced-git-search.nvim'
+depends = ['telescope.nvim', 'vim-fugitive', 'vim-rhubarb']
+on_cmd = ['AdvancedGitSearch']
+hook_source = '''
+lua << EOF
+require("telescope").load_extension("advanced_git_search")
+EOF
+'''

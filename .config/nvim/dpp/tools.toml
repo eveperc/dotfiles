@@ -1,0 +1,120 @@
+# Development Tools and Utilities
+
+# =========================================================================
+# Terminal
+# =========================================================================
+[[plugins]]
+repo = 'akinsho/toggleterm.nvim'
+on_cmd = ['ToggleTerm', 'TermExec']
+hook_source = '''
+lua << EOF
+require('toggleterm').setup({
+  size = 20,
+  open_mapping = [[<c-\>]],
+  direction = 'float',
+})
+EOF
+'''
+
+# =========================================================================
+# Debugging
+# =========================================================================
+[[plugins]]
+repo = 'mfussenegger/nvim-dap'
+on_cmd = ['DapToggleBreakpoint', 'DapContinue']
+
+[[plugins]]
+repo = 'rcarriga/nvim-dap-ui'
+depends = ['nvim-dap', 'nvim-nio']
+on_source = 'nvim-dap'
+hook_source = '''
+lua << EOF
+require('dapui').setup()
+EOF
+'''
+
+[[plugins]]
+repo = 'nvim-neotest/nvim-nio'
+on_source = 'nvim-dap-ui'
+
+[[plugins]]
+repo = 'theHamsta/nvim-dap-virtual-text'
+depends = ['nvim-dap', 'nvim-treesitter']
+on_source = 'nvim-dap'
+
+# =========================================================================
+# Documentation & Preview
+# =========================================================================
+[[plugins]]
+repo = 'previm/previm'
+on_ft = ['markdown']
+
+[[plugins]]
+repo = 'vim-denops/denops.vim'
+
+[[plugins]]
+repo = 'MeanderingProgrammer/render-markdown.nvim'
+on_ft = ['markdown']
+depends = ['nvim-treesitter', 'nvim-web-devicons']
+hook_source = '''
+lua << EOF
+require('render-markdown').setup()
+EOF
+'''
+
+# =========================================================================
+# Code Actions & Diagnostics
+# =========================================================================
+[[plugins]]
+repo = 'folke/trouble.nvim'
+on_cmd = ['Trouble', 'TroubleToggle']
+depends = ['nvim-web-devicons']
+hook_source = '''
+lua << EOF
+require('trouble').setup()
+EOF
+'''
+
+[[plugins]]
+repo = 'folke/todo-comments.nvim'
+on_event = 'BufRead'
+depends = ['plenary.nvim']
+hook_source = '''
+lua << EOF
+require('todo-comments').setup()
+EOF
+'''
+
+# =========================================================================
+# Code Screenshots
+# =========================================================================
+[[plugins]]
+repo = 'segeljakt/vim-silicon'
+on_cmd = ['Silicon']
+
+# =========================================================================
+# Templates
+# =========================================================================
+[[plugins]]
+repo = 'mattn/vim-sonictemplate'
+on_cmd = ['Template']
+
+# =========================================================================
+# AI Tools
+# =========================================================================
+[[plugins]]
+repo = 'olimorris/codecompanion.nvim'
+depends = ['plenary.nvim', 'nvim-treesitter']
+on_cmd = ['CodeCompanion']
+hook_source = '''
+lua << EOF
+require('codecompanion').setup()
+EOF
+'''
+
+# =========================================================================
+# Miscellaneous
+# =========================================================================
+[[plugins]]
+repo = 'RRethy/vim-illuminate'
+on_event = 'BufRead'

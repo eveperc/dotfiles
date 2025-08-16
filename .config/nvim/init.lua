@@ -15,7 +15,12 @@ end
 ensure_repo_exists("vim-denops/denops.vim.git", denopsSrc)
 ensure_repo_exists("Shougo/dpp.vim.git", dppSrc)
 
-local dpp = require("dpp")
+-- dpp.vimがロードされるまで待つ
+local dpp = nil
+local ok, dpp_module = pcall(require, "dpp")
+if ok then
+	dpp = dpp_module
+end
 
 local dppBase = vim.fn.stdpath("cache") .. "/dpp"
 local dppConfig = vim.fn.stdpath("config") .. "/config.ts"
@@ -39,16 +44,24 @@ end
 -- vim.g.denops_server_addr = "127.0.0.1:41979"
 -- vim.g["denops#debug"] = 1
 
-if dpp.load_state(dppBase) then
-	vim.opt.runtimepath:prepend(denopsSrc)
-	vim.api.nvim_create_augroup("ddp", {})
+-- dpp.vimの初期化
+if dpp and dpp.load_state then
+	if dpp.load_state(dppBase) then
+		vim.opt.runtimepath:prepend(denopsSrc)
+		vim.api.nvim_create_augroup("ddp", {})
 
-	vim.api.nvim_create_autocmd("User", {
-		pattern = "DenopsReady",
-		callback = function()
-			dpp.make_state(dppBase, dppConfig)
-		end,
-	})
+		vim.api.nvim_create_autocmd("User", {
+			pattern = "DenopsReady",
+			callback = function()
+				if dpp and dpp.make_state then
+					dpp.make_state(dppBase, dppConfig)
+				end
+			end,
+		})
+	end
+else
+	-- dppモジュールが使えない場合は、vim scriptの関数を使う
+	vim.opt.runtimepath:prepend(denopsSrc)
 end
 
 vim.api.nvim_create_autocmd("User", {
@@ -58,19 +71,47 @@ vim.api.nvim_create_autocmd("User", {
 	end,
 })
 
-if vim.fn["dpp#min#load_state"](dppBase) then
-	vim.opt.runtimepath:prepend(denopsSrc)
-
-	vim.api.nvim_create_autocmd("User", {
-		pattern = "DenopsReady",
-		callback = function()
-			dpp.make_state(dppBase, dppConfig)
-		end,
-	})
+-- VimScript APIを使った初期化
+if vim.fn.exists('*dpp#min#load_state') == 1 then
+	if vim.fn["dpp#min#load_state"](dppBase) == 1 then
+		vim.api.nvim_create_autocmd("User", {
+			pattern = "DenopsReady",
+			callback = function()
+				vim.notify("DenopsReady: Initializing dpp.vim...")
+				if vim.fn.exists('*dpp#make_state') == 1 then
+					vim.fn["dpp#make_state"](dppBase, dppConfig)
+				elseif dpp and dpp.make_state then
+					dpp.make_state(dppBase, dppConfig)
+				end
+			end,
+		})
+	end
 end
 
 vim.cmd("filetype indent plugin on")
 vim.cmd("syntax on")
+
+-- 基本設定の読み込み（プラグインに依存しない設定）
+-- バックアップディレクトリから復元
+local backup_dir = vim.fn.stdpath("config") .. "/backup_lazy_to_dpp"
+if vim.fn.isdirectory(backup_dir) == 1 then
+	-- 基本設定モジュールを読み込む
+	package.path = backup_dir .. "/?.lua;" .. package.path
+	
+	-- エラーを無視して各モジュールを読み込む
+	local modules = {"base", "options", "keymaps", "autocmds"}
+	for _, module in ipairs(modules) do
+		local ok, _ = pcall(require, module)
+		if not ok then
+			-- バックアップから直接読み込めない場合は、lua_bkから試す
+			local lua_bk_dir = vim.fn.stdpath("config") .. "/lua_bk"
+			if vim.fn.isdirectory(lua_bk_dir) == 1 then
+				package.path = lua_bk_dir .. "/?.lua;" .. package.path
+				pcall(require, module)
+			end
+		end
+	end
+end
 
 -- install
 vim.api.nvim_create_user_command("DppInstall", "call dpp#async_ext_action('installer', 'install')", {})
@@ -80,3 +121,8 @@ vim.api.nvim_create_user_command("DppUpdate", function(opts)
 	local args = opts.fargs
 	vim.fn["dpp#async_ext_action"]("installer", "update", { names = args })
 end, { nargs = "*" })
+
+-- make state
+vim.api.nvim_create_user_command("DppMakeState", function()
+	vim.fn["dpp#make_state"](vim.fn.stdpath("cache") .. "/dpp", vim.fn.stdpath("config") .. "/config.ts")
+end, {})

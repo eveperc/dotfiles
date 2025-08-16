@@ -1,0 +1,78 @@
+# Lazy loaded plugins
+
+# Colorschemes
+[[plugins]]
+repo = 'folke/tokyonight.nvim'
+on_event = ['VimEnter']
+hook_source = '''
+lua << EOF
+vim.cmd[[colorscheme tokyonight]]
+EOF
+'''
+
+# UI components
+[[plugins]]
+repo = 'nvim-lualine/lualine.nvim'
+depends = ['nvim-tree/nvim-web-devicons']
+on_event = ['VimEnter']
+hook_source = '''
+lua << EOF
+require('lualine').setup({
+  options = {
+    theme = 'tokyonight'
+  }
+})
+EOF
+'''
+
+# Git
+[[plugins]]
+repo = 'lewis6991/gitsigns.nvim'
+on_event = ['BufRead']
+hook_source = '''
+lua << EOF
+require('gitsigns').setup()
+EOF
+'''
+
+# Comment
+[[plugins]]
+repo = 'numToStr/Comment.nvim'
+on_event = ['BufRead']
+hook_source = '''
+lua << EOF
+require('Comment').setup()
+EOF
+'''
+
+# Auto pairs
+[[plugins]]
+repo = 'windwp/nvim-autopairs'
+on_event = ['InsertEnter']
+hook_source = '''
+lua << EOF
+require('nvim-autopairs').setup()
+EOF
+'''
+
+# File explorer
+[[plugins]]
+repo = 'nvim-tree/nvim-tree.lua'
+depends = ['nvim-tree/nvim-web-devicons']
+on_cmd = ['NvimTreeToggle', 'NvimTreeOpen']
+hook_source = '''
+lua << EOF
+require('nvim-tree').setup()
+EOF
+'''
+
+# Fuzzy finder
+[[plugins]]
+repo = 'ibhagwan/fzf-lua'
+depends = ['nvim-tree/nvim-web-devicons']
+on_cmd = ['FzfLua']
+hook_source = '''
+lua << EOF
+require('fzf-lua').setup({})
+EOF
+'''

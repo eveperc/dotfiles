@@ -1,0 +1,76 @@
+# LSP and Code Intelligence
+
+# =========================================================================
+# LSP Core
+# =========================================================================
+[[plugins]]
+repo = 'neovim/nvim-lspconfig'
+on_event = ['BufRead', 'BufNewFile']
+depends = ['nvim-navbuddy', 'nvim-navic']
+
+[[plugins]]
+repo = 'nvimdev/lspsaga.nvim'
+on_event = 'BufRead'
+depends = ['nvim-web-devicons']
+hook_source = '''
+lua << EOF
+require('lspsaga').setup({})
+EOF
+'''
+
+[[plugins]]
+repo = 'https://git.sr.ht/~whynothugo/lsp_lines.nvim'
+on_event = 'LspAttach'
+hook_source = '''
+lua << EOF
+require("lsp_lines").setup()
+EOF
+'''
+
+# =========================================================================
+# LSP Management
+# =========================================================================
+[[plugins]]
+repo = 'williamboman/mason.nvim'
+on_cmd = ['Mason', 'MasonInstall', 'MasonUninstall', 'MasonLog']
+hook_source = '''
+lua << EOF
+require("mason").setup()
+EOF
+'''
+
+[[plugins]]
+repo = 'williamboman/mason-lspconfig.nvim'
+depends = ['mason.nvim', 'nvim-lspconfig']
+on_event = 'BufRead'
+hook_source = '''
+lua << EOF
+require("mason-lspconfig").setup({
+  ensure_installed = { "lua_ls", "ts_ls", "rust_analyzer" }
+})
+EOF
+'''
+
+# =========================================================================
+# Linting & Formatting
+# =========================================================================
+[[plugins]]
+repo = 'creativenull/efmls-configs-nvim'
+on_event = 'BufRead'
+depends = ['nvim-lspconfig']
+
+[[plugins]]
+repo = 'dense-analysis/ale'
+on_event = ['BufRead', 'BufNewFile']
+
+# =========================================================================
+# Navigation
+# =========================================================================
+[[plugins]]
+repo = 'SmiteshP/nvim-navbuddy'
+depends = ['nvim-navic', 'nui.nvim']
+on_cmd = 'Navbuddy'
+
+[[plugins]]
+repo = 'SmiteshP/nvim-navic'
+on_event = 'LspAttach'
