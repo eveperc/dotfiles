@@ -7,6 +7,15 @@
 repo = 'nvim-lualine/lualine.nvim'
 on_event = 'VimEnter'
 depends = ['nvim-web-devicons']
+hook_source = '''
+lua << EOF
+local ok, _ = pcall(require, 'plugins.lualine')
+if not ok then
+  -- フォールバック設定
+  require('lualine').setup()
+end
+EOF
+'''
 
 [[plugins]]
 repo = 'akinsho/bufferline.nvim'

@@ -34,15 +34,15 @@ export class Config extends BaseConfig {
         const [context, options] = await args.contextBuilder.get(args.denops);
         const dotfilesDir = "~/.config/nvim/dpp";
 
-        // Load TOML files by category
+        // Load TOML files - minimal setup
         const tomlFiles = [
             { name: "/core.toml", lazy: false },
-            { name: "/lsp.toml", lazy: true },
-            { name: "/completion.toml", lazy: true },
-            { name: "/ui.toml", lazy: true },
-            { name: "/git.toml", lazy: true },
-            { name: "/editor.toml", lazy: true },
-            { name: "/tools.toml", lazy: true },
+            { name: "/editing.toml", lazy: true },  // 編集機能拡張
+            // { name: "/lsp.toml", lazy: true },
+            // { name: "/completion.toml", lazy: true },
+            // { name: "/ui.toml", lazy: true },
+            // { name: "/git.toml", lazy: true },
+            // { name: "/tools.toml", lazy: true },
         ];
 
         const tomls: Toml[] = [];
@@ -72,8 +72,10 @@ export class Config extends BaseConfig {
         const hooksFiles: string[] = [];
 
         tomls.forEach((toml) => {
-            for (const plugin of toml.plugins) {
-                recordPlugins[plugin.name] = plugin;
+            if (toml.plugins) {
+                for (const plugin of toml.plugins) {
+                    recordPlugins[plugin.name] = plugin;
+                }
             }
 
             if (toml.ftplugins) {
@@ -136,8 +138,6 @@ export class Config extends BaseConfig {
         //console.log(lazyResult);
 
         return {
-            ftplugins,
-            hooksFiles,
             plugins: lazyResult?.plugins ?? [],
             stateLines: lazyResult?.stateLines ?? [],
         };

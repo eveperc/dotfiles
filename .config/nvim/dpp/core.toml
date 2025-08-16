@@ -1,7 +1,7 @@
-# Core plugins - Essential and always loaded
+# Core plugins - Minimal essential plugins only
 
 # =========================================================================
-# Package Manager Core
+# Package Manager Core (Required for dpp.vim to work)
 # =========================================================================
 [[plugins]]
 repo = 'Shougo/dpp.vim'
@@ -25,24 +25,71 @@ repo = 'Shougo/dpp-protocol-git'
 repo = 'Shougo/dpp-ext-local'
 
 # =========================================================================
-# Base Libraries
+# Minimal Essential Plugins
 # =========================================================================
-[[plugins]]
-repo = 'nvim-lua/plenary.nvim'
 
+# Colorscheme
 [[plugins]]
-repo = 'MunifTanjim/nui.nvim'
-
-# =========================================================================
-# Icons
-# =========================================================================
-[[plugins]]
-repo = 'nvim-tree/nvim-web-devicons'
-hook_source = '''
+repo = 'folke/tokyonight.nvim'
+hook_add = '''
 lua << EOF
-require('nvim-web-devicons').setup()
+vim.cmd('colorscheme tokyonight-night')
+EOF
+'''
+
+# File explorer
+[[plugins]]
+repo = 'nvim-tree/nvim-tree.lua'
+lazy = false
+hook_add = '''
+lua << EOF
+-- nvim-treeを起動時に初期化
+vim.api.nvim_create_autocmd("VimEnter", {
+  callback = function()
+    require('nvim-tree').setup({
+      view = {
+        width = 30,
+      },
+      renderer = {
+        icons = {
+          show = {
+            file = false,
+            folder = false,
+            folder_arrow = true,
+            git = false,
+          },
+        },
+      },
+    })
+    -- キーマップを設定
+    vim.keymap.set('n', '<leader>e', ':NvimTreeToggle<CR>', { noremap = true, silent = true })
+  end,
+  once = true,
+})
+EOF
+'''
+
+# Fuzzy finder
+[[plugins]]
+repo = 'nvim-telescope/telescope.nvim'
+depends = ['plenary.nvim']
+lazy = false
+hook_add = '''
+lua << EOF
+-- Telescopeを起動時に初期化
+vim.api.nvim_create_autocmd("VimEnter", {
+  callback = function()
+    require('telescope').setup()
+    -- キーマップを設定
+    vim.keymap.set('n', '<leader>ff', ':Telescope find_files<CR>', { noremap = true, silent = true })
+    vim.keymap.set('n', '<leader>fg', ':Telescope live_grep<CR>', { noremap = true, silent = true })
+    vim.keymap.set('n', '<leader>fb', ':Telescope buffers<CR>', { noremap = true, silent = true })
+  end,
+  once = true,
+})
 EOF
 '''
 
 [[plugins]]
-repo = 'ryanoasis/vim-devicons'
+repo = 'nvim-lua/plenary.nvim'
+lazy = false

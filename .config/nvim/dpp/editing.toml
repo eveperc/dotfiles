@@ -1,0 +1,58 @@
+# Editing Enhancement Plugins
+
+# Auto pairs
+[[plugins]]
+repo = 'windwp/nvim-autopairs'
+on_event = 'InsertEnter'
+hook_source = '''
+lua << EOF
+require('nvim-autopairs').setup({
+  disable_filetype = { "TelescopePrompt", "vim" },
+})
+EOF
+'''
+
+# Commenting
+[[plugins]]
+repo = 'numToStr/Comment.nvim'
+on_event = 'BufRead'
+hook_source = '''
+lua << EOF
+require('Comment').setup()
+EOF
+'''
+
+# Surround
+[[plugins]]
+repo = 'kylechui/nvim-surround'
+on_event = 'BufRead'
+hook_source = '''
+lua << EOF
+require('nvim-surround').setup()
+EOF
+'''
+
+# Better increment/decrement
+[[plugins]]
+repo = 'monaqa/dial.nvim'
+on_event = 'BufRead'
+hook_source = '''
+lua << EOF
+local augend = require("dial.augend")
+require("dial.config").augends:register_group{
+  default = {
+    augend.integer.alias.decimal,
+    augend.integer.alias.hex,
+    augend.date.alias["%Y/%m/%d"],
+    augend.constant.alias.bool,
+  },
+}
+
+vim.keymap.set("n", "<C-a>", function() require("dial.map").inc_normal() end, { noremap = true })
+vim.keymap.set("n", "<C-x>", function() require("dial.map").dec_normal() end, { noremap = true })
+vim.keymap.set("v", "<C-a>", function() require("dial.map").inc_visual() end, { noremap = true })
+vim.keymap.set("v", "<C-x>", function() require("dial.map").dec_visual() end, { noremap = true })
+vim.keymap.set("v", "g<C-a>", function() require("dial.map").inc_gvisual() end, { noremap = true })
+vim.keymap.set("v", "g<C-x>", function() require("dial.map").dec_gvisual() end, { noremap = true })
+EOF
+'''
