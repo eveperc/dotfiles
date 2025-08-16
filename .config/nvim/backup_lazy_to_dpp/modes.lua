@@ -1,7 +1,7 @@
 -- Attempt to require the 'modes' module
 local status, modes = pcall(require, 'modes')
 if not status then
-  print("Failed to load modes module")
+  -- Silent return, module not installed
   return
 end
 

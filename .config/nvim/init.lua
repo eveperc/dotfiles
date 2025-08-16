@@ -1,37 +1,82 @@
---[[
-Neovimの設定エントリーポイント / Neovim Configuration Entry Point
+local cache_path = vim.fn.stdpath("cache") .. "/dpp/repos/github.com"
+local dppSrc = cache_path .. "/Shougo/dpp.vim"
+local denopsSrc = cache_path .. "/vim-denops/denops.vim"
 
-このファイルは以下のモジュールを読み込みます：
-This file loads the following modules:
+-- Add path to runtimepath
+vim.opt.runtimepath:prepend(dppSrc)
 
-1. base      - 基本設定（エンコーディング、バックアップなど）
-               Basic settings (encoding, backup, etc.)
-2. plugins   - プラグイン管理とその設定
-               Plugin management and configuration
-3. autocmds  - 自動コマンドの設定
-               Autocommand settings
-4. options   - Neovimのオプション設定
-               Neovim option settings
-5. keymaps   - キーマッピングの設定
-               Key mapping configuration
-6. colorscheme - カラースキームの設定
-                 Color scheme settings
---]]
+-- check repository exists.
+local function ensure_repo_exists(repo_url, dest_path)
+	if not vim.loop.fs_stat(dest_path) then
+		vim.fn.system({ "git", "clone", "https://github.com/" .. repo_url, dest_path })
+	end
+end
 
--- 基本設定の読み込み / Load basic settings
-require("base")
+ensure_repo_exists("vim-denops/denops.vim.git", denopsSrc)
+ensure_repo_exists("Shougo/dpp.vim.git", dppSrc)
 
--- プラグインマネージャーと各プラグインの設定 / Plugin manager and plugin configurations
-require("plugins")
+local dpp = require("dpp")
 
--- 自動コマンドの設定 / Autocommand settings
-require("autocmds")
+local dppBase = vim.fn.stdpath("cache") .. "/dpp"
+local dppConfig = vim.fn.stdpath("config") .. "/config.ts"
 
--- Neovimのオプション設定 / Neovim option settings
-require("options")
+-- option.
+local extension_urls = {
+	"Shougo/dpp-ext-installer.git",
+	"Shougo/dpp-ext-toml.git",
+	"Shougo/dpp-protocol-git.git",
+	"Shougo/dpp-ext-lazy.git",
+	"Shougo/dpp-ext-local.git",
+}
 
--- キーマッピングの設定 / Key mapping configuration
-require("keymaps")
+-- Ensure each extension is installed and add to runtimepath
+for _, url in ipairs(extension_urls) do
+	local ext_path = cache_path .. "/" .. string.gsub(url, ".git", "")
+	ensure_repo_exists(url, ext_path)
+	vim.opt.runtimepath:append(ext_path)
+end
 
--- カラースキームの設定 / Color scheme settings
-require("colorscheme")
+-- vim.g.denops_server_addr = "127.0.0.1:41979"
+-- vim.g["denops#debug"] = 1
+
+if dpp.load_state(dppBase) then
+	vim.opt.runtimepath:prepend(denopsSrc)
+	vim.api.nvim_create_augroup("ddp", {})
+
+	vim.api.nvim_create_autocmd("User", {
+		pattern = "DenopsReady",
+		callback = function()
+			dpp.make_state(dppBase, dppConfig)
+		end,
+	})
+end
+
+vim.api.nvim_create_autocmd("User", {
+	pattern = "Dpp:makeStatePost",
+	callback = function()
+		vim.notify("dpp make_state() is done")
+	end,
+})
+
+if vim.fn["dpp#min#load_state"](dppBase) then
+	vim.opt.runtimepath:prepend(denopsSrc)
+
+	vim.api.nvim_create_autocmd("User", {
+		pattern = "DenopsReady",
+		callback = function()
+			dpp.make_state(dppBase, dppConfig)
+		end,
+	})
+end
+
+vim.cmd("filetype indent plugin on")
+vim.cmd("syntax on")
+
+-- install
+vim.api.nvim_create_user_command("DppInstall", "call dpp#async_ext_action('installer', 'install')", {})
+
+-- update
+vim.api.nvim_create_user_command("DppUpdate", function(opts)
+	local args = opts.fargs
+	vim.fn["dpp#async_ext_action"]("installer", "update", { names = args })
+end, { nargs = "*" })

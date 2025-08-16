@@ -1,7 +1,7 @@
 -- Attempt to require the 'treesitter-context' module
 local status, treesitter_context = pcall(require, 'treesitter-context')
 if not status then
-  print("Failed to load treesitter-context module")
+  -- Silent return, module not installed
   return
 end
 

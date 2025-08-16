@@ -1,0 +1,22 @@
+# 遅延読み込みプラグイン
+
+# Colorschemes (段階的に移行)
+[[plugins]]
+repo = 'folke/tokyonight.nvim'
+on_event = ['VimEnter']
+
+# Git関連
+[[plugins]]
+repo = 'lewis6991/gitsigns.nvim'
+on_event = ['BufRead']
+lua_source = '''
+  require('gitsigns').setup()
+'''
+
+# コメント
+[[plugins]]
+repo = 'numToStr/Comment.nvim'
+on_event = ['BufRead']
+lua_source = '''
+  require('Comment').setup()
+'''

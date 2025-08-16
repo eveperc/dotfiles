@@ -90,8 +90,8 @@ cmp.setup({
     ['<C-l>'] = map.complete(),
     ['<C-e>'] = map.abort(),
     ['<CR>'] = map.confirm { select = true },
-    ['<Tab>'] = map(M.tab, { 'i', 's' }),
-    ['<S-Tab>'] = map(M.shift_tab, { 'i', 's' }),
+    -- ['<Tab>'] = map(M.tab, { 'i', 's' }),
+    -- ['<S-Tab>'] = map(M.shift_tab, { 'i', 's' }),
   }),
   experimental = {
     ghost_text = true,
