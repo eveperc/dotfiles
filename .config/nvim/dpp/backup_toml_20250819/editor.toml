@@ -47,10 +47,14 @@ on_event = 'BufRead'
 # =========================================================================
 [[plugins]]
 repo = 'smoka7/hop.nvim'
+version = '*'
 on_cmd = ['HopWord', 'HopLine', 'HopChar1', 'HopChar2']
 hook_source = '''
 lua << EOF
-require('hop').setup()
+local ok, _ = pcall(require, 'plugins.hop')
+if not ok then
+  require('hop').setup()
+end
 EOF
 '''
 
@@ -126,17 +130,70 @@ EOF
 '''
 
 [[plugins]]
-repo = 'gbprod/nvim-alt-substitute'
-on_cmd = ['SubstituteRange', 'SubstituteWord']
-on_event = 'BufRead'
+repo = 'chrisgrieser/nvim-alt-substitute'
+on_event = 'CmdlineEnter'
+hook_source = '''
+lua << EOF
+require('alt-substitute').setup()
+EOF
+'''
 
 # =========================================================================
 # File Management
 # =========================================================================
 [[plugins]]
 repo = 'tamago324/lir.nvim'
-on_cmd = ['LirOpen']
 depends = ['nvim-web-devicons']
+on_event = ['VimEnter']
+hook_source = '''
+lua << EOF
+local ok, _ = pcall(require, 'plugins.lir')
+if not ok then
+  local actions = require 'lir.actions'
+  local mark_actions = require 'lir.mark.actions'
+  local clipboard_actions = require 'lir.clipboard.actions'
+  
+  require('lir').setup({
+    show_hidden_files = false,
+    ignore = {".DS_Store"},
+    devicons = {
+      enable = true,
+      highlight_dirname = true
+    },
+    mappings = {
+      ['l']     = actions.edit,
+      ['<C-s>'] = actions.split,
+      ['<C-v>'] = actions.vsplit,
+      ['<C-t>'] = actions.tabedit,
+      ['h'] = actions.up,
+      ['q'] = actions.quit,
+      ['K'] = actions.mkdir,
+      ['N'] = actions.newfile,
+      ['R'] = actions.rename,
+      ['@'] = actions.cd,
+      ['Y'] = actions.yank_path,
+      ['.'] = actions.toggle_show_hidden,
+      ['D'] = actions.delete,
+      ['J'] = function()
+        mark_actions.toggle_mark()
+        vim.cmd('normal! j')
+      end,
+      ['C'] = clipboard_actions.copy,
+      ['X'] = clipboard_actions.cut,
+      ['P'] = clipboard_actions.paste,
+    },
+    float = {
+      winblend = 0,
+      curdir_window = {
+        enable = false,
+        highlight_dirname = false
+      },
+    },
+    hide_cursor = true,
+  })
+end
+EOF
+'''
 
 [[plugins]]
 repo = 'nvim-tree/nvim-tree.lua'
@@ -162,7 +219,10 @@ depends = ['nvim-web-devicons']
 on_cmd = ['FzfLua']
 hook_source = '''
 lua << EOF
-require('fzf-lua').setup({})
+local ok, _ = pcall(require, 'plugins.fzf-lua')
+if not ok then
+  require('fzf-lua').setup({})
+end
 EOF
 '''
 

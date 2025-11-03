@@ -34,19 +34,18 @@ export class Config extends BaseConfig {
         const [context, options] = await args.contextBuilder.get(args.denops);
         const dotfilesDir = "~/.config/nvim/dpp";
 
-        // Load TOML files - minimal setup
+        // Load TOML files
         const tomlFiles = [
-            { name: "/core.toml", lazy: false },
-            { name: "/editing.toml", lazy: true },  // 編集機能拡張
-            // { name: "/lsp.toml", lazy: true },
-            // { name: "/completion.toml", lazy: true },
-            // { name: "/ui.toml", lazy: true },
-            // { name: "/git.toml", lazy: true },
-            // { name: "/tools.toml", lazy: true },
+            { name: "/base.toml", lazy: false },     // 基本設定フック
+            { name: "/core.toml", lazy: false },     // 必須プラグイン（即座に必要）
+            { name: "/lazy.toml", lazy: true },      // 遅延読み込みプラグイン（一元管理）
+            { name: "/lsp.toml", lazy: false },      // LSP基本設定
+            { name: "/completion.toml", lazy: false }, // 補完システム
+            { name: "/plugins.toml", lazy: false },  // その他の即座に必要なプラグイン
         ];
 
         const tomls: Toml[] = [];
-        
+
         for (const file of tomlFiles) {
             const toml = (await args.dpp.extAction(
                 args.denops,
@@ -61,7 +60,7 @@ export class Config extends BaseConfig {
                     },
                 }
             )) as Toml | undefined;
-            
+
             if (toml) {
                 tomls.push(toml);
             }

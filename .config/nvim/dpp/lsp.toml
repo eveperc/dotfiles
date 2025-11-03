@@ -5,8 +5,29 @@
 # =========================================================================
 [[plugins]]
 repo = 'neovim/nvim-lspconfig'
-on_event = ['BufRead', 'BufNewFile']
+on_event = ['VimEnter']
 depends = ['nvim-navbuddy', 'nvim-navic']
+hook_add = '''
+" プラグインが追加された時点でLuaパスを設定
+lua << EOF
+local plugin_path = vim.fn.expand("<sfile>:p:h:h")
+local lua_path = plugin_path .. "/lua"
+if vim.fn.isdirectory(lua_path) == 1 then
+  package.path = lua_path .. "/?.lua;" .. lua_path .. "/?/init.lua;" .. package.path
+end
+EOF
+'''
+hook_post_source = '''
+" プラグインがsourceされた後にも確認
+lua << EOF
+local cache_path = vim.fn.stdpath("cache") .. "/dpp"
+local lspconfig_path = cache_path .. "/repos/github.com/neovim/nvim-lspconfig/lua"
+if not package.path:match("nvim%-lspconfig") then
+  package.path = lspconfig_path .. "/?.lua;" .. lspconfig_path .. "/?/init.lua;" .. package.path
+  -- vim.notify("Added lspconfig path in hook_post_source", vim.log.levels.INFO)
+end
+EOF
+'''
 
 [[plugins]]
 repo = 'nvimdev/lspsaga.nvim'
@@ -14,7 +35,12 @@ on_event = 'BufRead'
 depends = ['nvim-web-devicons']
 hook_source = '''
 lua << EOF
-require('lspsaga').setup({})
+local ok, _ = pcall(require, 'plugins.lspsaga')
+if not ok then
+  require('lspsaga').setup({
+    enable = false,
+  })
+end
 EOF
 '''
 
@@ -31,23 +57,74 @@ EOF
 # LSP Management
 # =========================================================================
 [[plugins]]
-repo = 'williamboman/mason.nvim'
-on_cmd = ['Mason', 'MasonInstall', 'MasonUninstall', 'MasonLog']
+repo = 'mason-org/mason.nvim'
+on_event = ['VimEnter']
+lazy = false
 hook_source = '''
 lua << EOF
-require("mason").setup()
+require("mason").setup({
+  ui = {
+    icons = {
+      package_installed = "✓",
+      package_pending = "➜",
+      package_uninstalled = "✗"
+    }
+  }
+})
 EOF
 '''
 
 [[plugins]]
-repo = 'williamboman/mason-lspconfig.nvim'
-depends = ['mason.nvim', 'nvim-lspconfig']
-on_event = 'BufRead'
-hook_source = '''
-lua << EOF
-require("mason-lspconfig").setup({
-  ensure_installed = { "lua_ls", "ts_ls", "rust_analyzer" }
+repo = 'hrsh7th/cmp-nvim-lsp'
+on_event = ['VimEnter']
+
+[[plugins]]
+repo = 'mason-org/mason-lspconfig.nvim'
+depends = [
+  'mason-org/mason.nvim',
+  'neovim/nvim-lspconfig',
+  # 'hrsh7th/cmp-nvim-lsp',
+]
+lazy = false
+hook_post_source = '''
+lua << 'EOF'
+-- ===== Mason を一度だけ初期化 =====
+vim.notify('mason-lspconfig not found', vim.log.levels.ERROR)
+local ok_mason, mason = pcall(require, 'mason')
+if ok_mason and not vim.g.__mason_setup_done then
+  mason.setup({})
+  vim.g.__mason_setup_done = true
+end
+
+-- ===== mason-lspconfig のセットアップ =====
+local ok_mlsp, mlsp = pcall(require, 'mason-lspconfig')
+if not ok_mlsp then
+  vim.notify('mason-lspconfig not found', vim.log.levels.ERROR)
+  return
+end
+
+mlsp.setup({
+  ensure_installed = { 'lua_ls', 'rust_analyzer', 'volar', 'vtsls' },
+  automatic_installation = true,
 })
+
+-- ===== LSP設定ファイルを確実に読み込む =====
+if not vim.g.__my_lsp_hooks_loaded then
+  local cfg = vim.fn.stdpath('config')
+  local path = (vim.fs and vim.fs.joinpath or function(a,b) return a..'/'..b end)(cfg, 'dpp/hooks/lsp.lua')
+
+  if vim.loop and vim.loop.fs_stat(path) then
+    local ok, err = pcall(dofile, path)
+    if ok then
+      vim.g.__my_lsp_hooks_loaded = true
+      vim.notify('✅ loaded: dpp/hooks/lsp.lua', vim.log.levels.INFO)
+    else
+      vim.notify('Failed to load lsp.lua: '..tostring(err), vim.log.levels.ERROR)
+    end
+  else
+    vim.notify('lsp.lua not found at '..path, vim.log.levels.WARN)
+  end
+end
 EOF
 '''
 

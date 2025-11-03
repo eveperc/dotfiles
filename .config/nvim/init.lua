@@ -42,9 +42,69 @@ for i = 3, #repos do
   vim.opt.runtimepath:append(repos[i].path)
 end
 
+-- Fix Lua module path for dpp plugins immediately
+local function add_dpp_lua_paths()
+  local dpp_repos = cache_path .. "/repos/github.com"
+  
+  -- Add specific known paths first
+  local lspconfig_path = dpp_repos .. "/neovim/nvim-lspconfig/lua"
+  if vim.fn.isdirectory(lspconfig_path) == 1 then
+    package.path = package.path .. ";" .. lspconfig_path .. "/?.lua;" .. lspconfig_path .. "/?/init.lua"
+  end
+  
+  -- Add all plugin lua directories
+  for _, dir in ipairs(vim.fn.glob(dpp_repos .. "/*/nvim-*/lua", 0, 1)) do
+    package.path = package.path .. ";" .. dir .. "/?.lua;" .. dir .. "/?/init.lua"
+  end
+  for _, dir in ipairs(vim.fn.glob(dpp_repos .. "/*/*/lua", 0, 1)) do
+    package.path = package.path .. ";" .. dir .. "/?.lua;" .. dir .. "/?/init.lua"
+  end
+end
+
+-- Add paths immediately
+add_dpp_lua_paths()
+
+-- Also add on DppReady event (for plugins loaded later)
+vim.api.nvim_create_autocmd("User", {
+  pattern = "DppReady",
+  once = true,
+  callback = function()
+    add_dpp_lua_paths()
+    vim.notify("Lua paths updated for dpp plugins", vim.log.levels.INFO)
+  end
+})
+
 -- Enable filetype and syntax early
 vim.cmd("filetype indent plugin on")
 vim.cmd("syntax enable")
+
+-- Load basic Neovim settings (options, keymaps, autocmds)
+local function load_basic_settings()
+  local dpp_hooks_path = config_path .. '/dpp/hooks/'
+  
+  -- Load options
+  local options_ok, _ = pcall(dofile, dpp_hooks_path .. 'options.lua')
+  if not options_ok then
+    vim.notify("Failed to load options.lua", vim.log.levels.WARN)
+  end
+  
+  -- Load keymaps
+  local keymaps_ok, _ = pcall(dofile, dpp_hooks_path .. 'keymaps.lua')
+  if not keymaps_ok then
+    vim.notify("Failed to load keymaps.lua", vim.log.levels.WARN)
+  end
+  
+  -- Load autocmds
+  local autocmds_ok, _ = pcall(dofile, dpp_hooks_path .. 'autocmds.lua')
+  if not autocmds_ok then
+    vim.notify("Failed to load autocmds.lua", vim.log.levels.WARN)
+  end
+end
+
+-- Load basic settings immediately
+load_basic_settings()
+
+-- LSP設定はplugin/lsp.luaで自動的に読み込まれる
 
 -- Force load dpp autoload functions
 vim.cmd("runtime! autoload/dpp.vim")

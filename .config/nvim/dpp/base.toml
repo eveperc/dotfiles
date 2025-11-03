@@ -1,0 +1,34 @@
+# Base Configuration - Neovim基本設定を管理するファイル
+# このファイルはdpp.vimの起動時に最初に読み込まれます
+
+# =========================================================================
+# ダミープラグイン（設定読み込み用）
+# =========================================================================
+[[plugins]]
+repo = 'vim-jp/vital.vim'
+merged = false
+hook_add = '''
+lua << EOF
+-- options.lua, keymaps.lua, autocmds.luaを読み込む
+local config_path = vim.fn.stdpath('config')
+local dpp_hooks_path = config_path .. '/dpp/hooks/'
+
+-- オプション設定を読み込む
+local options_ok, _ = pcall(dofile, dpp_hooks_path .. 'options.lua')
+if not options_ok then
+  vim.notify("Failed to load options.lua", vim.log.levels.WARN)
+end
+
+-- キーマップ設定を読み込む
+local keymaps_ok, _ = pcall(dofile, dpp_hooks_path .. 'keymaps.lua')
+if not keymaps_ok then
+  vim.notify("Failed to load keymaps.lua", vim.log.levels.WARN)
+end
+
+-- 自動コマンド設定を読み込む
+local autocmds_ok, _ = pcall(dofile, dpp_hooks_path .. 'autocmds.lua')
+if not autocmds_ok then
+  vim.notify("Failed to load autocmds.lua", vim.log.levels.WARN)
+end
+EOF
+'''

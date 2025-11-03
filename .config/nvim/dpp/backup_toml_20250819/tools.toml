@@ -8,11 +8,14 @@ repo = 'akinsho/toggleterm.nvim'
 on_cmd = ['ToggleTerm', 'TermExec']
 hook_source = '''
 lua << EOF
-require('toggleterm').setup({
-  size = 20,
-  open_mapping = [[<c-\>]],
-  direction = 'float',
-})
+local ok, _ = pcall(require, 'plugins.toggleterm')
+if not ok then
+  require('toggleterm').setup({
+    size = 20,
+    open_mapping = [[<c-\>]],
+    direction = 'float',
+  })
+end
 EOF
 '''
 
@@ -102,15 +105,7 @@ on_cmd = ['Template']
 # =========================================================================
 # AI Tools
 # =========================================================================
-[[plugins]]
-repo = 'olimorris/codecompanion.nvim'
-depends = ['plenary.nvim', 'nvim-treesitter']
-on_cmd = ['CodeCompanion']
-hook_source = '''
-lua << EOF
-require('codecompanion').setup()
-EOF
-'''
+
 
 # =========================================================================
 # Miscellaneous

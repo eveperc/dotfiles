@@ -1,31 +1,135 @@
-# Lazy loaded plugins
+# =========================================================================
+# Lazy loaded plugins - 遅延読み込みプラグインを一元管理
+# =========================================================================
+# このファイルは起動速度を最適化するため、必要なタイミングでプラグインを読み込みます
 
-# Colorschemes
-[[plugins]]
-repo = 'folke/tokyonight.nvim'
-on_event = ['VimEnter']
-hook_source = '''
-lua << EOF
-vim.cmd[[colorscheme tokyonight]]
-EOF
-'''
+# =========================================================================
+# UI Components - UI拡張（起動後に読み込み）
+# =========================================================================
 
-# UI components
+# ステータスライン
 [[plugins]]
 repo = 'nvim-lualine/lualine.nvim'
-depends = ['nvim-tree/nvim-web-devicons']
+depends = ['nvim-web-devicons']
 on_event = ['VimEnter']
 hook_source = '''
 lua << EOF
 require('lualine').setup({
   options = {
-    theme = 'tokyonight'
+    theme = 'everforest'
   }
 })
 EOF
 '''
 
-# Git
+# バッファライン（タブライン）
+[[plugins]]
+repo = 'akinsho/bufferline.nvim'
+depends = ['nvim-web-devicons']
+on_event = ['VimEnter']
+hook_source = '''
+lua << EOF
+require('bufferline').setup()
+EOF
+'''
+
+# 通知システム
+[[plugins]]
+repo = 'rcarriga/nvim-notify'
+on_event = ['VimEnter']
+hook_source = '''
+lua << EOF
+require('notify').setup({
+  background_colour = "#000000",
+})
+vim.notify = require('notify')
+EOF
+'''
+
+# コマンドラインUI
+[[plugins]]
+repo = 'folke/noice.nvim'
+depends = ['nui.nvim', 'nvim-notify']
+on_event = ['CmdlineEnter']
+hook_source = '''
+lua << EOF
+require('noice').setup({
+  lsp = {
+    override = {
+      ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
+      ["vim.lsp.util.stylize_markdown"] = true,
+      ["cmp.entry.get_documentation"] = true,
+    },
+  },
+})
+EOF
+'''
+
+# UIライブラリ
+[[plugins]]
+repo = 'MunifTanjim/nui.nvim'
+on_source = ['noice.nvim']
+
+# LSP進捗表示
+[[plugins]]
+repo = 'j-hui/fidget.nvim'
+on_event = ['LspAttach']
+hook_source = '''
+lua << EOF
+require('fidget').setup()
+EOF
+'''
+
+# インデントガイド
+[[plugins]]
+repo = 'lukas-reineke/indent-blankline.nvim'
+on_event = ['BufRead']
+hook_source = '''
+lua << EOF
+require('ibl').setup()
+EOF
+'''
+
+# スクロールバー
+[[plugins]]
+repo = 'petertriho/nvim-scrollbar'
+on_event = ['BufRead']
+hook_source = '''
+lua << EOF
+require('scrollbar').setup()
+EOF
+'''
+
+# カラーコード表示
+[[plugins]]
+repo = 'NvChad/nvim-colorizer.lua'
+on_ft = ['css', 'html', 'javascript', 'typescript', 'vue']
+hook_source = '''
+lua << EOF
+require('colorizer').setup()
+EOF
+'''
+
+# カーソル下の単語をハイライト
+[[plugins]]
+repo = 'itchyny/vim-cursorword'
+on_event = ['BufRead']
+
+# モード表示
+[[plugins]]
+repo = 'mvllow/modes.nvim'
+on_event = ['ModeChanged']
+hook_source = '''
+lua << EOF
+require('modes').setup()
+EOF
+'''
+
+# =========================================================================
+# Git Integration - Git統合（バッファ読み込み時）
+# =========================================================================
+
+# Git差分表示
 [[plugins]]
 repo = 'lewis6991/gitsigns.nvim'
 on_event = ['BufRead']
@@ -35,7 +139,59 @@ require('gitsigns').setup()
 EOF
 '''
 
-# Comment
+# Gitコマンド統合
+[[plugins]]
+repo = 'tpope/vim-fugitive'
+on_cmd = ['Git', 'Gstatus', 'Gblame', 'Gpush', 'Gpull']
+
+# 差分ビューア
+[[plugins]]
+repo = 'sindrets/diffview.nvim'
+depends = ['plenary.nvim']
+on_cmd = ['DiffviewOpen', 'DiffviewFileHistory']
+hook_source = '''
+lua << EOF
+require('diffview').setup()
+EOF
+'''
+
+# GitHub連携
+[[plugins]]
+repo = 'pwntester/octo.nvim'
+depends = ['plenary.nvim', 'telescope.nvim', 'nvim-web-devicons']
+on_cmd = ['Octo']
+hook_source = '''
+lua << EOF
+require('octo').setup()
+EOF
+'''
+
+# GitHub連携（Fugitive拡張）
+[[plugins]]
+repo = 'tpope/vim-rhubarb'
+on_source = ['vim-fugitive']
+
+# Git blame
+[[plugins]]
+repo = 'f-person/git-blame.nvim'
+on_cmd = ['GitBlameToggle']
+
+# 高度なGit検索
+[[plugins]]
+repo = 'aaronhallaert/advanced-git-search.nvim'
+depends = ['telescope.nvim', 'vim-fugitive', 'vim-rhubarb']
+on_cmd = ['AdvancedGitSearch']
+hook_source = '''
+lua << EOF
+require('telescope').load_extension('advanced_git_search')
+EOF
+'''
+
+# =========================================================================
+# Editing Support - 編集支援（編集時に読み込み）
+# =========================================================================
+
+# コメントトグル
 [[plugins]]
 repo = 'numToStr/Comment.nvim'
 on_event = ['BufRead']
@@ -45,7 +201,7 @@ require('Comment').setup()
 EOF
 '''
 
-# Auto pairs
+# 括弧自動補完
 [[plugins]]
 repo = 'windwp/nvim-autopairs'
 on_event = ['InsertEnter']
@@ -55,24 +211,384 @@ require('nvim-autopairs').setup()
 EOF
 '''
 
-# File explorer
+# 囲み文字操作
 [[plugins]]
-repo = 'nvim-tree/nvim-tree.lua'
-depends = ['nvim-tree/nvim-web-devicons']
-on_cmd = ['NvimTreeToggle', 'NvimTreeOpen']
+repo = 'kylechui/nvim-surround'
+on_event = ['BufRead']
 hook_source = '''
 lua << EOF
-require('nvim-tree').setup()
+require('nvim-surround').setup()
 EOF
 '''
 
-# Fuzzy finder
+# 高速カーソル移動
+[[plugins]]
+repo = 'smoka7/hop.nvim'
+on_cmd = ['HopWord', 'HopLine', 'HopChar1', 'HopChar2']
+hook_source = '''
+lua << EOF
+require('hop').setup()
+EOF
+'''
+
+# マルチカーソル
+[[plugins]]
+repo = 'mg979/vim-visual-multi'
+on_event = ['BufRead']
+
+# インクリメント/デクリメント拡張
+[[plugins]]
+repo = 'monaqa/dial.nvim'
+on_event = ['BufRead']
+hook_source = '''
+lua << EOF
+local augend = require('dial.augend')
+require('dial.config').augends:register_group{
+  default = {
+    augend.integer.alias.decimal,
+    augend.integer.alias.hex,
+    augend.date.alias["%Y/%m/%d"],
+    augend.constant.alias.bool,
+  },
+}
+EOF
+'''
+
+# 高度な囲み文字操作
+[[plugins]]
+repo = 'machakann/vim-sandwich'
+on_event = ['BufRead']
+
+# 置換拡張
+[[plugins]]
+repo = 'gbprod/substitute.nvim'
+on_event = ['BufRead']
+hook_source = '''
+lua << EOF
+require('substitute').setup()
+EOF
+'''
+
+# クイックスコープ（f/F/t/T移動強化）
+[[plugins]]
+repo = 'unblevable/quick-scope'
+on_event = ['BufRead']
+
+# エッジ移動
+[[plugins]]
+repo = 'haya14busa/vim-edgemotion'
+on_event = ['BufRead']
+
+# マーク管理強化
+[[plugins]]
+repo = 'chentoast/marks.nvim'
+on_event = ['BufRead']
+hook_source = '''
+lua << EOF
+require('marks').setup()
+EOF
+'''
+
+# =========================================================================
+# File Management - ファイル管理（コマンド実行時）
+# =========================================================================
+
+# 軽量ファイルエクスプローラー（lir）
+[[plugins]]
+repo = 'tamago324/lir.nvim'
+depends = ['nvim-web-devicons']
+on_event = ['VimEnter']
+hook_source = '''
+lua << EOF
+local actions = require 'lir.actions'
+local mark_actions = require 'lir.mark.actions'
+local clipboard_actions = require 'lir.clipboard.actions'
+
+require('lir').setup({
+  show_hidden_files = false,
+  ignore = {".DS_Store"},
+  devicons = {
+    enable = true,
+    highlight_dirname = true
+  },
+  mappings = {
+    ['l']     = actions.edit,
+    ['<C-s>'] = actions.split,
+    ['<C-v>'] = actions.vsplit,
+    ['<C-t>'] = actions.tabedit,
+    ['h'] = actions.up,
+    ['q'] = actions.quit,
+    ['K'] = actions.mkdir,
+    ['N'] = actions.newfile,
+    ['R'] = actions.rename,
+    ['@'] = actions.cd,
+    ['Y'] = actions.yank_path,
+    ['.'] = actions.toggle_show_hidden,
+    ['D'] = actions.delete,
+    ['J'] = function()
+      mark_actions.toggle_mark()
+      vim.cmd('normal! j')
+    end,
+    ['C'] = clipboard_actions.copy,
+    ['X'] = clipboard_actions.cut,
+    ['P'] = clipboard_actions.paste,
+  },
+  float = {
+    winblend = 0,
+    curdir_window = {
+      enable = false,
+      highlight_dirname = false
+    },
+  },
+  hide_cursor = true,
+})
+EOF
+'''
+
+# ファイルエクスプローラー（nvim-tree）
+[[plugins]]
+repo = 'nvim-tree/nvim-tree.lua'
+depends = ['nvim-web-devicons']
+on_cmd = ['NvimTreeToggle', 'NvimTreeOpen', 'NvimTreeFindFile']
+hook_source = '''
+lua << EOF
+require('nvim-tree').setup({
+  view = {
+    width = 30,
+  },
+  renderer = {
+    icons = {
+      show = {
+        file = false,
+        folder = false,
+        folder_arrow = true,
+        git = false,
+      },
+    },
+  },
+})
+EOF
+'''
+
+# ファジーファインダー
 [[plugins]]
 repo = 'ibhagwan/fzf-lua'
-depends = ['nvim-tree/nvim-web-devicons']
+depends = ['nvim-web-devicons']
 on_cmd = ['FzfLua']
 hook_source = '''
 lua << EOF
 require('fzf-lua').setup({})
 EOF
 '''
+
+# ファジーファインダー（代替）
+[[plugins]]
+repo = 'nvim-telescope/telescope.nvim'
+depends = ['plenary.nvim']
+on_cmd = ['Telescope']
+hook_source = '''
+lua << EOF
+require('telescope').setup()
+EOF
+'''
+
+# =========================================================================
+# Development Tools - 開発ツール（必要時に読み込み）
+# =========================================================================
+
+# ターミナル統合
+[[plugins]]
+repo = 'akinsho/toggleterm.nvim'
+on_cmd = ['ToggleTerm', 'TermExec']
+hook_source = '''
+lua << EOF
+require('toggleterm').setup({
+  size = 20,
+  open_mapping = [[<c-\>]],
+  direction = 'float',
+})
+EOF
+'''
+
+# デバッガ
+[[plugins]]
+repo = 'mfussenegger/nvim-dap'
+on_cmd = ['DapToggleBreakpoint', 'DapContinue']
+
+[[plugins]]
+repo = 'rcarriga/nvim-dap-ui'
+depends = ['nvim-dap', 'nvim-nio']
+on_source = ['nvim-dap']
+hook_source = '''
+lua << EOF
+require('dapui').setup()
+EOF
+'''
+
+[[plugins]]
+repo = 'nvim-neotest/nvim-nio'
+on_source = ['nvim-dap-ui']
+
+# 診断リスト
+[[plugins]]
+repo = 'folke/trouble.nvim'
+depends = ['nvim-web-devicons']
+on_cmd = ['Trouble', 'TroubleToggle']
+hook_source = '''
+lua << EOF
+require('trouble').setup()
+EOF
+'''
+
+# TODOコメント
+[[plugins]]
+repo = 'folke/todo-comments.nvim'
+depends = ['plenary.nvim']
+on_event = ['BufRead']
+hook_source = '''
+lua << EOF
+require('todo-comments').setup()
+EOF
+'''
+
+# コード実行
+[[plugins]]
+repo = 'michaelb/sniprun'
+build = 'bash ./install.sh'
+on_cmd = ['SnipRun', 'SnipInfo']
+
+# REST クライアント
+[[plugins]]
+repo = 'NTBBloodbath/rest.nvim'
+depends = ['plenary.nvim']
+on_ft = ['http']
+hook_source = '''
+lua << EOF
+require('rest-nvim').setup()
+EOF
+'''
+
+# マークダウンプレビュー
+[[plugins]]
+repo = 'previm/previm'
+on_ft = ['markdown']
+
+# 検索・置換強化
+[[plugins]]
+repo = 'roobert/search-replace.nvim'
+on_cmd = ['SearchReplace']
+hook_source = '''
+lua << EOF
+require('search-replace').setup()
+EOF
+'''
+
+# カーソル下の単語ハイライト（illuminate）
+[[plugins]]
+repo = 'RRethy/vim-illuminate'
+on_event = ['BufRead']
+
+# コードスクリーンショット
+[[plugins]]
+repo = 'segeljakt/vim-silicon'
+on_cmd = ['Silicon']
+
+# テンプレートシステム
+[[plugins]]
+repo = 'mattn/vim-sonictemplate'
+on_cmd = ['Template']
+
+# DAP仮想テキスト
+[[plugins]]
+repo = 'theHamsta/nvim-dap-virtual-text'
+on_source = ['nvim-dap']
+hook_source = '''
+lua << EOF
+require('nvim-dap-virtual-text').setup()
+EOF
+'''
+
+# =========================================================================
+# Treesitter & Syntax - 構文解析（バッファ読み込み時）
+# =========================================================================
+
+# Treesitter
+[[plugins]]
+repo = 'nvim-treesitter/nvim-treesitter'
+hook_post_update = 'TSUpdate'
+on_event = ['BufRead', 'BufNewFile']
+hook_source = '''
+lua << EOF
+require('nvim-treesitter.configs').setup({
+  ensure_installed = { "lua", "vim", "vimdoc", "typescript", "javascript", "python", "rust", "go" },
+  sync_install = false,
+  auto_install = true,
+  highlight = {
+    enable = true,
+  },
+  indent = {
+    enable = true,
+  },
+})
+EOF
+'''
+
+# Treesitter テキストオブジェクト
+[[plugins]]
+repo = 'nvim-treesitter/nvim-treesitter-textobjects'
+on_source = ['nvim-treesitter']
+
+# コンテキスト表示
+[[plugins]]
+repo = 'nvim-treesitter/nvim-treesitter-context'
+on_source = ['nvim-treesitter']
+hook_source = '''
+lua << EOF
+require('treesitter-context').setup()
+EOF
+'''
+
+# 自動タグ
+[[plugins]]
+repo = 'windwp/nvim-ts-autotag'
+on_source = ['nvim-treesitter']
+hook_source = '''
+lua << EOF
+require('nvim-ts-autotag').setup()
+EOF
+'''
+
+# Treesitterユニット
+[[plugins]]
+repo = 'David-Kunz/treesitter-unit'
+on_source = ['nvim-treesitter']
+
+# Treesitterインデント改善
+[[plugins]]
+repo = 'yioneko/nvim-yati'
+on_source = ['nvim-treesitter']
+
+# Treesitterホッピング
+[[plugins]]
+repo = 'mfussenegger/nvim-treehopper'
+on_source = ['nvim-treesitter']
+hook_source = '''
+lua << EOF
+require('tsht').config.hint_keys = { "h", "j", "f", "d", "n", "v", "s", "l", "a" }
+EOF
+'''
+
+# マークダウンレンダリング強化
+[[plugins]]
+repo = 'MeanderingProgrammer/render-markdown.nvim'
+on_ft = ['markdown']
+depends = ['nvim-treesitter', 'nvim-web-devicons']
+hook_source = '''
+lua << EOF
+require('render-markdown').setup()
+EOF
+'''
+
+# =========================================================================
+# AI Assistance - AI支援（コマンド実行時）
+# =========================================================================

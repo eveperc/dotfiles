@@ -8,20 +8,48 @@ repo = 'hrsh7th/nvim-cmp'
 on_event = ['InsertEnter', 'CmdlineEnter']
 depends = [
   'cmp-nvim-lsp',
+  'cmp-nvim-lsp-signature-help',
+  'cmp-nvim-lsp-document-symbol',
   'cmp-buffer',
   'cmp-path',
   'cmp-cmdline',
+  'vim-vsnip',
   'lspkind.nvim',
   'LuaSnip',
-  'cmp_luasnip'
+  'cmp_luasnip',
+  'copilot-cmp'
 ]
+hook_source = '''
+lua << EOF
+local ok, _ = pcall(require, 'plugins.cmp')
+if not ok then
+  -- Fallback configuration
+  local cmp = require('cmp')
+  cmp.setup({
+    mapping = cmp.mapping.preset.insert({
+      ['<C-b>'] = cmp.mapping.scroll_docs(-4),
+      ['<C-f>'] = cmp.mapping.scroll_docs(4),
+      ['<C-Space>'] = cmp.mapping.complete(),
+      ['<C-e>'] = cmp.mapping.abort(),
+      ['<CR>'] = cmp.mapping.confirm({ select = true }),
+    }),
+    sources = cmp.config.sources({
+      { name = 'nvim_lsp' },
+      { name = 'luasnip' },
+    }, {
+      { name = 'buffer' },
+    })
+  })
+end
+EOF
+'''
 
 # =========================================================================
 # Completion Sources
 # =========================================================================
 [[plugins]]
 repo = 'hrsh7th/cmp-nvim-lsp'
-on_source = 'nvim-cmp'
+on_event = ['VimEnter']
 
 [[plugins]]
 repo = 'hrsh7th/cmp-nvim-lsp-signature-help'
@@ -90,16 +118,5 @@ on_source = 'nvim-cmp'
 hook_source = '''
 lua << EOF
 require("copilot_cmp").setup()
-EOF
-'''
-
-[[plugins]]
-repo = 'CopilotC-Nvim/CopilotChat.nvim'
-branch = 'canary'
-depends = ['copilot.lua', 'plenary.nvim']
-on_cmd = ['CopilotChat']
-hook_source = '''
-lua << EOF
-require("CopilotChat").setup()
 EOF
 '''

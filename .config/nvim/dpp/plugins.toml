@@ -27,6 +27,7 @@ repo = 'nvim-lua/plenary.nvim'
 
 [[plugins]]
 repo = 'nvim-tree/nvim-web-devicons'
+name = 'nvim-web-devicons'
 
 # Treesitter (基本的な構文ハイライト)
 [[plugins]]

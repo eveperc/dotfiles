@@ -40,6 +40,7 @@ end
 M.initialize_dpp = function()
   -- TOMLファイルから直接読み込む簡易実装
   local toml_files = {
+    vim.fn.expand('~/.config/nvim/dpp/base.toml'),
     vim.fn.expand('~/.config/nvim/dpp/dpp.toml'),
     vim.fn.expand('~/.config/nvim/dpp/dpp_lazy.toml')
   }

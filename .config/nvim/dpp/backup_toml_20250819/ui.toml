@@ -21,6 +21,14 @@ EOF
 repo = 'akinsho/bufferline.nvim'
 on_event = 'VimEnter'
 depends = ['nvim-web-devicons']
+hook_source = '''
+lua << EOF
+local ok, _ = pcall(require, 'plugins.bufferline')
+if not ok then
+  require('bufferline').setup()
+end
+EOF
+'''
 
 # =========================================================================
 # Notifications & Messages
@@ -35,9 +43,14 @@ EOF
 '''
 
 [[plugins]]
+repo = 'MunifTanjim/nui.nvim'
+on_event = 'VimEnter'
+
+[[plugins]]
 repo = 'folke/noice.nvim'
 on_event = 'VimEnter'
 depends = ['nui.nvim', 'nvim-notify']
+
 
 [[plugins]]
 repo = 'j-hui/fidget.nvim'
@@ -112,12 +125,24 @@ repo = 'titanzero/zephyrium'
 
 [[plugins]]
 repo = 'neanias/everforest-nvim'
-hook_source = '''
+branch = 'main'
+lazy = false
+hook_add = '''
 lua << EOF
-require("everforest").setup()
+require('everforest').setup({
+  background = "medium",
+  transparent_background_level = 0,
+})
 EOF
 '''
 
 [[plugins]]
 repo = 'nvimdev/zephyr-nvim'
 depends = ['nvim-treesitter']
+
+# =========================================================================
+# Icons
+# =========================================================================
+[[plugins]]
+repo = 'ryanoasis/vim-devicons'
+on_event = 'VimEnter'

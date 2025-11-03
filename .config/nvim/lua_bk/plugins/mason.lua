@@ -39,9 +39,16 @@ vim.defer_fn(function()
         on_attach = function(client, bufnr)
           on_attach(server, bufnr)
         end,
-        capabilities = require('cmp_nvim_lsp').default_capabilities(
-          vim.lsp.protocol.make_client_capabilities()
-        )
+        capabilities = (function()
+          local ok, cmp_nvim_lsp = pcall(require, 'cmp_nvim_lsp')
+          if ok then
+            return cmp_nvim_lsp.default_capabilities(
+              vim.lsp.protocol.make_client_capabilities()
+            )
+          else
+            return vim.lsp.protocol.make_client_capabilities()
+          end
+        end)()
       }
 
       if server == "intelephense" then

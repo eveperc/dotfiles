@@ -28,68 +28,25 @@ repo = 'Shougo/dpp-ext-local'
 # Minimal Essential Plugins
 # =========================================================================
 
-# Colorscheme
+# Colorscheme (即座に必要)
 [[plugins]]
-repo = 'folke/tokyonight.nvim'
+repo = 'neanias/everforest-nvim'
+branch = 'main'
 hook_add = '''
 lua << EOF
-vim.cmd('colorscheme tokyonight-night')
-EOF
-'''
-
-# File explorer
-[[plugins]]
-repo = 'nvim-tree/nvim-tree.lua'
-lazy = false
-hook_add = '''
-lua << EOF
--- nvim-treeを起動時に初期化
-vim.api.nvim_create_autocmd("VimEnter", {
-  callback = function()
-    require('nvim-tree').setup({
-      view = {
-        width = 30,
-      },
-      renderer = {
-        icons = {
-          show = {
-            file = false,
-            folder = false,
-            folder_arrow = true,
-            git = false,
-          },
-        },
-      },
-    })
-    -- キーマップを設定
-    vim.keymap.set('n', '<leader>e', ':NvimTreeToggle<CR>', { noremap = true, silent = true })
-  end,
-  once = true,
+require('everforest').setup({
+  background = "medium",
+  transparent_background_level = 0,
 })
+vim.cmd('colorscheme everforest')
 EOF
 '''
 
-# Fuzzy finder
-[[plugins]]
-repo = 'nvim-telescope/telescope.nvim'
-depends = ['plenary.nvim']
-lazy = false
-hook_add = '''
-lua << EOF
--- Telescopeを起動時に初期化
-vim.api.nvim_create_autocmd("VimEnter", {
-  callback = function()
-    require('telescope').setup()
-    -- キーマップを設定
-    vim.keymap.set('n', '<leader>ff', ':Telescope find_files<CR>', { noremap = true, silent = true })
-    vim.keymap.set('n', '<leader>fg', ':Telescope live_grep<CR>', { noremap = true, silent = true })
-    vim.keymap.set('n', '<leader>fb', ':Telescope buffers<CR>', { noremap = true, silent = true })
-  end,
-  once = true,
-})
-EOF
-'''
-
+# Base requirements
 [[plugins]]
 repo = 'nvim-lua/plenary.nvim'
-lazy = false
+
+[[plugins]]
+repo = 'nvim-tree/nvim-web-devicons'
+name = 'nvim-web-devicons'
+
