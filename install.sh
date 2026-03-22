@@ -79,6 +79,7 @@ setup_symlinks() {
   create_symlink "$DOTFILES_DIR/.config/fish" "$HOME/.config/fish"
   create_symlink "$DOTFILES_DIR/.config/wezterm" "$HOME/.config/wezterm"
   create_symlink "$DOTFILES_DIR/.config/sketchybar" "$HOME/.config/sketchybar"
+  create_symlink "$DOTFILES_DIR/.config/aerospace" "$HOME/.config/aerospace"
 
   # Linux固有
   if [[ "$OS" == "Linux" ]]; then
