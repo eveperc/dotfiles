@@ -17,7 +17,6 @@ depends = [
   'lspkind.nvim',
   'LuaSnip',
   'cmp_luasnip',
-  'copilot-cmp'
 ]
 hook_source = '''
 lua << EOF
@@ -96,27 +95,3 @@ on_source = 'LuaSnip'
 repo = 'hrsh7th/vim-vsnip'
 on_event = 'InsertEnter'
 
-# =========================================================================
-# AI Completion
-# =========================================================================
-[[plugins]]
-repo = 'zbirenbaum/copilot.lua'
-on_event = 'InsertEnter'
-hook_source = '''
-lua << EOF
-require("copilot").setup({
-  suggestion = { enabled = false },
-  panel = { enabled = false },
-})
-EOF
-'''
-
-[[plugins]]
-repo = 'zbirenbaum/copilot-cmp'
-depends = ['copilot.lua']
-on_source = 'nvim-cmp'
-hook_source = '''
-lua << EOF
-require("copilot_cmp").setup()
-EOF
-'''

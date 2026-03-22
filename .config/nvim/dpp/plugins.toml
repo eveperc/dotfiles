@@ -35,13 +35,13 @@ repo = 'nvim-treesitter/nvim-treesitter'
 hook_post_update = 'TSUpdate'
 hook_source = '''
 lua << EOF
-require('nvim-treesitter.configs').setup({
-  ensure_installed = { "lua", "vim", "vimdoc", "typescript", "javascript", "python" },
-  sync_install = false,
-  auto_install = true,
-  highlight = {
-    enable = true,
-  },
+require('nvim-treesitter').setup()
+vim.treesitter.language.register('lua', 'lua')
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = { 'lua', 'vim', 'vimdoc', 'typescript', 'javascript', 'python' },
+  callback = function()
+    pcall(vim.treesitter.start)
+  end,
 })
 EOF
 '''

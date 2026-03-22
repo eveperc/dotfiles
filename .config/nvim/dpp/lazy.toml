@@ -519,16 +519,12 @@ hook_post_update = 'TSUpdate'
 on_event = ['BufRead', 'BufNewFile']
 hook_source = '''
 lua << EOF
-require('nvim-treesitter.configs').setup({
-  ensure_installed = { "lua", "vim", "vimdoc", "typescript", "javascript", "python", "rust", "go" },
-  sync_install = false,
-  auto_install = true,
-  highlight = {
-    enable = true,
-  },
-  indent = {
-    enable = true,
-  },
+require('nvim-treesitter').setup()
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = { 'lua', 'vim', 'vimdoc', 'typescript', 'javascript', 'python', 'rust', 'go' },
+  callback = function()
+    pcall(vim.treesitter.start)
+  end,
 })
 EOF
 '''

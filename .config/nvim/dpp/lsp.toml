@@ -82,8 +82,8 @@ on_event = ['VimEnter']
 [[plugins]]
 repo = 'mason-org/mason-lspconfig.nvim'
 depends = [
-  'mason-org/mason.nvim',
-  'neovim/nvim-lspconfig',
+  'mason.nvim',
+  'nvim-lspconfig',
 ]
 lazy = false
 hook_post_source = '''
@@ -113,7 +113,7 @@ if not vim.g.__my_lsp_hooks_loaded then
   local cfg = vim.fn.stdpath('config')
   local join = (vim.fs and vim.fs.joinpath) or function(a,b) return a..'/'..b end
   local path = join(cfg, 'dpp/hooks/lsp.lua')
-  if vim.loop and vim.loop.fs_stat(path) then
+  if vim.uv and vim.uv.fs_stat(path) then
     local ok, err = pcall(dofile, path)
     if ok then
       vim.g.__my_lsp_hooks_loaded = true
