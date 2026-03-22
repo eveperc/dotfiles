@@ -1,5 +1,6 @@
 tap "felixkratz/formulae"
 tap "nikitabobko/tap"
+tap "oven-sh/bun"
 tap "shivammathur/php"
 
 # Core Development Tools
@@ -18,7 +19,7 @@ brew "findutils"
 brew "go"
 brew "deno"
 brew "nodebrew"
-brew "bun"
+brew "oven-sh/bun/bun"
 brew "pnpm"
 brew "yarn"
 brew "rustup"
