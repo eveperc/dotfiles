@@ -7,7 +7,7 @@ return {
   color_scheme = 'Everforest Dark (Gogh)',
   hide_tab_bar_if_only_one_tab = true,
   adjust_window_size_when_changing_font_size = false,
-  scrollback_lines = 1000,
+  scrollback_lines = 10000,
   window_background_opacity = 0.7,
   keys = {
     {

@@ -1,3 +1,21 @@
 /.config/fish/fish_variables
+/.config/fish/config.local.fish
 .DS_Store
 .gitconfig.local
+
+# Secrets
+*.local
+.env
+.env.*
+*.pem
+*.key
+id_rsa*
+
+# Neovim
+.config/nvim/lua_bk/
+.config/nvim/dpp/backup_toml_*/
+.config/nvim/lazy-lock.json
+.config/nvim/init.lua_bk
+.config/nvim/test_*.vim
+.config/nvim/.config/
+.config/nvim/.claude/

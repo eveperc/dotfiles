@@ -7,12 +7,14 @@ fi
 export ZSH="$HOME/.oh-my-zsh"
 ZSH_THEME="powerlevel10k/powerlevel10k"
 plugins=(git zsh-autosuggestions zsh-syntax-highlighting z)
-source $ZSH/oh-my-zsh.sh
+source "$ZSH/oh-my-zsh.sh"
 
 # Powerlevel10k
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
-# PATH
+# PATH (重複追加を防止)
+typeset -U PATH path
+
 export PATH="/opt/homebrew/bin:$PATH"
 export PATH="/usr/local/bin:$PATH"
 export PATH="$HOME/.local/bin:$PATH"
@@ -29,14 +31,17 @@ if command -v go &>/dev/null; then
 fi
 
 # Python / Pyenv
-if command -v brew &>/dev/null; then
-  export PATH="$(brew --prefix python 2>/dev/null)/libexec/bin:$PATH"
+if [ -d "/opt/homebrew/opt/python@3.13/libexec/bin" ]; then
+  export PATH="/opt/homebrew/opt/python@3.13/libexec/bin:$PATH"
+elif [ -d "/usr/local/opt/python@3.13/libexec/bin" ]; then
+  export PATH="/usr/local/opt/python@3.13/libexec/bin:$PATH"
 fi
+
 export PYENV_ROOT="$HOME/.pyenv"
 if [ -d "$PYENV_ROOT" ]; then
   export PATH="$PYENV_ROOT/bin:$PATH"
-  eval "$(pyenv init --path)"
-  eval "$(pyenv init -)"
+  eval "$("$PYENV_ROOT/bin/pyenv" init --path)"
+  eval "$("$PYENV_ROOT/bin/pyenv" init -)"
 fi
 
 # zsh-syntax-highlighting
