@@ -36,7 +36,7 @@ install_packages() {
   if [[ "$OS" != "Darwin" ]]; then return; fi
 
   info "Installing packages from Brewfile..."
-  brew bundle --file="$DOTFILES_DIR/Brewfile" --no-lock
+  brew bundle --file="$DOTFILES_DIR/Brewfile"
   success "Packages installed"
 }
 
