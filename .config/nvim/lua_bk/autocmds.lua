@@ -96,13 +96,13 @@ local opts = { noremap = true, silent = true }
 
 -- ファイル保存時のフォーマット設定（現在コメントアウト中）
 -- CSS/SCSS以外のファイルに対してLSPフォーマッタを実行
--- vim.api.nvim_create_augroup("FormatOnSave", { clear = true })
--- vim.api.nvim_create_autocmd("BufWritePre", {
---   group = "FormatOnSave",
---   pattern = "*",
---   callback = function()
---     if vim.bo.filetype ~= 'css' and vim.bo.filetype ~= 'scss' then
---       vim.lsp.buf.format()
---     end
---   end,
--- })
+vim.api.nvim_create_augroup("FormatOnSave", { clear = true })
+vim.api.nvim_create_autocmd("BufWritePre", {
+  group = "FormatOnSave",
+  pattern = "*",
+  callback = function()
+    if vim.bo.filetype ~= 'css' and vim.bo.filetype ~= 'scss' then
+      vim.lsp.buf.format()
+    end
+  end,
+})

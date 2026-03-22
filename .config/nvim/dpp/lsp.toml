@@ -78,25 +78,25 @@ EOF
 repo = 'hrsh7th/cmp-nvim-lsp'
 on_event = ['VimEnter']
 
+
 [[plugins]]
 repo = 'mason-org/mason-lspconfig.nvim'
 depends = [
   'mason-org/mason.nvim',
   'neovim/nvim-lspconfig',
-  # 'hrsh7th/cmp-nvim-lsp',
 ]
 lazy = false
 hook_post_source = '''
 lua << 'EOF'
--- ===== Mason を一度だけ初期化 =====
-vim.notify('mason-lspconfig not found', vim.log.levels.ERROR)
+-- （★この行は不要なので削除推奨★）
+-- vim.notify('mason-lspconfig not found', vim.log.levels.ERROR)
+
 local ok_mason, mason = pcall(require, 'mason')
 if ok_mason and not vim.g.__mason_setup_done then
   mason.setup({})
   vim.g.__mason_setup_done = true
 end
 
--- ===== mason-lspconfig のセットアップ =====
 local ok_mlsp, mlsp = pcall(require, 'mason-lspconfig')
 if not ok_mlsp then
   vim.notify('mason-lspconfig not found', vim.log.levels.ERROR)
@@ -104,15 +104,15 @@ if not ok_mlsp then
 end
 
 mlsp.setup({
-  ensure_installed = { 'lua_ls', 'rust_analyzer', 'volar', 'vtsls' },
+  ensure_installed = { 'lua_ls', 'rust_analyzer', 'vtsls', 'intelephense' },  -- ★ 追加
   automatic_installation = true,
 })
 
--- ===== LSP設定ファイルを確実に読み込む =====
+-- LSP 個別設定の読み込み
 if not vim.g.__my_lsp_hooks_loaded then
   local cfg = vim.fn.stdpath('config')
-  local path = (vim.fs and vim.fs.joinpath or function(a,b) return a..'/'..b end)(cfg, 'dpp/hooks/lsp.lua')
-
+  local join = (vim.fs and vim.fs.joinpath) or function(a,b) return a..'/'..b end
+  local path = join(cfg, 'dpp/hooks/lsp.lua')
   if vim.loop and vim.loop.fs_stat(path) then
     local ok, err = pcall(dofile, path)
     if ok then
@@ -128,6 +128,7 @@ end
 EOF
 '''
 
+
 # =========================================================================
 # Linting & Formatting
 # =========================================================================
@@ -135,10 +136,6 @@ EOF
 repo = 'creativenull/efmls-configs-nvim'
 on_event = 'BufRead'
 depends = ['nvim-lspconfig']
-
-[[plugins]]
-repo = 'dense-analysis/ale'
-on_event = ['BufRead', 'BufNewFile']
 
 # =========================================================================
 # Navigation

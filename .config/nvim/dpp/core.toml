@@ -42,6 +42,37 @@ vim.cmd('colorscheme everforest')
 EOF
 '''
 
+# Linting & Formatting (起動時に必要)
+[[plugins]]
+repo = 'dense-analysis/ale'
+hook_add = '''
+" ALE基本設定
+let g:ale_enabled = 1
+let g:ale_fix_on_save = 1
+
+" PHP設定
+let g:ale_php_phpcs_standard = 'PSR12'
+let g:ale_php_phpcbf_standard = 'PSR12'
+let g:ale_php_phpcs_use_global = 1
+let g:ale_php_phpcbf_use_global = 1
+
+" eslint設定
+let g:ale_javascript_eslint_executable = 'eslint_d'
+let g:ale_javascript_eslint_use_global = 1
+
+" フォーマッタ設定
+let g:ale_fixers = {
+\   'css': ['prettier'],
+\   'scss': ['prettier'],
+\   'javascript': ['prettier'],
+\   'typescript': ['prettier'],
+\   'vue': ['prettier'],
+\   'php': ['phpcbf'],
+\}
+
+echom '✅ ALE configuration loaded'
+'''
+
 # Base requirements
 [[plugins]]
 repo = 'nvim-lua/plenary.nvim'
