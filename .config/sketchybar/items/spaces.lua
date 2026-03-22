@@ -5,7 +5,13 @@ local app_icons = require("helpers.app_icons")
 
 local spaces = {}
 
-local workspaces = get_workspaces()
+local all_workspaces = get_workspaces()
+local workspaces = {}
+for _, ws in ipairs(all_workspaces) do
+    if tonumber(ws) and tonumber(ws) <= 9 then
+        table.insert(workspaces, ws)
+    end
+end
 local current_workspace = get_current_workspace()
 local function split(str, sep)
     local result = {}
