@@ -1,7 +1,5 @@
 tap "felixkratz/formulae"
-tap "homebrew/services"
 tap "nikitabobko/tap"
-tap "oven-sh/bun"
 tap "shivammathur/php"
 
 # Core Development Tools
@@ -32,8 +30,6 @@ brew "composer"
 
 # DevOps & Infrastructure
 brew "awscli"
-brew "docker"
-brew "devcontainer"
 brew "lazydocker"
 brew "lazygit"
 
@@ -68,10 +64,3 @@ cask "font-hack-nerd-font"
 cask "font-plemol-jp"
 cask "font-plemol-jp-hs"
 cask "font-plemol-jp-nf"
-
-# VS Code Extensions
-vscode "dbaeumer.vscode-eslint"
-vscode "esbenp.prettier-vscode"
-vscode "sainnhe.everforest"
-vscode "vue.volar"
-vscode "zignd.html-css-class-completion"

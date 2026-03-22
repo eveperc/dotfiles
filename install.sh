@@ -36,8 +36,11 @@ install_packages() {
   if [[ "$OS" != "Darwin" ]]; then return; fi
 
   info "Installing packages from Brewfile..."
-  brew bundle --file="$DOTFILES_DIR/Brewfile"
-  success "Packages installed"
+  if brew bundle --file="$DOTFILES_DIR/Brewfile"; then
+    success "Packages installed"
+  else
+    warn "Some packages failed to install (continuing...)"
+  fi
 }
 
 # -----------------------------------------------------------
