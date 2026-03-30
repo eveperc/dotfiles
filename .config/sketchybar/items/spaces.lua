@@ -78,8 +78,9 @@ for i = 1, 10, 1 do
 			label = { highlight = selected },
 			background = {
 				height = 25,
-				border_color = selected and colors_spaces[i],
-				color = selected and colors_spaces[i] or colors.transparent,
+				border_width = selected and 2 or 0,
+				border_color = selected and colors_spaces[i] or colors.transparent,
+				color = selected and colors.transparent or colors.transparent,
 				corner_radius = selected and 6 or 0,
 			},
 		})
