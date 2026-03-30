@@ -55,3 +55,7 @@ end
 if test -f ~/.config/fish/config.local.fish
     source ~/.config/fish/config.local.fish
 end
+
+### MANAGED BY RANCHER DESKTOP START (DO NOT EDIT)
+set --export --prepend PATH "/Users/katsunori-ibusuki/.rd/bin"
+### MANAGED BY RANCHER DESKTOP END (DO NOT EDIT)

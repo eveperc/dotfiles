@@ -61,3 +61,7 @@ ZSH_HIGHLIGHT_STYLES[root]='bg=red'
 if [ -f "$HOME/.safe-chain/scripts/init-posix.sh" ]; then
   source "$HOME/.safe-chain/scripts/init-posix.sh"
 fi
+
+### MANAGED BY RANCHER DESKTOP START (DO NOT EDIT)
+export PATH="/Users/katsunori-ibusuki/.rd/bin:$PATH"
+### MANAGED BY RANCHER DESKTOP END (DO NOT EDIT)
