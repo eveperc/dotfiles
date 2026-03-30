@@ -19,3 +19,6 @@ id_rsa*
 .config/nvim/test_*.vim
 .config/nvim/.config/
 .config/nvim/.claude/
+
+# Sketchybar
+.config/sketchybar/noice.log
