@@ -10,6 +10,12 @@ local icons = {
 		cpu = "􀫥",
 		clipboard = "􀉄",
 		memory = "󰠷",
+		disk = "􀤂",
+		vpn = "􀞚",
+		docker = "􀐛",
+		brew = "􀎗",
+		git_branch = "􀙠",
+		slack = "􀌤",
 
 		switch = {
 			on = "􁏮",
