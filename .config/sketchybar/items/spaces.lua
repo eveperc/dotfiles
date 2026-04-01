@@ -47,7 +47,7 @@ for i = 1, 10, 1 do
 			padding_right = 10,
 			padding_left = 3,
 			color = colors_spaces[i],
-			font = "sketchybar-app-font-bg:Regular:21.0",
+			font = "sketchybar-app-font:Regular:21.0",
 			y_offset = -2,
 		},
 		padding_right = 4,
@@ -220,7 +220,7 @@ local front_app_icon = sbar.add("item", "front_app_icon", {
 	display = "active",
 	icon = { drawing = false },
 	label = {
-		font = "sketchybar-app-font-bg:Regular:21.0",
+		font = "sketchybar-app-font:Regular:21.0",
 	},
 	updates = true,
 	padding_right = 0,
