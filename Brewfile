@@ -21,7 +21,6 @@ brew "deno"
 brew "nodebrew"
 brew "oven-sh/bun/bun"
 brew "pnpm"
-brew "yarn"
 brew "rustup"
 brew "lua"
 brew "python@3.13"
@@ -41,13 +40,19 @@ brew "marp-cli"
 brew "nowplaying-cli"
 brew "switchaudio-osx"
 
+# Modern CLI Tools
+brew "zoxide"
+brew "eza"
+brew "bat"
+brew "yazi"
+brew "git-delta"
+
 # macOS Window Management
 brew "felixkratz/formulae/borders"
 brew "felixkratz/formulae/sketchybar"
 
 # Casks - Applications
 cask "nikitabobko/tap/aerospace"
-cask "wezterm"
 cask "iterm2"
 cask "raycast"
 cask "discord"

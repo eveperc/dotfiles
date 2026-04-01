@@ -6,11 +6,14 @@ fi
 # Oh My Zsh
 export ZSH="$HOME/.oh-my-zsh"
 ZSH_THEME="powerlevel10k/powerlevel10k"
-plugins=(git zsh-autosuggestions zsh-syntax-highlighting z)
+plugins=(git zsh-autosuggestions zsh-syntax-highlighting)
 source "$ZSH/oh-my-zsh.sh"
 
 # Powerlevel10k
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
+# XDG Base Directory
+export XDG_CONFIG_HOME="$HOME/.config"
 
 # PATH (重複追加を防止)
 typeset -U PATH path
@@ -56,6 +59,33 @@ ZSH_HIGHLIGHT_STYLES[bracket-level-5]='fg=cyan,bold'
 ZSH_HIGHLIGHT_STYLES[cursor-matchingbracket]='standout'
 ZSH_HIGHLIGHT_STYLES[cursor]='bg=blue'
 ZSH_HIGHLIGHT_STYLES[root]='bg=red'
+
+# zoxide (z の代替)
+if command -v zoxide &>/dev/null; then
+  eval "$(zoxide init zsh)"
+fi
+
+# eza (ls の代替)
+if command -v eza &>/dev/null; then
+  alias ls="eza --icons --git"
+  alias ll="eza --icons --git -la"
+  alias lt="eza --icons --git --tree --level=2"
+fi
+
+# bat (cat の代替)
+if command -v bat &>/dev/null; then
+  alias cat="bat --paging=never"
+fi
+
+# yazi: 終了時にカレントディレクトリを追従する関数
+function y() {
+  local tmp="$(mktemp -t "yazi-cwd.XXXXXX")"
+  yazi "$@" --cwd-file="$tmp"
+  if cwd="$(command cat -- "$tmp")" && [ -n "$cwd" ] && [ "$cwd" != "$PWD" ]; then
+    builtin cd -- "$cwd"
+  fi
+  rm -f -- "$tmp"
+}
 
 # Safe-chain
 if [ -f "$HOME/.safe-chain/scripts/init-posix.sh" ]; then
