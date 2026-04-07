@@ -64,6 +64,7 @@ cask "wave"
 cask "qmk-toolbox"
 cask "session-manager-plugin"
 cask "sf-symbols"
+cask "obsidian"
 
 # Fonts
 cask "font-hack-nerd-font"
